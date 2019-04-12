@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Keras-Without-Keras</title>
+        <link rel="stylesheet" type="text/css" href="app.css"  />
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    </head>
+    <body>
+        <!-- NavBar -->
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+    		<div class="container">
+    			<div class="navbar-header">
+    				 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-nav-demo" aria-expanded="false">
+    	        <span class="sr-only">Toggle navigation</span>
+    	        <span class="icon-bar"></span>
+    	        <span class="icon-bar"></span>
+    	        <span class="icon-bar"></span>
+    	      </button>
+    				<a href="#" class="navbar-brand"><span class="glyphicon glyphicon-picture"></span> KwoK</a>
+    			</div>
+    			<div class="collapse navbar-collapse" id="bs-nav-demo">
+    				<ul class="nav navbar-nav">
+    					<li><a href="#">About</a></li>
+    					<li><a href="#">Contact</a></li>
+    				</ul>
+    				<ul class="nav navbar-nav navbar-right">
+    					<li><a href="#">Sign Up</a></li>
+    					<li><a href="#">Login</a></li>
+    				</ul>
+    			</div>
+    		</div>
+    	</nav>
+
+         <div class="container">
+             <!-- Title -->
+             <div class="jumbotron">
+               <h2><i class="fas fa-database"></i> Step 1. Select Your Data Type </h2>
+               <!--<p>A bunch of beautiful images that I didn't take (except for the first one!)</p>  -->
+             </div>
+             <!-- Data Types -->
+             <div class="row">
+                <div class="col-lg-4">
+                    <div class="content">
+                       <!-- <h3> <i class="fas fa-table"></i> Tabular </h3> -->
+                       <button type="button" class="btn btn-light btn-lg btn-block rounded-0" data-toggle="collapse" data-target="#tabular">  <i class="fas fa-table"></i> Tabular</button>
+                       <div class="collapse" id="tabular">
+                           <ul>
+                               <li class="list-inline-item"><h4> Input/Output in csv files</h4></li>
+                               <li class="list-inline-item"><h4> each row is a sample </h4></li>
+                               <li class="list-inline-item"><h4> each column  is a feature </h4></li>
+                               <li class="list-inline-item"><h4> Feature can be numeric or categorical </h4></li>
+                               <li class="list-inline-item"><h4> Example Applications: </h4>
+                                      <ul>
+                                          <li> Classification </li>
+                                          <li> Regression </li>
+                                          <li> Time Series Prediction </li>
+                                      </ul>
+                               </li>
+                             </ul>
+                              <a type="button" class="btn btn-primary" href="tabular_upload.html"> Import Your Data  </a>
+                              <a type="button" class="btn btn-primary"> Use Example Data</a>
+                       </div>
+                       <hr />
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="content">
+                       <h3> <i class="far fa-images"></i> Images </h3>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="content">
+                       <h3> <i class="fas fa-language"></i> Text </h3>
+                    </div>
+                </div>
+
+             </div>
+         </div>
+
+
+     <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    </body>
+</html>
