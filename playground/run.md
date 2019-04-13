@@ -1,4 +1,4 @@
-*** To run the visualization locally, run:***
+###To run the visualization locally, run:###
 
 - npm i to install dependencies
 - npm run build to compile the app and place it in the dist/ directory
