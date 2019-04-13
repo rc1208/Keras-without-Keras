@@ -130,7 +130,9 @@ export class State {
     {name: "tutorial", type: Type.STRING},
     {name: "problem", type: Type.OBJECT, keyMap: problems},
     {name: "initZero", type: Type.BOOLEAN},
-    {name: "hideText", type: Type.BOOLEAN}
+    {name: "hideText", type: Type.BOOLEAN},
+    {name: "sizeInput", type: Type.NUMBER},
+    {name: "sizeOutput", type: Type.NUMBER}
   ];
 
   [key: string]: any;
