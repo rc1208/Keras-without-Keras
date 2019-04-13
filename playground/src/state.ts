@@ -150,7 +150,7 @@ export class State {
   collectStats = false;
   numHiddenLayers = 1;
   hiddenLayerControls: any[] = [];
-  networkShape: number[] = [4, 2];
+  networkShape: number[] = [3, 2];
   x = true;
   y = true;
   xTimesY = false;
@@ -258,13 +258,15 @@ export class State {
       }
       props.push(`${name}=${value}`);
     });
+
+    props.push(`discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true`);
+
     // Serialize properties that correspond to hiding UI controls.
     getHideProps(this).forEach(prop => {
       props.push(`${prop}=${this[prop]}`);
     });
     window.location.hash = props.join("&");
   }
-
   /** Returns all the hidden properties. */
   getHiddenProps(): string[] {
     let result: string[] = [];

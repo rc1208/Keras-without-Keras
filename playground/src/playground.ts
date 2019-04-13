@@ -47,7 +47,7 @@ function scrollTween(offset) {
   };
 }
 
-const RECT_SIZE = 30;
+const RECT_SIZE = 20;
 const BIAS_SIZE = 5;
 const NUM_SAMPLES_CLASSIFY = 500;
 const NUM_SAMPLES_REGRESS = 1200;
@@ -63,13 +63,13 @@ interface InputFeature {
 }
 
 let INPUTS: {[name: string]: InputFeature} = {
-  "x": {f: (x, y) => x, label: "X_1"},
-  "y": {f: (x, y) => y, label: "X_2"},
-  "xSquared": {f: (x, y) => x * x, label: "X_1^2"},
-  "ySquared": {f: (x, y) => y * y,  label: "X_2^2"},
-  "xTimesY": {f: (x, y) => x * y, label: "X_1X_2"},
-  "sinX": {f: (x, y) => Math.sin(x), label: "sin(X_1)"},
-  "sinY": {f: (x, y) => Math.sin(y), label: "sin(X_2)"},
+  "x": {f: (x, y) => x, label: ""},
+  "y": {f: (x, y) => y, label: ""},
+  "xSquared": {f: (x, y) => x * x, label: ""},
+  "ySquared": {f: (x, y) => y * y,  label: ""},
+  "xTimesY": {f: (x, y) => x * y, label: ""},
+  "sinX": {f: (x, y) => Math.sin(x), label: ""},
+  "sinY": {f: (x, y) => Math.sin(y), label: ""},
 };
 
 let HIDABLE_CONTROLS = [
@@ -475,21 +475,21 @@ function drawNode(cx: number, cy: number, nodeId: string, isInput: boolean,
     }
     nodeGroup.classed(activeOrNotClass, true);
   }
-  if (!isInput) {
-    // Draw the node's bias.
-    nodeGroup.append("rect")
-      .attr({
-        id: `bias-${nodeId}`,
-        x: -BIAS_SIZE - 2,
-        y: RECT_SIZE - BIAS_SIZE + 3,
-        width: BIAS_SIZE,
-        height: BIAS_SIZE,
-      }).on("mouseenter", function() {
-        updateHoverCard(HoverType.BIAS, node, d3.mouse(container.node()));
-      }).on("mouseleave", function() {
-        updateHoverCard(null);
-      });
-  }
+  // if (!isInput) {
+  //   // Draw the node's bias.
+  //   nodeGroup.append("rect")
+  //     .attr({
+  //       id: `bias-${nodeId}`,
+  //       x: -BIAS_SIZE - 2,
+  //       y: RECT_SIZE - BIAS_SIZE + 3,
+  //       width: BIAS_SIZE,
+  //       height: BIAS_SIZE,
+  //     }).on("mouseenter", function() {
+  //       updateHoverCard(HoverType.BIAS, node, d3.mouse(container.node()));
+  //     }).on("mouseleave", function() {
+  //       updateHoverCard(null);
+  //     });
+  // }
 
   // Draw the node's canvas.
   let div = d3.select("#network").insert("div", ":first-child")
@@ -850,20 +850,20 @@ function getLoss(network: nn.Node[][], dataPoints: Example2D[]): number {
 
 function updateUI(firstStep = false) {
   // Update the links visually.
-  updateWeightsUI(network, d3.select("g.core"));
+  // updateWeightsUI(network, d3.select("g.core"));
   // Update the bias values visually.
   updateBiasesUI(network);
   // Get the decision boundary of the network.
   updateDecisionBoundary(network, firstStep);
   let selectedId = selectedNodeId != null ?
       selectedNodeId : nn.getOutputNode(network).id;
-  heatMap.updateBackground(boundary[selectedId], state.discretize);
+  // heatMap.updateBackground(boundary[selectedId], state.discretize);
 
   // Update all decision boundaries.
   d3.select("#network").selectAll("div.canvas")
       .each(function(data: {heatmap: HeatMap, id: string}) {
-    data.heatmap.updateBackground(reduceMatrix(boundary[data.id], 10),
-        state.discretize);
+    // data.heatmap.updateBackground(reduceMatrix(boundary[data.id], 10),
+    //     state.discretize);
   });
 
   function zeroPad(n: number): string {
