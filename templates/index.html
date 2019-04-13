@@ -59,7 +59,7 @@
                                       </ul>
                                </li>
                              </ul>
-                              <a type="button" class="btn btn-primary" href="tabular_upload.html"> Import Your Data  </a>
+                              <a type="button" class="btn btn-primary" href="tabular_upload"> Import Your Data  </a>
                               <a type="button" class="btn btn-primary"> Use Example Data</a>
                        </div>
                        <hr />
@@ -68,13 +68,34 @@
 
                 <div class="col-lg-4">
                     <div class="content">
-                       <h3> <i class="far fa-images"></i> Images </h3>
+                       <button type="button" class="btn btn-light btn-lg btn-block rounded-0" data-toggle="collapse" data-target="#images">  <i class="far fa-images"></i> Images </button>
+                       <div class="collapse" id="images">
+                           <ul>
+                               <li class="list-inline-item"><h4> Input are images, should be same size </h4></li>
+                               <li class="list-inline-item"><h4> Output is a file with a column of catogories </h4></li>
+                               <li class="list-inline-item"><h4> only support images classification now </h4></li>
+                             </ul>
+                              <a type="button" class="btn btn-primary" href="images_upload"> Import Your Data  </a>
+                              <a type="button" class="btn btn-primary"> Use Example Data</a>
+                       </div>
+                       <hr />
                     </div>
                 </div>
 
                 <div class="col-lg-4">
                     <div class="content">
-                       <h3> <i class="fas fa-language"></i> Text </h3>
+                       <button type="button" class="btn btn-light btn-lg btn-block rounded-0" data-toggle="collapse" data-target="#text">  <i class="fas fa-language"></i> Text </button>
+                       <div class="collapse" id="text">
+                           <ul>
+                               <li class="list-inline-item"><h4> Input is a txt file </h4></li>
+                               <li class="list-inline-item"><h4> each row is a training sample (sentence, paragraph) </h4></li>
+                               <li class="list-inline-item"><h4> Output is a txt file of categories </h4></li>
+                               <li class="list-inline-item"><h4> only support NLP classification now</h4></li>
+                             </ul>
+                              <a type="button" class="btn btn-primary" href="text_upload"> Import Your Data  </a>
+                              <a type="button" class="btn btn-primary"> Use Example Data</a>
+                       </div>
+                       <hr />
                     </div>
                 </div>
 

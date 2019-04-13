@@ -15,12 +15,15 @@
         <div class="container">
             <div class="jumbotron">
               <h2><i class="fas fa-database"></i> Step 2. Upload Your Data </h2>
+              <p>
+                   Input a csv file, where the last column is the target, other columns are features
+              </p>
               <!--<p>A bunch of beautiful images that I didn't take (except for the first one!)</p>  -->
             </div>
 
             <form action="#">
               <div class="form-group">
-                  <label for="inputfileX">Input Data</label>
+                  <label for="inputfileX">Upload Data</label>
                   <div class="row">
                      <div class="col-lg-6 col-xs-12" >
                     <!--     <input type="file" class="form-control-file border" id="inputfileX" multiple /> -->
@@ -30,7 +33,7 @@
                         </div>
                      </div>
 
-                     <div class="col-lg-6 col-xs-12">
+                     <div class="col-lg-3 col-xs-12">
                           <div class="custom-control custom-checkbox">
                              <input class="custom-control-input" type="checkbox" id="ignoreHeaderX">
                              <label class="custom-control-label" for="ignoreHeaderX">
@@ -38,9 +41,18 @@
                             </label>
                         </div>
                      </div>
+
+                     <div class="col-lg-3 col-xs-12">
+                          <div class="custom-control custom-checkbox">
+                              <input class="custom-control-input" type="checkbox" id="categorical">
+                              <label class="custom-control-label" for="categorical">
+                                  Is target categorical?
+                             </label>
+                        </div>
+                     </div>
                   </div>
               </div>
-
+<!--
               <div class="form-group">
                   <label for="inputfiley">Output Data</label>
                   <div class="row">
@@ -69,6 +81,7 @@
                          </div>
                   </div>
               </div>
+        -->
 
                 <div class="form-group">
                      <div class="row">
