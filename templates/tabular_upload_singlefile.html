@@ -21,22 +21,22 @@
               <!--<p>A bunch of beautiful images that I didn't take (except for the first one!)</p>  -->
             </div>
 
-            <form action="#">
+            <form action="tabular_upload" method="post" enctype="multipart/form-data">
               <div class="form-group">
-                  <label for="inputfileX">Upload Data</label>
+                  <label for="inputfile">Upload Data</label>
                   <div class="row">
                      <div class="col-lg-6 col-xs-12" >
-                    <!--     <input type="file" class="form-control-file border" id="inputfileX" multiple /> -->
+                    <!--     <input type="file" class="form-control-file border" id="inputfile" multiple /> -->
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputfileX">
-                            <label class="custom-file-label" for="inputfileX">Choose file</label>
+                            <input type="file" class="custom-file-input" id="inputfile" name="file" required accept=".csv">
+                            <label class="custom-file-label" for="inputfile">Choose file</label>
                         </div>
                      </div>
 
                      <div class="col-lg-3 col-xs-12">
                           <div class="custom-control custom-checkbox">
-                             <input class="custom-control-input" type="checkbox" id="ignoreHeaderX">
-                             <label class="custom-control-label" for="ignoreHeaderX">
+                             <input class="custom-control-input" type="checkbox" id="ignoreHeader" name="ignoreHeader">
+                             <label class="custom-control-label" for="ignoreHeader">
                                  Ignore First Line
                             </label>
                         </div>
@@ -44,7 +44,7 @@
 
                      <div class="col-lg-3 col-xs-12">
                           <div class="custom-control custom-checkbox">
-                              <input class="custom-control-input" type="checkbox" id="categorical">
+                              <input class="custom-control-input" type="checkbox" id="categorical" name="categorical">
                               <label class="custom-control-label" for="categorical">
                                   Is target categorical?
                              </label>
