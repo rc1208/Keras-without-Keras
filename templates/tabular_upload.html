@@ -25,7 +25,7 @@
                      <div class="col-lg-6 col-xs-12" >
                     <!--     <input type="file" class="form-control-file border" id="inputfileX" multiple /> -->
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputfileX" multiple>
+                            <input type="file" class="custom-file-input" id="inputfileX">
                             <label class="custom-file-label" for="inputfileX">Choose file</label>
                         </div>
                      </div>
@@ -46,7 +46,7 @@
                   <div class="row">
                          <div class="col-lg-6 col-xs-12" >
                              <div class="custom-file">
-                                 <input type="file" class="custom-file-input" id="inputfiley" multiple>
+                                 <input type="file" class="custom-file-input" id="inputfiley">
                                  <label class="custom-file-label" for="inputfiley">Choose file</label>
                              </div>
                          </div>
@@ -72,7 +72,7 @@
 
                 <div class="form-group">
                      <div class="row">
-                         <div class="col-lg-5  col-xs-12">
+                         <div class="col-lg-12  col-xs-12">
                              <div class="custom-control custom-checkbox">
                                  <input class="custom-control-input" type="checkbox" id="saveData" onclick="enableDataIdentifer()"/>
                                  <label class="custom-control-label" for="saveData">
@@ -80,8 +80,9 @@
                                  </label>
                              </div>
                          </div>
-                         <div class="col-lg-7 col-xs-12">
-                             <input type="text" class="form-control" id="dataIdentifier" placeholder="Type Your Data identifier Here" disabled/>
+                         <div class="col-lg-12 col-xs-12">
+                             <input type="text" class="form-control" id="dataIdentifier" placeholder="Type Your Data identifier Here" hidden/>
+                             <textarea class="form-control" rows="3" id="dataDescription" placeholder="Type Your Data Description Here" hidden></textarea>
                          </div>
 
                      </div>
@@ -114,9 +115,11 @@ $(".custom-file-input").on("change", function() {
 {
 if (document.getElementById('saveData').checked)
 {
-   document.getElementById('dataIdentifier').disabled = false;
+   document.getElementById('dataIdentifier').hidden = false;
+   document.getElementById('dataDescription').hidden = false;
 } else {
-   document.getElementById('dataIdentifier').disabled = true;
+   document.getElementById('dataIdentifier').hidden = true;
+   document.getElementById('dataDescription').hidden = true;
 }
 }
         </script>
