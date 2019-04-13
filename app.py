@@ -10,7 +10,7 @@ def home():
 
 @app.route('/tabular_upload', methods = ['GET'])
 def tabular_upload():
-    return render_template('tabular_upload.html')
+    return render_template('tabular_upload_singlefile.html')
 
 #When run from command line, start the server
 if __name__ == '__main__':

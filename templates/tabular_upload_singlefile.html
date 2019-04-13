@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Numeric File Upload</title>
+        <link rel="stylesheet" type="text/css" href="app.css"  />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    </head>
+    <body>
+
+        <div class="container">
+            <div class="jumbotron">
+              <h2><i class="fas fa-database"></i> Step 2. Upload Your Data </h2>
+              <p>
+                   Input a csv file, where the last column is the target, other columns are features
+              </p>
+              <!--<p>A bunch of beautiful images that I didn't take (except for the first one!)</p>  -->
+            </div>
+
+            <form action="#">
+              <div class="form-group">
+                  <label for="inputfileX">Upload Data</label>
+                  <div class="row">
+                     <div class="col-lg-6 col-xs-12" >
+                    <!--     <input type="file" class="form-control-file border" id="inputfileX" multiple /> -->
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="inputfileX">
+                            <label class="custom-file-label" for="inputfileX">Choose file</label>
+                        </div>
+                     </div>
+
+                     <div class="col-lg-3 col-xs-12">
+                          <div class="custom-control custom-checkbox">
+                             <input class="custom-control-input" type="checkbox" id="ignoreHeaderX">
+                             <label class="custom-control-label" for="ignoreHeaderX">
+                                 Ignore First Line
+                            </label>
+                        </div>
+                     </div>
+
+                     <div class="col-lg-3 col-xs-12">
+                          <div class="custom-control custom-checkbox">
+                              <input class="custom-control-input" type="checkbox" id="categorical">
+                              <label class="custom-control-label" for="categorical">
+                                  Is target categorical?
+                             </label>
+                        </div>
+                     </div>
+                  </div>
+              </div>
+<!--
+              <div class="form-group">
+                  <label for="inputfiley">Output Data</label>
+                  <div class="row">
+                         <div class="col-lg-6 col-xs-12" >
+                             <div class="custom-file">
+                                 <input type="file" class="custom-file-input" id="inputfiley">
+                                 <label class="custom-file-label" for="inputfiley">Choose file</label>
+                             </div>
+                         </div>
+                         <div class="col-lg-3 col-sm-6 col-xs-12">
+                             <div class="custom-control custom-checkbox">
+                                 <input class="custom-control-input" type="checkbox" id="ignoreHeadery">
+                                 <label class="custom-control-label" for="ignoreHeadery">
+                                     Ignore First Line
+                                </label>
+                            </div>
+                         </div>
+
+                         <div class="col-lg-3 col-sm-6 col-xs-12">
+                             <div class="custom-control custom-checkbox">
+                                 <input class="custom-control-input" type="checkbox" id="categoricaly">
+                                 <label class="custom-control-label" for="categoricaly">
+                                     Is Categorical Data?
+                                </label>
+                            </div>
+                         </div>
+                  </div>
+              </div>
+        -->
+
+                <div class="form-group">
+                     <div class="row">
+                         <div class="col-lg-12  col-xs-12">
+                             <div class="custom-control custom-checkbox">
+                                 <input class="custom-control-input" type="checkbox" id="saveData" onclick="enableDataIdentifer()"/>
+                                 <label class="custom-control-label" for="saveData">
+                                 Save your data by specifying a unique identifier?
+                                 </label>
+                             </div>
+                         </div>
+                         <div class="col-lg-12 col-xs-12">
+                             <input type="text" class="form-control" id="dataIdentifier" placeholder="Type Your Data identifier Here" hidden/>
+                             <textarea class="form-control" rows="3" id="dataDescription" placeholder="Type Your Data Description Here" hidden></textarea>
+                         </div>
+
+                     </div>
+              </div>
+
+               <div class="form-group">
+                  <div class="row">
+                    <div class="col-xs-12">
+                        <input type="submit" class="btn btn-primary" value="upload" />
+                    </div>
+
+                  </div>
+
+               </div>
+
+
+            </form>
+        </div>
+
+<script>
+// Add the following code if you want the name of the file appear on select
+$(".custom-file-input").on("change", function() {
+  var fileName = $(this).val().split("\\").pop();
+  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});
+</script>
+
+        <script>
+        function enableDataIdentifer()
+{
+if (document.getElementById('saveData').checked)
+{
+   document.getElementById('dataIdentifier').hidden = false;
+   document.getElementById('dataDescription').hidden = false;
+} else {
+   document.getElementById('dataIdentifier').hidden = true;
+   document.getElementById('dataDescription').hidden = true;
+}
+}
+        </script>
+
+    </body>
+</html>
