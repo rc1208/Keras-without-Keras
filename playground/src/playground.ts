@@ -63,13 +63,13 @@ interface InputFeature {
 }
 
 let INPUTS: {[name: string]: InputFeature} = {
-  "x": {f: (x, y) => x, label: ""},
-  "y": {f: (x, y) => y, label: ""},
-  "xSquared": {f: (x, y) => x * x, label: ""},
-  "ySquared": {f: (x, y) => y * y,  label: ""},
-  "xTimesY": {f: (x, y) => x * y, label: ""},
-  "sinX": {f: (x, y) => Math.sin(x), label: ""},
-  "sinY": {f: (x, y) => Math.sin(y), label: ""},
+  // "x": {f: (x, y) => x, label: ""},
+  // "y": {f: (x, y) => y, label: ""},
+  // "xSquared": {f: (x, y) => x * x, label: ""},
+  // "ySquared": {f: (x, y) => y * y,  label: ""},
+  // "xTimesY": {f: (x, y) => x * y, label: ""},
+  // "sinX": {f: (x, y) => Math.sin(x), label: ""},
+  // "sinY": {f: (x, y) => Math.sin(y), label: ""},
 };
 
 let HIDABLE_CONTROLS = [
@@ -142,6 +142,10 @@ class Player {
 }
 
 let state = State.deserializeState();
+
+for(var i = 0;i < state["sizeInput"]; i++) {
+  INPUTS['a' + i] = {f: (x, y) => 1, label: ""};
+}
 
 // Filter out inputs that are hidden.
 state.getHiddenProps().forEach(prop => {
@@ -576,7 +580,7 @@ function drawNetwork(network: nn.Node[][]): void {
   nodeIds.forEach((nodeId, i) => {
     let cy = nodeIndexScale(i) + RECT_SIZE / 2;
     node2coord[nodeId] = {cx, cy};
-    drawNode(cx, cy, nodeId, true, container);
+    drawNode(cx, cy, nodeId, false, container);
   });
 
   // Draw the intermediate layers.
@@ -889,9 +893,9 @@ function updateUI(firstStep = false) {
 function constructInputIds(): string[] {
   let result: string[] = [];
   for (let inputName in INPUTS) {
-    if (state[inputName]) {
+    // if (state[inputName]) {
       result.push(inputName);
-    }
+    // }
   }
   return result;
 }
@@ -899,9 +903,9 @@ function constructInputIds(): string[] {
 function constructInput(x: number, y: number): number[] {
   let input: number[] = [];
   for (let inputName in INPUTS) {
-    if (state[inputName]) {
+    // if (state[inputName]) {
       input.push(INPUTS[inputName].f(x, y));
-    }
+    // }
   }
   return input;
 }
