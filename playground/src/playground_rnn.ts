@@ -24,7 +24,7 @@ import {
   regularizations,
   getKeyFromValue,
   Problem
-} from "./state";
+} from "./state_rnn";
 import {Example2D, shuffle} from "./dataset";
 import {AppendingLineChart} from "./linechart";
 import * as d3 from 'd3';
@@ -332,8 +332,8 @@ function makeGUI() {
     if (this.value == 1){
       window.location.replace("index_cnn.html");
     }
-    if (this.value == 2){
-      window.location.replace("index_rnn.html");
+    if (this.value == 0){
+      window.location.replace("index.html");
     }
   });
   typeofnet.property("value", state.typeofnet);

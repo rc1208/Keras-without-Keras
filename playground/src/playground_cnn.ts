@@ -24,7 +24,7 @@ import {
   regularizations,
   getKeyFromValue,
   Problem
-} from "./state";
+} from "./state_cnn";
 import {Example2D, shuffle} from "./dataset";
 import {AppendingLineChart} from "./linechart";
 import * as d3 from 'd3';
@@ -245,25 +245,25 @@ function makeGUI() {
     .classed("selected", true);
 
   d3.select("#add-layers").on("click", () => {
-    if (state.numHiddenLayers >= 100) {
+    if (state.numHiddenLayers >= 4) {
       return;
     }
     
-    if (state.networkShape[state.numHiddenLayers-1] > 0) {
-      state.networkShape[state.numHiddenLayers] = state.networkShape[state.numHiddenLayers-1];
+    if (state.networkShape[state.numHiddenLayers-1] > 3) {
+      state.networkShape[state.numHiddenLayers] = 4;
     } else {
-      state.networkShape[state.numHiddenLayers] = 2;
+      state.networkShape[state.numHiddenLayers] = 4;
     }
-    state.numHiddenLayers++;
+    // state.numHiddenLayers++;
     parametersChanged = true;
     reset();
   });
 
   d3.select("#remove-layers").on("click", () => {
-    if (state.numHiddenLayers <= 0) {
+    if (state.numHiddenLayers <= 4) {
       return;
     }
-    state.numHiddenLayers--;
+    // state.numHiddenLayers--;
     state.networkShape.splice(state.numHiddenLayers);
     parametersChanged = true;
     reset();
@@ -329,8 +329,8 @@ function makeGUI() {
   let typeofnet = d3.select("#typeofnet").on("change", function() {
     state.typeofnet = this.value;
     parametersChanged = true;
-    if (this.value == 1){
-      window.location.replace("index_cnn.html");
+    if (this.value == 0){
+      window.location.replace("index.html");
     }
     if (this.value == 2){
       window.location.replace("index_rnn.html");
@@ -690,7 +690,7 @@ function addPlusMinusControl(x: number, layerIdx: number) {
         if (numNeurons >= 100) {
           return;
         }
-        state.networkShape[i]++;
+        // state.networkShape[i]++;
         parametersChanged = true;
         reset();
       })
@@ -705,7 +705,7 @@ function addPlusMinusControl(x: number, layerIdx: number) {
         if (numNeurons <= 1) {
           return;
         }
-        state.networkShape[i]--;
+        // state.networkShape[i]--;
         parametersChanged = true;
         reset();
       })
@@ -714,9 +714,17 @@ function addPlusMinusControl(x: number, layerIdx: number) {
       .text("remove");
 
   let suffix = state.networkShape[i] > 1 ? "s" : "";
-  div.append("div").text(
+
+  if (suffix == ""){
+    div.append("div").text(
+      "conv2d");
+  }
+  else{
+    div.append("div").text(
     state.networkShape[i] + " neuron" + suffix
   );
+  }
+  
 
   
   //   d3.select("#svg").on("click", () => {

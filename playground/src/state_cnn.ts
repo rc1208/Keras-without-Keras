@@ -138,7 +138,7 @@ export class State {
 
   [key: string]: any;
   learningRate = 0.03;
-  typeofnet = 0;
+  typeofnet = 1;
   regularizationRate = 0;
   showTestData = false;
   noise = 0;
@@ -152,9 +152,9 @@ export class State {
   initZero = false;
   hideText = false;
   collectStats = false;
-  numHiddenLayers = 2;
+  numHiddenLayers = 4;
   hiddenLayerControls: any[] = [];
-  networkShape: number[] = [5, 4];
+  networkShape: number[] = [1, 1, 4, 4];
   x = true;
   y = true;
   xTimesY = false;

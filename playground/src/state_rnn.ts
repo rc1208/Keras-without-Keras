@@ -138,7 +138,7 @@ export class State {
 
   [key: string]: any;
   learningRate = 0.03;
-  typeofnet = 0;
+  typeofnet = 2;
   regularizationRate = 0;
   showTestData = false;
   noise = 0;
