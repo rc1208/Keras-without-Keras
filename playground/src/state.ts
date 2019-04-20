@@ -165,6 +165,8 @@ export class State {
   dataset: dataset.DataGenerator = dataset.classifyCircleData;
   regDataset: dataset.DataGenerator = dataset.regressPlane;
   seed: string;
+  sizeInput = 2;
+  sizeOutput = 1;
 
   /**
    * Deserializes the state from the url hash.
