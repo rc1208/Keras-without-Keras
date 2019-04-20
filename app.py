@@ -2,6 +2,8 @@
 from flask import Flask,render_template, request,jsonify,Response, flash, redirect
 import os
 import csv
+import json
+from datetime import datetime
 from werkzeug.utils import secure_filename
 #Create the app object that will route our calls
 app = Flask(__name__)
@@ -9,6 +11,7 @@ app = Flask(__name__)
 
 
 app.config["UPLOAD_DATA_FOLDER"]=app.instance_path + "/data/dataContent/"
+app.config["UPLOAD_INVECTORY_FOLDER"]=app.instance_path + "/data/dataInventory/"
 app.secret_key="123789456"
 
 
@@ -32,11 +35,13 @@ def tabular_upload_post():
     if file:
         if(not os.path.isdir(app.config["UPLOAD_DATA_FOLDER"])):
             os.makedirs(app.config["UPLOAD_DATA_FOLDER"])
-        filename = "training.txt"
-        filepath = os.path.join(app.config["UPLOAD_DATA_FOLDER"], filename)
-        file.save(filepath)
         if_ignore_1stline = request.form.get("ignoreHeader")
         if_target_category = request.form.get("categorical")
+        filepath = os.path.join(app.config["UPLOAD_DATA_FOLDER"], "training.txt")
+        if(request.form.get("dataid")):
+            tabular_savefile(file, request.form.get('dataid'), request.form.get('datadesc'),  if_ignore_1stline, if_target_category)
+        else:
+            file.save(filepath)
         size_input_neuron, size_output_neuron = tabular_getsize(filepath, if_target_category, if_ignore_1stline)
         print((if_target_category, if_ignore_1stline, size_input_neuron, size_output_neuron))
         return redirect("http://127.0.0.1:8080/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=3,2&seed=0.44887&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&sizeInput=%d&sizeOutput=%d" %(size_input_neuron, size_output_neuron))
@@ -59,6 +64,32 @@ def tabular_getsize(filepath, if_target_category, if_ignore_1stline):
             set_labels.add(row[-1])
     n_output = len(set_labels)
     return (n_feature, n_output)
+
+#
+def tabular_savefile(file, file_id, file_description, if_ignore_1stline, if_target_category):
+    # save the file into fileid, save the inventory, link file to training.txt
+    filepath = os.path.join(app.config["UPLOAD_DATA_FOLDER"], file_id)
+    file.save(filepath)
+    training_file=os.path.join(app.config["UPLOAD_DATA_FOLDER"], "training.txt")
+    if(os.path.exists(training_file)):
+        os.remove(training_file)
+    os.symlink(filepath, training_file)
+    if(not os.path.isdir(app.config["UPLOAD_INVECTORY_FOLDER"])):
+        os.makedirs(app.config["UPLOAD_INVECTORY_FOLDER"])
+    invpath = os.path.join(app.config["UPLOAD_INVECTORY_FOLDER"], file_id)
+    inv_dict = dict()
+    inv_dict["data_id"] = file_id
+    now=datetime.now()
+    strdate = now.strftime("%Y-%m-%d %H-%M-%S")
+    inv_dict["dated_created"] = strdate
+    inv_dict["data_type"] = "tabular"
+    inv_dict["file_number"] = 1
+    inv_dict["data_description"] = file_description
+    inv_dict["if_ignore_1stline"] = if_ignore_1stline
+    inv_dict["if_target_category"] = if_target_category
+    with open(invpath, "w") as f:
+        json.dump(inv_dict, f)
+
 
 #When run from command line, start the server
 if __name__ == '__main__':
