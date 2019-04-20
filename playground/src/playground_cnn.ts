@@ -245,25 +245,33 @@ function makeGUI() {
     .classed("selected", true);
 
   d3.select("#add-layers").on("click", () => {
-    if (state.numHiddenLayers >= 4) {
+    if (state.numHiddenLayers >= 10) {
       return;
     }
-    
-    if (state.networkShape[state.numHiddenLayers-1] > 3) {
-      state.networkShape[state.numHiddenLayers] = 4;
+
+    if (state.networkShape[state.numHiddenLayers-1] > 0) {
+      state.networkShape[state.numHiddenLayers] = state.networkShape[state.numHiddenLayers-1];
     } else {
       state.networkShape[state.numHiddenLayers] = 4;
     }
-    // state.numHiddenLayers++;
+    state.numHiddenLayers++;
     parametersChanged = true;
-    reset();
+    reset();    
+    // if (state.networkShape[state.numHiddenLayers-1] > 3) {
+    //   state.networkShape[state.numHiddenLayers] = 4;
+    // } else {
+    //   state.networkShape[state.numHiddenLayers] = 4;
+    // }
+    // // state.numHiddenLayers++;
+    // parametersChanged = true;
+    // reset();
   });
 
   d3.select("#remove-layers").on("click", () => {
     if (state.numHiddenLayers <= 4) {
       return;
     }
-    // state.numHiddenLayers--;
+    state.numHiddenLayers--;
     state.networkShape.splice(state.numHiddenLayers);
     parametersChanged = true;
     reset();
@@ -683,6 +691,7 @@ function addPlusMinusControl(x: number, layerIdx: number) {
 
   let i = layerIdx - 1;
   let firstRow = div.append("div").attr("class", `ui-numNodes${layerIdx}`);
+  if (i > 1){
   firstRow.append("button")
       .attr("class", "mdl-button mdl-js-button mdl-button--icon")
       .on("click", () => {
@@ -690,14 +699,22 @@ function addPlusMinusControl(x: number, layerIdx: number) {
         if (numNeurons >= 100) {
           return;
         }
-        // state.networkShape[i]++;
+
+        if (state.networkShape[i] >= 10){
+          state.networkShape[i] = state.networkShape[i]+5;
+        }
+        else{
+          state.networkShape[i]++;
+        }
+        
         parametersChanged = true;
         reset();
       })
     .append("i")
       .attr("class", "material-icons")
       .text("add");
-
+  }
+  if (i > 1){
   firstRow.append("button")
       .attr("class", "mdl-button mdl-js-button mdl-button--icon")
       .on("click", () => {
@@ -705,24 +722,28 @@ function addPlusMinusControl(x: number, layerIdx: number) {
         if (numNeurons <= 1) {
           return;
         }
-        // state.networkShape[i]--;
+        if (state.networkShape[i] >= 15){
+          state.networkShape[i] = state.networkShape[i]-5;
+        }
+        else{
+          state.networkShape[i]--;
+        }
+        
         parametersChanged = true;
         reset();
       })
     .append("i")
       .attr("class", "material-icons")
       .text("remove");
-
+  }
   let suffix = state.networkShape[i] > 1 ? "s" : "";
 
-  if (suffix == ""){
-    div.append("div").text(
-      "conv2d");
+  if (layerIdx-1 == 0 || layerIdx-1 == 1){
+    div.append("div").text("conv2d");
   }
   else{
     div.append("div").text(
-    state.networkShape[i] + " neuron" + suffix
-  );
+    state.networkShape[i] + " neuron" + suffix);
   }
   
 

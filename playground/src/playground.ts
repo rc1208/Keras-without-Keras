@@ -245,7 +245,7 @@ function makeGUI() {
     .classed("selected", true);
 
   d3.select("#add-layers").on("click", () => {
-    if (state.numHiddenLayers >= 100) {
+    if (state.numHiddenLayers >= 10) {
       return;
     }
     
@@ -260,7 +260,7 @@ function makeGUI() {
   });
 
   d3.select("#remove-layers").on("click", () => {
-    if (state.numHiddenLayers <= 0) {
+    if (state.numHiddenLayers <= 1) {
       return;
     }
     state.numHiddenLayers--;
@@ -606,7 +606,9 @@ function drawNetwork(network: nn.Node[][]): void {
       let node = network[layerIdx][i];
       let cy = nodeIndexScale(i) + RECT_SIZE / 2;
       node2coord[node.id] = {cx, cy};
-      drawNode(cx, cy, node.id, false, container, node);
+      if (i <= 10){
+        drawNode(cx, cy, node.id, false, container, node);
+      }
 
       // Show callout to thumbnails.
       let numNodes = network[layerIdx].length;
@@ -690,7 +692,13 @@ function addPlusMinusControl(x: number, layerIdx: number) {
         if (numNeurons >= 100) {
           return;
         }
-        state.networkShape[i]++;
+
+        if (state.networkShape[i] >= 10){
+          state.networkShape[i] = state.networkShape[i]+5;
+        }
+        else{
+          state.networkShape[i]++;
+        }
         parametersChanged = true;
         reset();
       })
@@ -705,7 +713,12 @@ function addPlusMinusControl(x: number, layerIdx: number) {
         if (numNeurons <= 1) {
           return;
         }
-        state.networkShape[i]--;
+        if (state.networkShape[i] >= 15){
+          state.networkShape[i] = state.networkShape[i]-5;
+        }
+        else{
+          state.networkShape[i]--;
+        }
         parametersChanged = true;
         reset();
       })
