@@ -24,7 +24,7 @@ import {
   regularizations,
   getKeyFromValue,
   Problem
-} from "./state";
+} from "./state_rnn";
 import {Example2D, shuffle} from "./dataset";
 import {AppendingLineChart} from "./linechart";
 import * as d3 from 'd3';
@@ -63,13 +63,13 @@ interface InputFeature {
 }
 
 let INPUTS: {[name: string]: InputFeature} = {
-  // "x": {f: (x, y) => x, label: ""},
-  // "y": {f: (x, y) => y, label: ""},
-  // "xSquared": {f: (x, y) => x * x, label: ""},
-  // "ySquared": {f: (x, y) => y * y,  label: ""},
-  // "xTimesY": {f: (x, y) => x * y, label: ""},
-  // "sinX": {f: (x, y) => Math.sin(x), label: ""},
-  // "sinY": {f: (x, y) => Math.sin(y), label: ""},
+  "x": {f: (x, y) => x, label: ""},
+  "y": {f: (x, y) => y, label: ""},
+  "xSquared": {f: (x, y) => x * x, label: ""},
+  "ySquared": {f: (x, y) => y * y,  label: ""},
+  "xTimesY": {f: (x, y) => x * y, label: ""},
+  "sinX": {f: (x, y) => Math.sin(x), label: ""},
+  "sinY": {f: (x, y) => Math.sin(y), label: ""},
 };
 
 let HIDABLE_CONTROLS = [
@@ -142,10 +142,6 @@ class Player {
 }
 
 let state = State.deserializeState();
-
-for(var i = 0;i < state["sizeInput"]; i++) {
-  INPUTS['a' + i] = {f: (x, y) => 1, label: ""};
-}
 
 // Filter out inputs that are hidden.
 state.getHiddenProps().forEach(prop => {
@@ -249,7 +245,7 @@ function makeGUI() {
     .classed("selected", true);
 
   d3.select("#add-layers").on("click", () => {
-    if (state.numHiddenLayers >= 10) {
+    if (state.numHiddenLayers >= 1) {
       return;
     }
     
@@ -258,7 +254,7 @@ function makeGUI() {
     } else {
       state.networkShape[state.numHiddenLayers] = 2;
     }
-    state.numHiddenLayers++;
+    // state.numHiddenLayers++;
     parametersChanged = true;
     reset();
   });
@@ -267,7 +263,7 @@ function makeGUI() {
     if (state.numHiddenLayers <= 1) {
       return;
     }
-    state.numHiddenLayers--;
+    // state.numHiddenLayers--;
     state.networkShape.splice(state.numHiddenLayers);
     parametersChanged = true;
     reset();
@@ -336,8 +332,8 @@ function makeGUI() {
     if (this.value == 1){
       window.location.replace("index_cnn.html");
     }
-    if (this.value == 2){
-      window.location.replace("index_rnn.html");
+    if (this.value == 0){
+      window.location.replace("index.html");
     }
   });
   typeofnet.property("value", state.typeofnet);
@@ -597,7 +593,7 @@ function drawNetwork(network: nn.Node[][]): void {
   nodeIds.forEach((nodeId, i) => {
     let cy = nodeIndexScale(i) + RECT_SIZE / 2;
     node2coord[nodeId] = {cx, cy};
-    drawNode(cx, cy, nodeId, false, container);
+    drawNode(cx, cy, nodeId, true, container);
   });
 
   // Draw the intermediate layers.
@@ -606,11 +602,12 @@ function drawNetwork(network: nn.Node[][]): void {
     let cx = layerScale(layerIdx) + RECT_SIZE / 2;
     maxY = Math.max(maxY, nodeIndexScale(numNodes));
     addPlusMinusControl(layerScale(layerIdx), layerIdx);
-    for (let i = 0; i < numNodes; i++) {
+    for (let i = 0; i < 1; i++) {
       let node = network[layerIdx][i];
       let cy = nodeIndexScale(i) + RECT_SIZE / 2;
       node2coord[node.id] = {cx, cy};
-      if (i <= 10){
+
+      if (i == 0){
         drawNode(cx, cy, node.id, false, container, node);
       }
 
@@ -693,6 +690,7 @@ function addPlusMinusControl(x: number, layerIdx: number) {
       .attr("class", "mdl-button mdl-js-button mdl-button--icon")
       .on("click", () => {
         let numNeurons = state.networkShape[i];
+
         if (numNeurons >= 100) {
           return;
         }
@@ -732,7 +730,7 @@ function addPlusMinusControl(x: number, layerIdx: number) {
 
   let suffix = state.networkShape[i] > 1 ? "s" : "";
   div.append("div").text(
-    state.networkShape[i] + " neuron" + suffix
+    state.networkShape[i] + " hidden layer" + suffix
   );
 
   
@@ -947,9 +945,9 @@ function updateUI(firstStep = false) {
 function constructInputIds(): string[] {
   let result: string[] = [];
   for (let inputName in INPUTS) {
-    // if (state[inputName]) {
+    if (state[inputName]) {
       result.push(inputName);
-    // }
+    }
   }
   return result;
 }
@@ -957,9 +955,9 @@ function constructInputIds(): string[] {
 function constructInput(x: number, y: number): number[] {
   let input: number[] = [];
   for (let inputName in INPUTS) {
-    // if (state[inputName]) {
+    if (state[inputName]) {
       input.push(INPUTS[inputName].f(x, y));
-    // }
+    }
   }
   return input;
 }
@@ -1003,9 +1001,9 @@ function reset(onStartup=false) {
   }
   player.pause();
 
-  let suffix = state.numHiddenLayers !== 1 ? "s" : "";
-  d3.select("#layers-label").text("Hidden layer" + suffix);
-  d3.select("#num-layers").text(state.numHiddenLayers);
+  // let suffix = state.numHiddenLayers !== 1 ? "s" : "";
+  // d3.select("#layers-label").text("Hidden layer" + suffix);
+  // d3.select("#num-layers").text(state.numHiddenLayers);
 
   // Make a simple network.
   iter = 0;

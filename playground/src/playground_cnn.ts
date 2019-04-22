@@ -24,7 +24,7 @@ import {
   regularizations,
   getKeyFromValue,
   Problem
-} from "./state";
+} from "./state_cnn";
 import {Example2D, shuffle} from "./dataset";
 import {AppendingLineChart} from "./linechart";
 import * as d3 from 'd3';
@@ -63,13 +63,13 @@ interface InputFeature {
 }
 
 let INPUTS: {[name: string]: InputFeature} = {
-  // "x": {f: (x, y) => x, label: ""},
-  // "y": {f: (x, y) => y, label: ""},
-  // "xSquared": {f: (x, y) => x * x, label: ""},
-  // "ySquared": {f: (x, y) => y * y,  label: ""},
-  // "xTimesY": {f: (x, y) => x * y, label: ""},
-  // "sinX": {f: (x, y) => Math.sin(x), label: ""},
-  // "sinY": {f: (x, y) => Math.sin(y), label: ""},
+  "x": {f: (x, y) => x, label: ""},
+  "y": {f: (x, y) => y, label: ""},
+  "xSquared": {f: (x, y) => x * x, label: ""},
+  "ySquared": {f: (x, y) => y * y,  label: ""},
+  "xTimesY": {f: (x, y) => x * y, label: ""},
+  "sinX": {f: (x, y) => Math.sin(x), label: ""},
+  "sinY": {f: (x, y) => Math.sin(y), label: ""},
 };
 
 let HIDABLE_CONTROLS = [
@@ -142,10 +142,6 @@ class Player {
 }
 
 let state = State.deserializeState();
-
-for(var i = 0;i < state["sizeInput"]; i++) {
-  INPUTS['a' + i] = {f: (x, y) => 1, label: ""};
-}
 
 // Filter out inputs that are hidden.
 state.getHiddenProps().forEach(prop => {
@@ -252,19 +248,27 @@ function makeGUI() {
     if (state.numHiddenLayers >= 10) {
       return;
     }
-    
+
     if (state.networkShape[state.numHiddenLayers-1] > 0) {
       state.networkShape[state.numHiddenLayers] = state.networkShape[state.numHiddenLayers-1];
     } else {
-      state.networkShape[state.numHiddenLayers] = 2;
+      state.networkShape[state.numHiddenLayers] = 4;
     }
     state.numHiddenLayers++;
     parametersChanged = true;
-    reset();
+    reset();    
+    // if (state.networkShape[state.numHiddenLayers-1] > 3) {
+    //   state.networkShape[state.numHiddenLayers] = 4;
+    // } else {
+    //   state.networkShape[state.numHiddenLayers] = 4;
+    // }
+    // // state.numHiddenLayers++;
+    // parametersChanged = true;
+    // reset();
   });
 
   d3.select("#remove-layers").on("click", () => {
-    if (state.numHiddenLayers <= 1) {
+    if (state.numHiddenLayers <= 4) {
       return;
     }
     state.numHiddenLayers--;
@@ -333,8 +337,8 @@ function makeGUI() {
   let typeofnet = d3.select("#typeofnet").on("change", function() {
     state.typeofnet = this.value;
     parametersChanged = true;
-    if (this.value == 1){
-      window.location.replace("index_cnn.html");
+    if (this.value == 0){
+      window.location.replace("index.html");
     }
     if (this.value == 2){
       window.location.replace("index_rnn.html");
@@ -597,7 +601,7 @@ function drawNetwork(network: nn.Node[][]): void {
   nodeIds.forEach((nodeId, i) => {
     let cy = nodeIndexScale(i) + RECT_SIZE / 2;
     node2coord[nodeId] = {cx, cy};
-    drawNode(cx, cy, nodeId, false, container);
+    drawNode(cx, cy, nodeId, true, container);
   });
 
   // Draw the intermediate layers.
@@ -610,9 +614,7 @@ function drawNetwork(network: nn.Node[][]): void {
       let node = network[layerIdx][i];
       let cy = nodeIndexScale(i) + RECT_SIZE / 2;
       node2coord[node.id] = {cx, cy};
-      if (i <= 10){
-        drawNode(cx, cy, node.id, false, container, node);
-      }
+      drawNode(cx, cy, node.id, false, container, node);
 
       // Show callout to thumbnails.
       let numNodes = network[layerIdx].length;
@@ -689,6 +691,7 @@ function addPlusMinusControl(x: number, layerIdx: number) {
 
   let i = layerIdx - 1;
   let firstRow = div.append("div").attr("class", `ui-numNodes${layerIdx}`);
+  if (i > 1){
   firstRow.append("button")
       .attr("class", "mdl-button mdl-js-button mdl-button--icon")
       .on("click", () => {
@@ -703,13 +706,15 @@ function addPlusMinusControl(x: number, layerIdx: number) {
         else{
           state.networkShape[i]++;
         }
+        
         parametersChanged = true;
         reset();
       })
     .append("i")
       .attr("class", "material-icons")
       .text("add");
-
+  }
+  if (i > 1){
   firstRow.append("button")
       .attr("class", "mdl-button mdl-js-button mdl-button--icon")
       .on("click", () => {
@@ -723,17 +728,24 @@ function addPlusMinusControl(x: number, layerIdx: number) {
         else{
           state.networkShape[i]--;
         }
+        
         parametersChanged = true;
         reset();
       })
     .append("i")
       .attr("class", "material-icons")
       .text("remove");
-
+  }
   let suffix = state.networkShape[i] > 1 ? "s" : "";
-  div.append("div").text(
-    state.networkShape[i] + " neuron" + suffix
-  );
+
+  if (layerIdx-1 == 0 || layerIdx-1 == 1){
+    div.append("div").text("conv2d");
+  }
+  else{
+    div.append("div").text(
+    state.networkShape[i] + " neuron" + suffix);
+  }
+  
 
   
   //   d3.select("#svg").on("click", () => {
@@ -947,9 +959,9 @@ function updateUI(firstStep = false) {
 function constructInputIds(): string[] {
   let result: string[] = [];
   for (let inputName in INPUTS) {
-    // if (state[inputName]) {
+    if (state[inputName]) {
       result.push(inputName);
-    // }
+    }
   }
   return result;
 }
@@ -957,9 +969,9 @@ function constructInputIds(): string[] {
 function constructInput(x: number, y: number): number[] {
   let input: number[] = [];
   for (let inputName in INPUTS) {
-    // if (state[inputName]) {
+    if (state[inputName]) {
       input.push(INPUTS[inputName].f(x, y));
-    // }
+    }
   }
   return input;
 }

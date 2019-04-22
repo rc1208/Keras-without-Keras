@@ -9,14 +9,18 @@
     "prep": "copyfiles analytics.js dist && concat node_modules/material-design-lite/material.min.js node_modules/seedrandom/seedrandom.min.js > dist/lib.js",
     "build-css": "concat node_modules/material-design-lite/material.min.css styles.css > dist/bundle.css",
     "watch-css": "concat node_modules/material-design-lite/material.min.css styles.css -o dist/bundle.css",
-    "build-html": "copyfiles index.html dist",
-    "watch-html": "concat index.html -o dist/index.html",
+    "build-html": "copyfiles index.html dist && copyfiles index_cnn.html dist && copyfiles index_rnn.html dist",
+    "watch-html": "concat index.html -o dist/index.html && concat index_cnn.html -o dist/index_cnn.html && concat index_rnn.html -o dist/index_rnn.html",
     "build-js": "browserify src/playground.ts -p [tsify] | uglifyjs -c > dist/bundle.js",
     "watch-js": "watchify src/playground.ts -p [tsify] -v --debug -o dist/bundle.js",
-    "build": "npm run prep && npm run build-js && npm run build-css && npm run build-html",
-    "watch": "npm run prep && concurrently \"npm run watch-js\" \"npm run watch-css\" \"npm run watch-html\"",
+    "buildcnn-js": "browserify src/playground_cnn.ts -p [tsify] | uglifyjs -c > dist/bundlecnn.js",
+    "watchcnn-js": "watchify src/playground_cnn.ts -p [tsify] -v --debug -o dist/bundlecnn.js",
+    "buildrnn-js": "browserify src/playground_rnn.ts -p [tsify] | uglifyjs -c > dist/bundlernn.js",
+    "watchrnn-js": "watchify src/playground_rnn.ts -p [tsify] -v --debug -o dist/bundlernn.js",
+    "build": "npm run prep && npm run build-js && npm run buildcnn-js && npm run buildrnn-js && npm run build-css && npm run build-html",
+    "watch": "npm run prep && concurrently \"npm run watch-js\" \"npm run watchcnn-js\" \"npm run watchrnn-js\" \"npm run watch-css\" \"npm run watch-html\"",
     "serve": "http-server -o -c-1 dist/",
-    "serve-watch": "concurrently \"http-server -o -c-1 dist/\" \"npm run watch\""
+    "serve-watch": "concurrently \"http-server -o -c-1 dist/\" \"npm run watch\" \"npm run watchcnn\" \"npm run watchrnn\""
   },
   "devDependencies": {
     "@types/d3": "^3.5.34",
