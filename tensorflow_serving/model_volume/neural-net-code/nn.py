@@ -23,5 +23,3 @@ class neural_net:
             model.add(Dense(hidden_list[i]))
             model.add(Activation(activation_list[i]))
         return model
-
-    def rnn(self,):
