@@ -43,7 +43,7 @@ model.add(Activation('sigmoid'))
 sgd = SGD(lr=0.1)
 
 model.compile(loss='binary_crossentropy', optimizer=sgd)
-model.fit(X_train, y_train, batch_size=1, nb_epoch=epoch, verbose = 2)
+model.fit(X_train, y_train, batch_size=1000, nb_epoch=epoch, verbose = 2)
 
 #get tensorflow serving input and output variable
 x = model.input
