@@ -18,9 +18,13 @@ class feedforward_nn:
             self.model.add(Dense(hidden_list[i]))
             self.model.add(Activation(activation_list[i]))
 
-    def model_comile(self):
+    def model_compile(self):
         self.model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
+    def model_train(self):
+        #train the model
+        model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=3)
+        
     def model_save(self,folder,model_version):
         sess = tf.Session()
         x = self.model.input
