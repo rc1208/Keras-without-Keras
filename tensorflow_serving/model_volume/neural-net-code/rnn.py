@@ -19,9 +19,9 @@ class rnn:
     def model_compile(self):
         self.model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
-    def model_train(self):
+    def model_train(self,X_train,y_train,X_test,y_test):
         #train the model
-        model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=3)
+        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=3)
 
     def model_save(self,folder,model_version):
         sess = tf.Session()
