@@ -9,7 +9,7 @@ class feedforward_nn:
     def __init__(self):
         self.model = Sequential()
 
-    def design_model(self,hidden_list,inp,activation_list,lr,optimiser):
+    def design_model(self,hidden_list,inp,activation_list):
         if len(hidden_list) != len(activation_list):
             return ArithmeticError
         self.model.add(Dense(hidden_list[0], input_dim=inp))
@@ -18,8 +18,8 @@ class feedforward_nn:
             self.model.add(Dense(hidden_list[i]))
             self.model.add(Activation(activation_list[i]))
 
-    def model_compile(self):
-        self.model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+    def model_compile(self,optimiser):
+        self.model.compile(loss='binary_crossentropy', optimizer=optimiser, metrics=['accuracy'])
 
     def model_train(self,X_train,y_train,X_test,y_test):
         #train the model

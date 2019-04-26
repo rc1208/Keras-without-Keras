@@ -1,10 +1,24 @@
 from flask import Flask, request
+import feed
+import pandas as pd
+from sklearn.model_selection import train_test_split
 
 app = Flask(__name__)
 
+folder = "/directory/to/store"
+model_version = "version"
 
 def create_feed_forward(content):
-    pass
+    ff = feed.feedforward_nn()
+    ff.design_model(content['hidden_list'],content['inp'],content['activation_list'])
+    ff.model_compile(content['optimiser'])
+    data = pd.read_csv(content['data_location'])
+    collist = data.columns.tolist()
+    X = data[collist[0:-1]].values
+    y = data[collist[-1:]].values
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=content['split_value'])
+    ff.model_train(X_train, y_train, X_test, y_test)
+    ff.model_save(folder,model_version)
 
 def create_rnn(content):
     pass
