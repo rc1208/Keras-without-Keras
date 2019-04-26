@@ -1,14 +1,12 @@
 # import the nessecary pieces from Flask
 import sqlite3
 from flask import current_app, g
-from flask.cli import with_appcontext
 from flask import Flask,render_template, request,jsonify,Response, flash, redirect
 import os
 import csv
 import json
 from datetime import datetime
 from werkzeug.utils import secure_filename
-from flask.cli import with_appcontext
 #Create the app object that will route our calls
 app = Flask(__name__)
 # Add a single endpoint that we can use for testing
@@ -19,11 +17,6 @@ app.config["UPLOAD_DATA_FOLDER"]=app.instance_path + "/data/"
 app.secret_key="123789456"
 app.config["DATABASE"] = app.instance_path + "/data.db"
 app.config["DBTABLE_DATA"] = "training_data"
-
-
-def init_app(app):
-    app.teardown_appcontext(close_db)
-    app.cli.add_command(init_db_command)
 
 
 @app.route('/', methods = ['GET'])
