@@ -7,6 +7,9 @@ import csv
 import json
 from datetime import datetime
 from werkzeug.utils import secure_filename
+from flask import make_response
+from flask import abort
+from tensorflow_serving.model_volume.neural_nets import nn
 #Create the app object that will route our calls
 app = Flask(__name__)
 # Add a single endpoint that we can use for testing
@@ -48,11 +51,14 @@ def tabular_upload_post():
             file.save(filepath)
         size_input_neuron, size_output_neuron = tabular_getsize(filepath, if_target_category, if_ignore_1stline)
         print((if_target_category, if_ignore_1stline, size_input_neuron, size_output_neuron))
-        return redirect("http://127.0.0.1:8080/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=3,2&seed=0.44887&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&sizeInput=%d&sizeOutput=%d" %(size_input_neuron, size_output_neuron))
+        lossfunc = "mse"
+        if(if_target_category == "on"):
+            lossfunc ="crossentropy"
+        return redirect("http://127.0.0.1:8080/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=3,2&seed=0.44887&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&sizeInput=%d&sizeOutput=%d&lossfunc=%s" %(size_input_neuron, size_output_neuron, lossfunc))
 
 # return (size_input_neuron, size_output_neuron)
 def tabular_getsize(filepath, if_target_category, if_ignore_1stline):
-    n_feature = 0 
+    n_feature = 0
     n_output = 0
     set_labels = set()
     with open(filepath, "r") as f:
@@ -69,7 +75,7 @@ def tabular_getsize(filepath, if_target_category, if_ignore_1stline):
     n_output = len(set_labels)
     return (n_feature, n_output)
 
-    
+
 
 
 
@@ -88,21 +94,6 @@ def tabular_savefile(file, data_id, data_desc, if_ignore_1stline, if_target_cate
     insert into %s (id, type, description, date_created, file_number, if_ignore_1stline, if_target_category) values (?,?,?,?,?,?,?)''' %app.config["DBTABLE_DATA"], \
                  (data_id, "tabular", data_desc, datetime.now().strftime("%Y-%m-%d %H-%M-%S"), 1, if_ignore_1stline, if_target_category) )
     conn.commit()
-''' 
-    invpath = os.path.join(app.config["UPLOAD_INVECTORY_FOLDER"], data_id)
-    inv_dict = dict()
-    inv_dict["data_id"] = data_id
-    now=datetime.now()
-    strdate = now.strftime("%Y-%m-%d %H-%M-%S")
-    inv_dict["dated_created"] = strdate
-    inv_dict["data_type"] = "tabular"
-    inv_dict["file_number"] = 1
-    inv_dict["data_description"] = data_desc
-    inv_dict["if_ignore_1stline"] = if_ignore_1stline
-    inv_dict["if_target_category"] = if_target_category
-    with open(invpath, "w") as f:
-        json.dump(inv_dict, f)
-'''
 
 
 
@@ -130,7 +121,47 @@ def check_dataid_existence(dataid):
     else:
         return 'FAIL'
 
+### -------API Design ----- ####
 
+### function to handle error response ###
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
+
+#### dummy data ####
+tasks = [
+    {
+        'id': 1,
+        'done': False
+    },
+    {
+        'id': 2,
+        'done': False
+    },
+    {
+        'id': 2,
+        'done': True
+    }
+]
+
+### experimental GET function. Get rid of this in the final architecture ###
+@app.route('/api/v1.0/tasks/<int:task_id>', methods=['POST'])
+def get_tasks(task_id):
+    task = [task for task in tasks if task['id'] == task_id]
+    if len(task) == 0:
+        abort(404)
+
+    return jsonify({'task': task[1]})
+
+### feedforward NN API - GET request at 1 - make the model with the given id '1' and data file
+@app.route('/api/neural-network/v1.0/', methods = ['POST'])
+def compile_model(nn_id):
+    content = request.get_json()
+    if content['nn_type'] == 'feedforward':
+        nn.initialze_feed_forward(content)
+
+    else:
+        abort(404)
 
 
 #When run from command line, start the server

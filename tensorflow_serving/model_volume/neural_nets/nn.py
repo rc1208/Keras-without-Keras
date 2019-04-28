@@ -1,12 +1,11 @@
 from flask import Flask, request
-import feed
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
 app = Flask(__name__)
 
-folder = "/directory/to/store"
-model_version = "version"
+folder = "tensorflow_serving/model_volume/models/"
+model_version = "1.0"
 
 def create_feed_forward(content):
     ff = feed.feedforward_nn()
@@ -18,7 +17,7 @@ def create_feed_forward(content):
     y = data[collist[-1:]].values
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=content['split_value'])
     ff.model_train(X_train, y_train, X_test, y_test)
-    ff.model_save(folder,model_version)
+    ff.model_save(folder + "feeds",model_version )
 
 def create_rnn(content):
     pass

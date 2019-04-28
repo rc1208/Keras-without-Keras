@@ -4,10 +4,8 @@ __pycache__/
 
 # C extensions
 *.so
-
-#
 instance/ 
-
+.gitignore
 # Distribution / packaging
 .Python
 env/
@@ -56,3 +54,9 @@ coverage.xml
 docs/_build/
 
 *.DS_Store
+
+.idea/Keras-without-Keras.iml
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
