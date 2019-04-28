@@ -3,8 +3,9 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import tensorflow_serving.model_volume.neural_nets.feed as feed
 app = Flask(__name__)
-
-folder = "/Users/apple/Documents/SEM/SEM4/deep_learning/project/Keras-without-Keras/tensorflow_serving/model_volume/models/"
+import os
+print(os.path)
+folder = "tensorflow_serving/model_volume/models/"
 model_version = "1.0"
 
 def create_feed_forward(content):
