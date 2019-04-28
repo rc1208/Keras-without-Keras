@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <title>AttributeError: '_AppCtxGlobals' object has no attribute 'pop' // Werkzeug Debugger</title>
+    <link rel="stylesheet" href="?__debugger__=yes&amp;cmd=resource&amp;f=style.css"
+        type="text/css">
+    <!-- We need to make sure this has a favicon so that the debugger does
+         not by accident trigger a request to /favicon.ico which might
+         change the application state. -->
+    <link rel="shortcut icon"
+        href="?__debugger__=yes&amp;cmd=resource&amp;f=console.png">
+    <script src="?__debugger__=yes&amp;cmd=resource&amp;f=jquery.js"></script>
+    <script src="?__debugger__=yes&amp;cmd=resource&amp;f=debugger.js"></script>
+    <script type="text/javascript">
+      var TRACEBACK = 112110136456,
+          CONSOLE_MODE = false,
+          EVALEX = true,
+          EVALEX_TRUSTED = false,
+          SECRET = "X4SZirW0LtnMXOmAjGgR";
+    </script>
+  </head>
+  <body style="background-color: #fff">
+    <div class="debugger">
+<h1>AttributeError</h1>
+<div class="detail">
+  <p class="errormsg">AttributeError: '_AppCtxGlobals' object has no attribute 'pop'</p>
+</div>
+<h2 class="traceback">Traceback <em>(most recent call last)</em></h2>
+<div class="traceback">
+
+  <ul><li><div class="frame" id="frame-112110136736">
+  <h4>File <cite class="filename">"/anaconda2/envs/py36/lib/python3.6/site-packages/flask/app.py"</cite>,
+      line <em class="line">1836</em>,
+      in <code class="function">__call__</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">                                </span>'Flask.blueprints instead'), stacklevel=2)</pre>
+<pre class="line before"><span class="ws">        </span>return self.blueprints</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">    </span>def __call__(self, environ, start_response):</pre>
+<pre class="line before"><span class="ws">        </span>&quot;&quot;&quot;Shortcut for :attr:`wsgi_app`.&quot;&quot;&quot;</pre>
+<pre class="line current"><span class="ws">        </span>return self.wsgi_app(environ, start_response)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def __repr__(self):</pre>
+<pre class="line after"><span class="ws">        </span>return '&lt;%s %r&gt;' % (</pre>
+<pre class="line after"><span class="ws">            </span>self.__class__.__name__,</pre>
+<pre class="line after"><span class="ws">            </span>self.name,</pre></div>
+</div>
+
+<li><div class="frame" id="frame-112110137016">
+  <h4>File <cite class="filename">"/anaconda2/envs/py36/lib/python3.6/site-packages/flask/app.py"</cite>,
+      line <em class="line">1813</em>,
+      in <code class="function">wsgi_app</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>:param start_response: a callable accepting a status code,</pre>
+<pre class="line before"><span class="ws">                               </span>a list of headers and an optional</pre>
+<pre class="line before"><span class="ws">                               </span>exception context to start the response</pre>
+<pre class="line before"><span class="ws">        </span>&quot;&quot;&quot;</pre>
+<pre class="line before"><span class="ws">        </span>ctx = self.request_context(environ)</pre>
+<pre class="line current"><span class="ws">        </span>ctx.push()</pre>
+<pre class="line after"><span class="ws">        </span>error = None</pre>
+<pre class="line after"><span class="ws">        </span>try:</pre>
+<pre class="line after"><span class="ws">            </span>try:</pre>
+<pre class="line after"><span class="ws">                </span>response = self.full_dispatch_request()</pre>
+<pre class="line after"><span class="ws">            </span>except Exception as e:</pre></div>
+</div>
+
+<li><div class="frame" id="frame-112110137296">
+  <h4>File <cite class="filename">"/anaconda2/envs/py36/lib/python3.6/site-packages/flask/ctx.py"</cite>,
+      line <em class="line">303</em>,
+      in <code class="function">push</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span># it's invalidated, otherwise we run at risk that something leaks</pre>
+<pre class="line before"><span class="ws">        </span># memory.  This is usually only a problem in testsuite since this</pre>
+<pre class="line before"><span class="ws">        </span># functionality is not active in production environments.</pre>
+<pre class="line before"><span class="ws">        </span>top = _request_ctx_stack.top</pre>
+<pre class="line before"><span class="ws">        </span>if top is not None and top.preserved:</pre>
+<pre class="line current"><span class="ws">            </span>top.pop(top._preserved_exc)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">        </span># Before we push the request context we have to ensure that there</pre>
+<pre class="line after"><span class="ws">        </span># is an application context.</pre>
+<pre class="line after"><span class="ws">        </span>app_ctx = _app_ctx_stack.top</pre>
+<pre class="line after"><span class="ws">        </span>if app_ctx is None or app_ctx.app != self.app:</pre></div>
+</div>
+
+<li><div class="frame" id="frame-112110136848">
+  <h4>File <cite class="filename">"/anaconda2/envs/py36/lib/python3.6/site-packages/flask/ctx.py"</cite>,
+      line <em class="line">366</em>,
+      in <code class="function">pop</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>if clear_request:</pre>
+<pre class="line before"><span class="ws">            </span>rv.request.environ['werkzeug.request'] = None</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">        </span># Get rid of the app as well if necessary.</pre>
+<pre class="line before"><span class="ws">        </span>if app_ctx is not None:</pre>
+<pre class="line current"><span class="ws">            </span>app_ctx.pop(exc)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def auto_pop(self, exc):</pre>
+<pre class="line after"><span class="ws">        </span>if self.request.environ.get('flask._preserve_context') or \</pre>
+<pre class="line after"><span class="ws">           </span>(exc is not None and self.app.preserve_context_on_exception):</pre>
+<pre class="line after"><span class="ws">            </span>self.preserved = True</pre></div>
+</div>
+
+<li><div class="frame" id="frame-112110481704">
+  <h4>File <cite class="filename">"/anaconda2/envs/py36/lib/python3.6/site-packages/flask/ctx.py"</cite>,
+      line <em class="line">175</em>,
+      in <code class="function">pop</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>&quot;&quot;&quot;Pops the app context.&quot;&quot;&quot;</pre>
+<pre class="line before"><span class="ws">        </span>self._refcnt -= 1</pre>
+<pre class="line before"><span class="ws">        </span>if self._refcnt &lt;= 0:</pre>
+<pre class="line before"><span class="ws">            </span>if exc is None:</pre>
+<pre class="line before"><span class="ws">                </span>exc = sys.exc_info()[1]</pre>
+<pre class="line current"><span class="ws">            </span>self.app.do_teardown_appcontext(exc)</pre>
+<pre class="line after"><span class="ws">        </span>rv = _app_ctx_stack.pop()</pre>
+<pre class="line after"><span class="ws">        </span>assert rv is self, 'Popped wrong app context.  (%r instead of %r)' \</pre>
+<pre class="line after"><span class="ws">            </span>% (rv, self)</pre>
+<pre class="line after"><span class="ws">        </span>appcontext_popped.send(self.app)</pre>
+<pre class="line after"><span class="ws"></span> </pre></div>
+</div>
+
+<li><div class="frame" id="frame-112110481760">
+  <h4>File <cite class="filename">"/anaconda2/envs/py36/lib/python3.6/site-packages/flask/app.py"</cite>,
+      line <em class="line">1727</em>,
+      in <code class="function">do_teardown_appcontext</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>.. versionadded:: 0.9</pre>
+<pre class="line before"><span class="ws">        </span>&quot;&quot;&quot;</pre>
+<pre class="line before"><span class="ws">        </span>if exc is None:</pre>
+<pre class="line before"><span class="ws">            </span>exc = sys.exc_info()[1]</pre>
+<pre class="line before"><span class="ws">        </span>for func in reversed(self.teardown_appcontext_funcs):</pre>
+<pre class="line current"><span class="ws">            </span>func(exc)</pre>
+<pre class="line after"><span class="ws">        </span>appcontext_tearing_down.send(self, exc=exc)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def app_context(self):</pre>
+<pre class="line after"><span class="ws">        </span>&quot;&quot;&quot;Binds the application only.  For as long as the application is bound</pre>
+<pre class="line after"><span class="ws">        </span>to the current context the :data:`flask.current_app` points to that</pre></div>
+</div>
+
+<li><div class="frame" id="frame-112110481816">
+  <h4>File <cite class="filename">"/Users/rahulchowdhury/Documents/Spring-Sem-19/CSCI5922/project/app.py"</cite>,
+      line <em class="line">120</em>,
+      in <code class="function">close_db</code></h4>
+  <div class="source "><pre class="line before"><span class="ws">        </span>g.db.row_factory = sqlite3.Row</pre>
+<pre class="line before"><span class="ws">    </span>return g.db</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws"></span>@app.teardown_appcontext</pre>
+<pre class="line before"><span class="ws"></span>def close_db(e=None):</pre>
+<pre class="line current"><span class="ws">    </span>db = g.pop('db', None)</pre>
+<pre class="line after"><span class="ws">    </span>if db is not None:</pre>
+<pre class="line after"><span class="ws">        </span>db.close()</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws"></span>@app.route('/check_dataid_ok/&lt;dataid&gt;', methods=[&quot;POST&quot;, &quot;GET&quot;])</pre>
+<pre class="line after"><span class="ws"></span>def check_dataid_existence(dataid):</pre></div>
+</div>
+
+<li><div class="frame" id="frame-112110481480">
+  <h4>File <cite class="filename">"/anaconda2/envs/py36/lib/python3.6/site-packages/werkzeug/local.py"</cite>,
+      line <em class="line">348</em>,
+      in <code class="function">__getattr__</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>return []</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">    </span>def __getattr__(self, name):</pre>
+<pre class="line before"><span class="ws">        </span>if name == &quot;__members__&quot;:</pre>
+<pre class="line before"><span class="ws">            </span>return dir(self._get_current_object())</pre>
+<pre class="line current"><span class="ws">        </span>return getattr(self._get_current_object(), name)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def __setitem__(self, key, value):</pre>
+<pre class="line after"><span class="ws">        </span>self._get_current_object()[key] = value</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def __delitem__(self, key):</pre></div>
+</div>
+</ul>
+  <blockquote>AttributeError: '_AppCtxGlobals' object has no attribute 'pop'</blockquote>
+</div>
+
+<div class="plain">
+  <form action="/?__debugger__=yes&amp;cmd=paste" method="post">
+    <p>
+      <input type="hidden" name="language" value="pytb">
+      This is the Copy/Paste friendly version of the traceback.  <span
+      class="pastemessage">You can also paste this traceback into
+      a <a href="https://gist.github.com/">gist</a>:
+      <input type="submit" value="create paste"></span>
+    </p>
+    <textarea cols="50" rows="10" name="code" readonly>Traceback (most recent call last):
+  File &quot;/anaconda2/envs/py36/lib/python3.6/site-packages/flask/app.py&quot;, line 1836, in __call__
+    return self.wsgi_app(environ, start_response)
+  File &quot;/anaconda2/envs/py36/lib/python3.6/site-packages/flask/app.py&quot;, line 1813, in wsgi_app
+    ctx.push()
+  File &quot;/anaconda2/envs/py36/lib/python3.6/site-packages/flask/ctx.py&quot;, line 303, in push
+    top.pop(top._preserved_exc)
+  File &quot;/anaconda2/envs/py36/lib/python3.6/site-packages/flask/ctx.py&quot;, line 366, in pop
+    app_ctx.pop(exc)
+  File &quot;/anaconda2/envs/py36/lib/python3.6/site-packages/flask/ctx.py&quot;, line 175, in pop
+    self.app.do_teardown_appcontext(exc)
+  File &quot;/anaconda2/envs/py36/lib/python3.6/site-packages/flask/app.py&quot;, line 1727, in do_teardown_appcontext
+    func(exc)
+  File &quot;/Users/rahulchowdhury/Documents/Spring-Sem-19/CSCI5922/project/app.py&quot;, line 120, in close_db
+    db = g.pop('db', None)
+  File &quot;/anaconda2/envs/py36/lib/python3.6/site-packages/werkzeug/local.py&quot;, line 348, in __getattr__
+    return getattr(self._get_current_object(), name)
+AttributeError: '_AppCtxGlobals' object has no attribute 'pop'</textarea>
+  </form>
+</div>
+<div class="explanation">
+  The debugger caught an exception in your WSGI application.  You can now
+  look at the traceback which led to the error.  <span class="nojavascript">
+  If you enable JavaScript you can also use additional features such as code
+  execution (if the evalex feature is enabled), automatic pasting of the
+  exceptions and much more.</span>
+</div>
+      <div class="footer">
+        Brought to you by <strong class="arthur">DON'T PANIC</strong>, your
+        friendly Werkzeug powered traceback interpreter.
+      </div>
+    </div>
+
+    <div class="pin-prompt">
+      <div class="inner">
+        <h3>Console Locked</h3>
+        <p>
+          The console is locked and needs to be unlocked by entering the PIN.
+          You can find the PIN printed out on the standard output of your
+          shell that runs the server.
+        <form>
+          <p>PIN:
+            <input type=text name=pin size=14>
+            <input type=submit name=btn value="Confirm Pin">
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

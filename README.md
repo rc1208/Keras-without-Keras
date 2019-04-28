@@ -12,3 +12,7 @@ curl -X POST   http://localhost:8501/v1/models/feeds:predict   -H 'cache-control
   [23,27.125,419,686,0.00471494214590473]
   ]
 }'
+
+## to generate the sqlite database (instance/data.db), run:
+## Warn: this will remove existing training data inventory saved in instance/data.db, don't do it if there are already some data uploaded
+python init_database.py

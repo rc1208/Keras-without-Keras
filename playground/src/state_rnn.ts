@@ -152,9 +152,9 @@ export class State {
   initZero = false;
   hideText = false;
   collectStats = false;
-  numHiddenLayers = 2;
+  numHiddenLayers = 1;
   hiddenLayerControls: any[] = [];
-  networkShape: number[] = [5, 4];
+  networkShape: number[] = [1];
   x = true;
   y = true;
   xTimesY = false;
