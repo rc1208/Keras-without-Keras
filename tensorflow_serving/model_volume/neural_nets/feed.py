@@ -38,13 +38,14 @@ class feedforward_nn:
         if (valid_prediction_signature == False):
             raise ValueError("Error: Prediction signature not valid!")
         builder = saved_model_builder.SavedModelBuilder(folder + model_version)
-        legacy_init_op = tf.group(tf.tables_initializer(), name='legacy_init_op')
+        #legacy_init_op = tf.group(tf.tables_initializer(), name='legacy_init_op')
         builder.add_meta_graph_and_variables(
             sess, [tag_constants.SERVING],
             signature_def_map={
                 signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY: prediction_signature,
-            },
-            legacy_init_op=legacy_init_op)
+            },)
+            #legacy_init_op=legacy_init_op)
 
         # save model
         builder.save()
+        sess.close()

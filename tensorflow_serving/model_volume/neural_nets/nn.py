@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 import tensorflow_serving.model_volume.neural_nets.feed as feed
 app = Flask(__name__)
 
-folder = "/Users/rahulchowdhury/Documents/Spring-Sem-19/CSCI5922/project/tensorflow_serving/model_volume/models/"
+folder = "/Users/apple/Documents/SEM/SEM4/deep_learning/project/Keras-without-Keras/tensorflow_serving/model_volume/models/"
 model_version = "1.0"
 
 def create_feed_forward(content):
