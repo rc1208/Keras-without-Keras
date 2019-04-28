@@ -54,7 +54,37 @@ def tabular_upload_post():
         lossfunc = "mse"
         if(if_target_category == "on"):
             lossfunc ="crossentropy"
-        return redirect("http://127.0.0.1:8080/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=3,2&seed=0.44887&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&sizeInput=%d&sizeOutput=%d&lossfunc=%s" %(size_input_neuron, size_output_neuron, lossfunc))
+        return redirect("http://127.0.0.1:8080/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=3,2&seed=0.44887&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&sizeInput=%d&sizeOutput=%d&lossfunc=%s&dataLocation=%s" %(size_input_neuron, size_output_neuron, lossfunc, filepath))
+
+
+@app.route("/images_upload", method = ["POST"])
+#image upload: 
+# if pkl/pklz, save as <data_id>.pklz, or <training_images>./pklz
+# if pngs, mkdir images_temp/, upload to images_temp/, then convert to pklz
+def images_upload_post():
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        flash('No selected file')
+        return redirect(request.url)
+    if file:
+        if(not os.path.isdir(app.config["UPLOAD_DATA_FOLDER"])):
+            os.makedirs(app.config["UPLOAD_DATA_FOLDER"])
+        
+        filepath = os.path.join(app.config["UPLOAD_DATA_FOLDER"], "training.csv")
+        if(request.form.get("dataid")):
+            tabular_savefile(file, request.form.get('dataid'), request.form.get('datadesc'),  if_ignore_1stline, if_target_category)
+        else:
+            file.save(filepath)
+        size_input_neuron, size_output_neuron = tabular_getsize(filepath, if_target_category, if_ignore_1stline)
+        print((if_target_category, if_ignore_1stline, size_input_neuron, size_output_neuron))
+        lossfunc = "mse"
+        if(if_target_category == "on"):
+            lossfunc ="crossentropy"
+        return redirect("http://127.0.0.1:8080/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=3,2&seed=0.44887&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&sizeInput=%d&sizeOutput=%d&lossfunc=%s&dataLocation=%s" %(size_input_neuron, size_output_neuron, lossfunc, filepath))
+    
 
 # return (size_input_neuron, size_output_neuron)
 def tabular_getsize(filepath, if_target_category, if_ignore_1stline):
@@ -94,6 +124,7 @@ def tabular_savefile(file, data_id, data_desc, if_ignore_1stline, if_target_cate
     insert into %s (id, type, description, date_created, file_number, if_ignore_1stline, if_target_category) values (?,?,?,?,?,?,?)''' %app.config["DBTABLE_DATA"], \
                  (data_id, "tabular", data_desc, datetime.now().strftime("%Y-%m-%d %H-%M-%S"), 1, if_ignore_1stline, if_target_category) )
     conn.commit()
+
 
 
 
