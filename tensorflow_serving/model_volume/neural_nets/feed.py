@@ -14,7 +14,7 @@ class feedforward_nn:
         activation_list = activation_layer.split()
         if len(hidden_list) != len(activation_list):
             return ArithmeticError
-        self.model.add(Dense(int(hidden_list[0]), input_dim=inp))
+        self.model.add(Dense(int(hidden_list[0]), input_dim=int(inp)))
         self.model.add(Activation(activation_list[0]))
         for i in range(1,len(hidden_list)):
             self.model.add(Dense(int(hidden_list[i])))
@@ -26,9 +26,11 @@ class feedforward_nn:
     def model_train(self,X_train,y_train,X_test,y_test):
         #train the model
         self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=3)
-        
+
     def model_save(self,folder,model_version):
+        init_op = tf.global_variables_initializer()
         sess = tf.Session()
+        sess.run(init_op)
         x = self.model.input
         y = self.model.output
         prediction_signature = tf.saved_model.signature_def_utils.predict_signature_def({"inputs": x},{"prediction": y})
