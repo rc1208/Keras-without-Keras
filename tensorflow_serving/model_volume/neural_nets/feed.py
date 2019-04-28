@@ -20,8 +20,8 @@ class feedforward_nn:
             self.model.add(Dense(int(hidden_list[i])))
             self.model.add(Activation(activation_list[i]))
 
-    def model_compile(self,optimiser):
-        self.model.compile(loss='binary_crossentropy', optimizer=optimiser, metrics=['accuracy'])
+    def model_compile(self,optimiser,loss_function):
+        self.model.compile(loss=loss_function, optimizer=optimiser, metrics=['accuracy'])
 
     def model_train(self,X_train,y_train,X_test,y_test):
         #train the model
