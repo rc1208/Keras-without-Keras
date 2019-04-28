@@ -134,12 +134,12 @@ def get_db():
         g.db.row_factory = sqlite3.Row
     return g.db
 
-@app.teardown_appcontext
+'''@app.teardown_appcontext
 def close_db(e=None):
     db = g.pop('db', None)
     if db is not None:
         db.close()
-
+'''
 @app.route('/check_dataid_ok/<dataid>', methods=["POST", "GET"])
 def check_dataid_existence(dataid):
     db=get_db()
@@ -186,13 +186,17 @@ def get_tasks(task_id):
 
 ### feedforward NN API - GET request at 1 - make the model with the given id '1' and data file
 @app.route('/api/neural-network/v1.0/', methods = ['POST'])
-def compile_model(nn_id):
+def compile_model():
     content = request.get_json()
     if content['nn_type'] == 'feedforward':
-        nn.initialze_feed_forward(content)
+        nn.create_feed_forward(content)
+        return json.dumps({'status':'Compiled'})
 
     else:
-        abort(404)
+        return json.dumps({'status':'Compiled-Failed'})
+
+
+
 
 
 #When run from command line, start the server
