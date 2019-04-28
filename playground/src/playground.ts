@@ -143,7 +143,7 @@ class Player {
 
 let state = State.deserializeState();
 
-for(var i = 0;i < state["sizeInput"]; i++) {
+for(var i = 0;i < state.sizeInput; i++) {
   INPUTS['a' + i] = {f: (x, y) => 1, label: ""};
 }
 
@@ -190,6 +190,30 @@ function makeGUI() {
     // Change the button's content.
     userHasInteracted();
     player.playOrPause();
+    if (iter === 0) {
+      let xhttp = new XMLHttpRequest();
+      xhttp.open("POST", "https:localhost:3333/api/neural-network/v1.0/", true);
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      let hidden_list = "";
+      let acts = "";
+      for (let i = 0; i < state.networkShape.length; i++) {
+        hidden_list += state.networkShape[i];
+        hidden_list += " ";
+        acts += state.act;
+        acts += " ";
+      }
+      hidden_list += state.sizeOutput == 2 ? 1 : state.sizeOutput;
+      acts += "sigmoid";
+      xhttp.send("nn_type=feedforward"
+        + "&inp=" + state.sizeInput
+        + "&hidden_list=" + hidden_list
+        + "&lossfunc=" + state.lossfunc
+        + "&activation_list=" + acts
+        + "&optimiser=adam"
+        + "&split_value=0.2"
+        + "&data_location=" + state.dataLocation
+      );
+    }
   });
 
   player.onPlayPause(isPlaying => {

@@ -133,7 +133,10 @@ export class State {
     {name: "initZero", type: Type.BOOLEAN},
     {name: "hideText", type: Type.BOOLEAN},
     {name: "sizeInput", type: Type.NUMBER},
-    {name: "sizeOutput", type: Type.NUMBER}
+    {name: "sizeOutput", type: Type.NUMBER},
+    {name: "lossfunc", type: Type.STRING},
+    {name: "dataLocation", type: Type.STRING},
+    {name: "act", type: Type.STRING}
   ];
 
   [key: string]: any;
@@ -169,6 +172,9 @@ export class State {
   seed: string;
   sizeInput = 2;
   sizeOutput = 1;
+  lossfunc: string;
+  dataLocation: string;
+  act = "relu";
 
   /**
    * Deserializes the state from the url hash.
@@ -199,6 +205,9 @@ export class State {
           }
           if (hasKey(name) && map[name] in keyMap) {
             state[name] = keyMap[map[name]];
+          }
+          if (name == "activation") {
+            state["act"] = map[name];
           }
           break;
         case Type.NUMBER:
