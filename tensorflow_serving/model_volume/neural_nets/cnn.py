@@ -1,5 +1,8 @@
 # credits: https: https://towardsdatascience.com/building-a-convolutional-neural-network-cnn-in-keras-329fbbadc5f5
 from keras.datasets import mnist
+from tensorflow.python.saved_model import builder as saved_model_builder
+from tensorflow.python.saved_model import tag_constants, signature_constants
+import tensorflow as tf
 #download mnist data and split into train and test sets
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
 
@@ -22,28 +25,28 @@ class cnn:
 
     def __init__(self):
         #create model
-        model = Sequential()
+        self.model = Sequential()
     def design_model(self,hidden_list,inp,activation_list,lr,optimiser):
 
         #add model layers
-        model.add(Conv2D(64, kernel_size=3, activation='relu', input_shape=(28,28,1)))
-        model.add(Conv2D(32, kernel_size=3, activation='relu'))
-        model.add(Flatten())
-        model.add(Dense(10, activation='softmax'))
+        self.model.add(Conv2D(64, kernel_size=3, activation='relu', input_shape=(28,28,1)))
+        self.model.add(Conv2D(32, kernel_size=3, activation='relu'))
+        self.model.add(Flatten())
+        self.model.add(Dense(10, activation='softmax'))
 
 
     def model_train(self):
         #train the model
-        model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=3)
+        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=3)
 
     def model_compile(self):
         #compile model using accuracy to measure model performance
-        model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+        self.model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
     def model_predict(self):
 
         #predict first 4 images in the test set
-        model.predict(X_test[:4])
+        self.model.predict(X_test[:4])
 
     def model_save(self,folder,model_version):
         sess = tf.Session()
