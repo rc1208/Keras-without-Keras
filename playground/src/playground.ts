@@ -208,9 +208,9 @@ function makeGUI() {
         JSON.stringify({
           "nn_type": "feedforward",
           "hidden_list": hidden_list,
-          "inp": state.sizeInput,
+          "inp": String(state.sizeInput),
           "activation_list": acts,
-          "optimiser":"adam",
+          "optimiser": "adam",
           "split_value": "0.2",
           "loss_function": state.lossfunc,
           "data_location": state.dataLocation
