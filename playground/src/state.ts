@@ -172,8 +172,8 @@ export class State {
   seed: string;
   sizeInput = 2;
   sizeOutput = 1;
-  lossfunc: string;
-  dataLocation: string;
+  lossfunc = "binary_crossentropy";
+  dataLocation = "data/data_new.csv";
   act = "relu";
 
   /**
