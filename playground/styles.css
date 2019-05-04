@@ -992,3 +992,40 @@ footer .links a:hover {
 #main-part .mdl-slider.is-upgraded:focus:not(:active)::-webkit-slider-thumb {
   box-shadow: 0 0 0 10px rgba(0,0,0, 0.12);
 }
+
+polyline,
+.point_symbol {
+  fill: none;
+  stroke-width: 4px;
+  stroke-linejoin: round;
+  stroke-linecap: square;
+  stroke: #0074d9;
+}
+
+.point_symbol {
+  fill: #efefef;
+}
+
+.asse,
+.trattino {
+  /* 			stroke-width: 1px; */
+  stroke: #999;
+}
+
+.etichetta {
+  text-anchor: end;
+  font-family: Helvetica, Arial, sans-serif;
+  fill: #999;
+  line-height: 1;
+  /* 			font-size:9px; */
+}
+
+.etichetta.middle {
+  text-anchor: middle;
+}
+
+.divider {
+  stroke-width: 1px;
+  stroke: #999;
+  stroke-dasharray: 2, 6;
+}
