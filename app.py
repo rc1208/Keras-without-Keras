@@ -163,6 +163,9 @@ def compile_model():
         nn.create_feed_forward(content)
         return json.dumps({'status':'Compiled'})
 
+    elif content['nn_type'] == 'feedforward':
+        nn.create_feed_forward(content)
+        return json.dumps({'status':'Compiled'})
     else:
         return json.dumps({'status':'Compiled-Failed'})
 

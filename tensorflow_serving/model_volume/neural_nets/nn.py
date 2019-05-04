@@ -2,6 +2,7 @@ from flask import Flask, request
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import tensorflow_serving.model_volume.neural_nets.feed as feed
+import tensorflow_serving.model_volume.neural_nets.rnn as rnn
 app = Flask(__name__)
 import os
 print(os.path)
@@ -21,7 +22,11 @@ def create_feed_forward(content):
     ff.model_save(folder + "feeds",model_version )
 
 def create_rnn(content):
-    pass
+    r = rnn.rnn()
+    r.design_model(content['vocab_size'],content['output_d'],content['max_len'],content['lstm_out'],content['lstm_drop'],content['lstm_recc_drop'],content['dense_out'],content['reg_dropout'])
+    r.model_compile(content['optimiser'],content['loss_function'])
+    data = ""
+    
 
 def create_cnn(content):
     pass
