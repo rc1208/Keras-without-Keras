@@ -1,24 +1,24 @@
-## Keras without Keras
+# Keras without Keras
 
 Deep learning has been used in a variety of applications since it was introduced. However, for those who does not know how to code, deep learning is not an available method. We propose a deep learning framework called ‘*Keras* *without* *Keras*’ so that user can use deep learning with their own data, and check the results with various options without any coding knowledge.
 
-####framwork pic here
+<img src="https://github.com/rc1208/Keras-without-Keras/blob/master/resources/framework.png" width="40%">
 
 ### 1. Objectives
 
-1. Provide NN, CNN, RNN functions according to user’s input data. 
-2. Make user manipulate a visual interface without any coding. Keras code is generated automatically and operated in the backend.
-3. Provide various options so that user can change them and compare results accordingly.
+* Provide NN, CNN, RNN functions according to user’s input data. 
+* Make user manipulate a visual interface without any coding. Keras code is generated automatically and operated in the backend.
+* Provide various options so that user can change them and compare results accordingly.
 
 ### 2. Problem
 
 Deep learning libraries require user to handle following steps in programming languages:
 
-1. Import data and split them into training and test sets
-2. Build a neural network architecture
-3. Train a model, then test it
-4. Check results, change options 
-5. Go back to step (2) <br>
+* step 1) Import data and split them into training and test sets
+* step 2) Build a neural network architecture
+* step 3) Train a model, then test it
+* step 4) Check results, change options 
+* step 5) Go back to step (2) <br>
 → *If you don’t know how to write a program, you can’t use deep learning!*
 
 **Research question:** can we use neural networks including CNN and RNN without knowing how to write a program?
@@ -26,18 +26,18 @@ Deep learning libraries require user to handle following steps in programming la
 ### 3. Architecture
 
 ***Frontend***
-1. *Data upload page (html, python)*: receive user’s data and decide a network type (DNN, CNN, RNN)
-2. *Build a net page (typescript)*: allow user to decide hyper-params, neural net architecture, and pass them to backend
+* *Data upload page (html, python)*: receive user’s data and decide a network type (DNN, CNN, RNN)
+* *Build a net page (typescript)*: allow user to decide hyper-params, neural net architecture, and pass them to backend
 
 ***Backend***
-1. Generate a Keras code according to inputs (python)
-2. Send results to frontend
+* Generate a Keras code according to inputs (python)
+* Send results to frontend
 
-####architecture pic here
+<img src="https://github.com/rc1208/Keras-without-Keras/blob/master/resources/archi.png" width="60%">
 
 ### 4. Result (User's view)
 
-####result pic here
+<img src="https://github.com/rc1208/Keras-without-Keras/blob/master/resources/result.png" width="100%">
 
 ### 5. How to use
 
