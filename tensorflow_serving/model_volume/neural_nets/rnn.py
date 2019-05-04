@@ -20,7 +20,7 @@ class rnn:
 
     def model_train(self,X_train,y_train,X_test,y_test,ep,logcsv="callback_log.csv"):
         callback = [CSVLogger(filename=logcsv)]
-        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=3,callbacks=callback)
+        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=ep,callbacks=callback)
 
     def model_save(self,folder,model_version):
         sess = tf.Session()

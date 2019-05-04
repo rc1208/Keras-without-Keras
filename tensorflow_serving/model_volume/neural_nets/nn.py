@@ -3,13 +3,10 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import tensorflow_serving.model_volume.neural_nets.feed as feed
 import tensorflow_serving.model_volume.neural_nets.rnn as rnn
-<<<<<<< HEAD
 import tensorflow_serving.model_volume.neural_nets.cnn as cnn
 from keras.datasets import mnist
-=======
 from keras.utils import np_utils
 import numpy as np
->>>>>>> 867da61674a98366bf8e2b21d1c05c0a6e52f712
 app = Flask(__name__)
 import os
 print(os.path)
@@ -50,18 +47,12 @@ def clean_test_data(loc,seq_length):
 
 def create_rnn(content,callback_log_dir):
     r = rnn.rnn()
-<<<<<<< HEAD
-    r.design_model(content['vocab_size'],content['output_d'],content['max_len'],content['lstm_out'],content['lstm_drop'],content['lstm_recc_drop'],content['dense_out'],content['reg_dropout'])
-    r.model_compile(content['optimiser'],content['loss_function'])
-    data = ""
-=======
     X,y = clean_test_data(content['filename'],int(content['seq_length']))
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=float(content['split_value']))
     r.design_model(y_train.shape[1],content['lstm_out'],content['lstm_drop'],content['lstm_recc_drop'],content['dense_out'],content['reg_dropout'],X_train.shape[1],X_train.shape[2])
     r.model_compile(content['optimiser'], content['loss_function'])
     r.model_train(X_train, X_test, y_train, y_test,content['epochs'], callback_log_dir+"/callback_log.csv")
     r.model_save(folder + "feeds",model_version )
->>>>>>> 867da61674a98366bf8e2b21d1c05c0a6e52f712
 
 
 def create_cnn(content):
