@@ -2,7 +2,7 @@
 
 Deep learning has been used in a variety of applications since it was introduced. However, for those who does not know how to code, deep learning is not an available method. We propose a deep learning framework called ‘*Keras* *without* *Keras*’ so that user can use deep learning with their own data, and check the results with various options without any coding knowledge.
 
-<img src="https://github.com/rc1208/Keras-without-Keras/blob/master/resources/framework.png" width="40%" align="center">
+<center><img src="https://github.com/rc1208/Keras-without-Keras/blob/master/resources/framework.png" width="40%"></center>
 
 ### 1. Objectives
 
