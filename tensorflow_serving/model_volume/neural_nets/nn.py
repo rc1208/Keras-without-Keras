@@ -7,6 +7,7 @@ import tensorflow_serving.model_volume.neural_nets.cnn as cnn
 from keras.datasets import mnist
 from keras.utils import np_utils
 import numpy as np
+from mlxtend.data import loadlocal_mnist
 app = Flask(__name__)
 import os
 print(os.path)
@@ -62,14 +63,17 @@ def create_cnn(content):
     #model_compile(self,optimizer,loss)
     c.model_compile(content['optimiser'],content['loss_function'])
     (X_train, y_train), (X_test, y_test) = mnist.load_data()
-    #data = pd.read_csv(content['data_location'])
-    #collist = data.columns.tolist()
-    #X = data[collist[0:-1]].values
-    #y = data[collist[-1:]].values
-    #model_train(self,X_train, y_train, X_test, y_test,epochs)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=float(content['split_value']))
-    c.model_train(X_train, y_train, X_test, y_test,epochs)
-    c.model_save(folder + "feeds",model_version )
+    #loading the data -- install mlxtend for this
+    X, y = loadlocal_mnist(
+    images_path='data/train-images-idx3-ubyte',
+    labels_path='data/train-labels-idx1-ubyte')
+    split_value = int(float(content['split_value'] * len(X))
+    X_train = X[:split_value,:]
+    X_test = X[split_value:,:]
+    X_train = X_train.reshape(len(X_train),content['inp'],content['inp'])
+    X_test = X_test.reshape(len(X_test),content['inp'],content['inp'])
+    c.model_train(X_train, y_train, X_test, y_test,content['epochs'])
+    c.model_save(folder + "cnn",model_version )
 
 @app.route("/",methods=['POST'])
 def handler():
