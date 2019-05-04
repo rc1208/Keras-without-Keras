@@ -20,6 +20,6 @@ res_cnn = requests.post('http://localhost:3333/api/neural-network/v1.0/', json={
   "optimiser":"adam", \
   "split_value": "0.2", \
   "loss_function": "categorical_crossentropy", \
-  "data_location":"data/data_new.csv"})
+  "data_location":"data/"})
 if res_cnn.ok:
     print("Model Compiled!")
