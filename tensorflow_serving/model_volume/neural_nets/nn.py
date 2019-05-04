@@ -64,28 +64,32 @@ def create_cnn(content):
     c.model_compile(content['optimiser'],content['loss_function'])
     (X_train, y_train), (X_test, y_test) = mnist.load_data()
     #loading the data -- install mlxtend for this
+    data = pickle.load(gzip.open(content['data_location']),'rb')
+    X = data[0]
+    y = data[1]
+    print("hello cnn")
+    '''
     X, y = loadlocal_mnist(
     images_path=content['data_location']+'train-images-idx3-ubyte',
     labels_path=content['data_location']+'train-labels-idx1-ubyte')
     split_value = int((1 - float(content['split_value']) * len(X)))
     X_train = X[:split_value,:]
     X_test = X[split_value:,:]
-    X_train = X_train.reshape(len(X_train),content['inp'],content['inp'])
-    X_test = X_test.reshape(len(X_test),content['inp'],content['inp'])
+    '''
+    split_value = int((1 - float(content['split_value']) * len(X)))
+    X_train = X[:split_value,:,:]
+    X_test = X[split_value:,:,:]
+
+    y_train = y[:split_value,:,:]
+    y_test = y[split_value:,:,:]
+
+
+    #X_train = X_train.reshape(len(X_train),content['inp'],content['inp'])
+    #X_test = X_test.reshape(len(X_test),content['inp'],content['inp'])
+    y_train = y_train.flatten()
+    y_test = y_test.flatten()
     c.model_train(X_train, y_train, X_test, y_test,content['epochs'])
     c.model_save(folder + "cnn",model_version )
-
-@app.route("/",methods=['POST'])
-def handler():
-    content = request.get_json()
-    if content['nn_type'] == 'feedforward':
-        create_feed_forward(content)
-    elif content['nn_type'] == 'rnn':
-        create_rnn(content)
-    elif content['nn_type'] == 'cnn':
-        create_cnn(content)
-    else:
-        return 'error!!!!'
 
 
 if __name__ == "__main__":

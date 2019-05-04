@@ -167,11 +167,15 @@ def get_tasks(task_id):
 def compile_model():
     content = request.get_json()
     if content['nn_type'] == 'feedforward':
-        nn.create_feed_forward(content,"/Users/apple/Documents/SEM/SEM4/deep_learning/project/test_data_123/")
+        nn.create_feed_forward(content,"data/mse")
         return json.dumps({'status':'Compiled'})
 
     elif content['nn_type'] == 'rnn':
-        nn.create_rnn(content,"/Users/apple/Documents/SEM/SEM4/deep_learning/project/test_data_123/")
+        nn.create_rnn(content,"data/mse")
+        return json.dumps({'status':'Compiled'})
+
+    elif content['nn_type'] == 'cnn':
+        nn.create_cnn(content,"data/mse")
         return json.dumps({'status':'Compiled'})
     else:
         return json.dumps({'status':'Compiled-Failed'})
@@ -211,7 +215,7 @@ def images_upload_post():
         flash('No file part')
         return redirect(request.url)
 
-    
+
 def images_savefile(file, data_id, data_desc, dir_pickle):
     #save the file (name as data_id), and link to "training.csv"
     filepath = os.path.join(dir_pickle, data_id)
@@ -247,10 +251,10 @@ def images_getsize(pickle_path):
         n_class=len(setx)
         return (n_image, width, height, n_class)
 
-        
 
 
-        
+
+
 
 #When run from command line, start the server
 if __name__ == '__main__':
