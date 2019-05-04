@@ -37,7 +37,7 @@ Deep learning libraries require user to handle following steps in programming la
 ### 4. Result (User's view)
 <img src="https://github.com/rc1208/Keras-without-Keras/blob/master/resources/result.png" width="100%">
 
-### 5. How to use
+### 5. How to run
 
 <br><br><br><br>
 

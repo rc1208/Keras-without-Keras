@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Image File Upload</title>
+        <link rel="stylesheet" type="text/css" href="app.css"  />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    </head>
+    <body>
+
+        <div class="container">
+            <div class="jumbotron">
+              <h2><i class="fas fa-database"></i> Step 2. Upload Your Data </h2>
+
+                   Data can be either of them:
+                    <ul>
+                        <li> a pickle (*.pkl) or pickle gzip (*.pklz) file (e.g. assignment7 data). Inside pickle:
+                            <ul>
+                               <li> 1st element: images as np.array (n_image, height_image, width_image) </li>
+                               <li> 2nd element: labels as list (the label for each image in order) </li>
+                            </ul>
+                         <li>
+                             any number of png files, each has same height x width size
+                             <ul>
+                               <li> an extra csv file, with no header line, saves (png name, label) as each row </li>
+                             </ul>
+                         </li>
+                    </ul>
+            </div>
+
+            <form action="images_upload" method="post" enctype="multipart/form-data">
+              <div class="form-group">
+                  <div class="d-inline d-lg-inline d-md-inline">
+                      <label for="inputfile">Upload Data</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                     <input class="custom-control-input" type="checkbox" id="isDataPng" name="isDataPng"  onchange="isDataPngChanged()">
+                     <label class="custom-control-label" for="isDataPng">
+                         Is the data real images (PNG)?
+                    </label>
+                </div>
+                  <div class="row">
+                      <!-- Pickle/gzip file -->
+                     <div class="col-lg-6 col-xs-12" id="divInputFilePkl" >
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="inputfilePkl" name="inputfilePkl" required accept=".pkl, .pklz">
+                            <label class="custom-file-label" for="inputfilePkl">Choose a pkl/pklz file</label>
+                        </div>
+                     </div>
+                    <!-- PNG files -->
+                     <div class="col-lg-6 col-xs-12" style="display: none;" id="divInputFilePNG" >
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="inputfilePNG" name="inputfilePNG"  multiple accept=".png">
+                            <label class="custom-file-label" for="inputfilePNG">Choose PNG files</label>
+                        </div>
+                     </div>
+                    <!-- PNG label csv file -->
+                     <div class="col-lg-6 col-xs-12"  style="display: none;" id="divInputFileCsv">
+                         <div class="custom-file">
+                             <input type="file" class="custom-file-input" id="inputfileCsv" name="inputfileCsv"  accept=".csv">
+                             <label class="custom-file-label" for="inputfileCsv">Choose a label csv file</label>
+                         </div>
+                     </div>
+                  </div>
+              </div>
+                <div class="form-group">
+                     <div class="row">
+                         <div class="col-lg-12  col-xs-12">
+                             <div class="custom-control custom-checkbox">
+                                 <input class="custom-control-input" type="checkbox" id="saveData" onclick="enableDataIdentifer()"/>
+                                 <label class="custom-control-label" for="saveData">
+                                 Save your data by specifying a unique identifier?
+                                 </label>
+                             </div>
+                         </div>
+                         <div id="div_data_save" class="col-lg-12 col-xs-12" style="display: none;">
+                              <div class="col-lg-5 col-xs-12">
+                                 <input type="text" class="form-control" id="dataIdentifier" name="dataid" placeholder="Type Your Data identifier Here"/>
+                              </div>
+                              <div class="col-lg-5 col-xs-12">
+                                 <p class="text-success" id="dataid_check_text"> </p>
+                              </div>
+                             <textarea class="form-control" rows="3" id="dataDescription" name="datadesc" placeholder="Type Your Data Description Here"></textarea>
+                         </div>
+
+                     </div>
+              </div>
+
+               <div class="form-group">
+                  <div class="row">
+                    <div class="col-xs-12">
+                        <input type="submit" class="btn btn-primary" value="upload" />
+                    </div>
+
+                  </div>
+
+               </div>
+
+
+            </form>
+        </div>
+
+<script>
+// Add the following code if you want the name of the file appear on select
+$(".custom-file-input").on("change", function() {
+  var fileName = $(this).val().split("\\").pop();
+  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});
+</script>
+
+        <script>
+        function enableDataIdentifer(){
+            if($("#saveData").prop("checked")) {
+                $("#div_data_save").show();
+            }else{
+                $("#div_data_save").hide();
+            }
+        }
+    </script>
+
+    <script>
+        function isDataPngChanged(){
+            if($("#isDataPng").prop("checked")){ //png + csv
+                $("#divInputFilePkl").hide();
+                $("#divInputFilePkl").prop("required", false);
+                $("#divInputFilePNG").show();
+                $("#divInputFilePNG").prop("required", true);
+                $("#divInputFileCsv").show();
+                $("#divInputFileCsv").prop("required", true);
+            }else{ //pkl
+                $("#divInputFilePkl").show();
+                $("#divInputFilePkl").prop("required", true);
+                $("#divInputFilePNG").hide();
+                $("#divInputFilePNG").prop("required", false);
+                $("#divInputFileCsv").hide();
+                $("#divInputFileCsv").prop("required", false);
+            }
+        }
+        </script>
+
+   <script>
+       $("#dataIdentifier").focus(function(){ $(this).addClass("focus");   }).blur(
+        function() {
+           var dataid = $("#dataIdentifier").val();
+              $.ajax({
+                url:"/check_dataid_ok/"+dataid,
+                type:"post",
+                beforeSend: function(req){
+                    $("#dataid_check_text").html("wait to type in ...");
+                    $("#dataid_check_text").removeClass("text-danger").addClass("text-success");
+                },
+                success: function(arg){
+                    if(arg == "FAIL"){
+                         $("#dataid_check_text").html("duplication found! Please change the data identifier");
+                         $("#dataid_check_text").removeClass("text-success").addClass("text-danger");
+                    }else{
+                         $("#dataid_check_text").html("good data identifier!");
+                         $("#dataid_check_text").removeClass("text-danger").addClass("text-success");
+                    }
+                }
+              });
+       });
+   </script>
+
+</body>
+</html>
