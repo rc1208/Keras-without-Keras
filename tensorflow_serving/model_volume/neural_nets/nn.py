@@ -22,16 +22,16 @@ def create_feed_forward(content,callback_log_dir):
     X = data[collist[0:-1]].values
     y = data[collist[-1:]].values
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=float(content['split_value']))
-    ff.model_train(X_train, y_train, X_test, y_test, callback_log_dir+"/callback_log.csv")
+    ff.model_train(X_train, y_train, X_test, y_test, callback_log_dir+"/callback_feed_log.csv")
     ff.model_save(folder + "feeds",model_version )
 
-def clean_test_data(loc,seq_length):
+def clean_test_data(loc):
     data = open(loc).read().lower()
     chars = sorted(list(set(data)))
     char_to_int = dict((c, i) for i, c in enumerate(chars))
     n_chars = len(data)
     n_vocab = len(chars)
-    seq_length = seq_length
+    seq_length = n_vocab
     dataX = []
     dataY = []
     for i in range(0, n_chars - seq_length, 1):
@@ -47,12 +47,12 @@ def clean_test_data(loc,seq_length):
 
 def create_rnn(content,callback_log_dir):
     r = rnn.rnn()
-    X,y = clean_test_data(content['filename'],int(content['seq_length']))
+    X,y = clean_test_data(content['data_location'])
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=float(content['split_value']))
-    r.design_model(y_train.shape[1],content['lstm_out'],content['lstm_drop'],content['lstm_recc_drop'],content['dense_out'],content['reg_dropout'],X_train.shape[1],X_train.shape[2])
+    r.design_model(y_train.shape[1],content['lstm_out'],content['dense_out'],content['reg_dropout'],X_train.shape[1],X_train.shape[2])
     r.model_compile(content['optimiser'], content['loss_function'])
-    r.model_train(X_train, X_test, y_train, y_test,content['epochs'], callback_log_dir+"/callback_log.csv")
-    r.model_save(folder + "feeds",model_version )
+    r.model_train(X_train, X_test, y_train, y_test,content['epochs'], callback_log_dir+"/callback_rnn_log.csv")
+    r.model_save(folder + "rnn",model_version )
 
 
 def create_cnn(content):
