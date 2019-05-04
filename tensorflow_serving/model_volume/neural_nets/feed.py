@@ -24,10 +24,10 @@ class feedforward_nn:
     def model_compile(self,optimiser,loss_function):
         self.model.compile(loss=loss_function, optimizer=optimiser, metrics=['accuracy'])
 
-    def model_train(self,X_train,y_train,X_test,y_test, logcsv="callback_log.csv"):
+    def model_train(self,X_train,y_train,X_test,y_test, ep, logcsv="callback_log.csv"):
         #train the model
         callback = [CSVLogger(filename=logcsv)]
-        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=30, callbacks=callback)
+        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=int(ep), callbacks=callback)
             
 
 
