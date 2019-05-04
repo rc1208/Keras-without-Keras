@@ -3,6 +3,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import tensorflow_serving.model_volume.neural_nets.feed as feed
 import tensorflow_serving.model_volume.neural_nets.rnn as rnn
+import tensorflow_serving.model_volume.neural_nets.cnn as cnn
+from keras.datasets import mnist
 app = Flask(__name__)
 import os
 print(os.path)
@@ -26,10 +28,23 @@ def create_rnn(content):
     r.design_model(content['vocab_size'],content['output_d'],content['max_len'],content['lstm_out'],content['lstm_drop'],content['lstm_recc_drop'],content['dense_out'],content['reg_dropout'])
     r.model_compile(content['optimiser'],content['loss_function'])
     data = ""
-    
+
 
 def create_cnn(content):
-    pass
+    c = cnn.cnn()
+    #design_model(self,hidden_list,inp,activation_list,kernel_size_1,kernel_size_2)
+    c.design_model(content['hidden_list'],content['inp'],content['activation_list'],content['kernel_size_1'],content['kernel_size_2'])
+    #model_compile(self,optimizer,loss)
+    c.model_compile(content['optimiser'],content['loss_function'])
+    (X_train, y_train), (X_test, y_test) = mnist.load_data()
+    #data = pd.read_csv(content['data_location'])
+    #collist = data.columns.tolist()
+    #X = data[collist[0:-1]].values
+    #y = data[collist[-1:]].values
+    #model_train(self,X_train, y_train, X_test, y_test,epochs)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=float(content['split_value']))
+    c.model_train(X_train, y_train, X_test, y_test,epochs)
+    c.model_save(folder + "feeds",model_version )
 
 @app.route("/",methods=['POST'])
 def handler():
