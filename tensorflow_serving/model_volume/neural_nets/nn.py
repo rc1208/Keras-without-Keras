@@ -65,9 +65,9 @@ def create_cnn(content):
     (X_train, y_train), (X_test, y_test) = mnist.load_data()
     #loading the data -- install mlxtend for this
     X, y = loadlocal_mnist(
-    images_path='data/train-images-idx3-ubyte',
-    labels_path='data/train-labels-idx1-ubyte')
-    split_value = int(float(content['split_value'] * len(X))
+    images_path=content['data_location']+'train-images-idx3-ubyte',
+    labels_path=content['data_location']+'train-labels-idx1-ubyte')
+    split_value = int((1 - float(content['split_value']) * len(X)))
     X_train = X[:split_value,:]
     X_test = X[split_value:,:]
     X_train = X_train.reshape(len(X_train),content['inp'],content['inp'])

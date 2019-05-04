@@ -21,5 +21,5 @@ res_cnn = requests.post('http://localhost:3333/api/neural-network/v1.0/', json={
   "split_value": "0.2", \
   "loss_function": "categorical_crossentropy", \
   "data_location":"data/data_new.csv"})
-if res.ok:
+if res_cnn.ok:
     print("Model Compiled!")
