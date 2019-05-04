@@ -26,22 +26,22 @@ class cnn:
     def __init__(self):
         #create model
         self.model = Sequential()
-    def design_model(self,hidden_list,inp,activation_list,lr,optimiser):
+    def design_model(self,hidden_list,inp,activation_list,kernel_size_1,kernel_size_2):
 
         #add model layers
-        self.model.add(Conv2D(64, kernel_size=3, activation='relu', input_shape=(28,28,1)))
-        self.model.add(Conv2D(32, kernel_size=3, activation='relu'))
+        self.model.add(Conv2D(hidden_list[0], kernel_size=kernel_size_1, activation=activation_list[0], input_shape=(inp,inp,1)))
+        self.model.add(Conv2D(hidden_list[1], kernel_size=kernel_size_2, activation=activation_list[1]))
         self.model.add(Flatten())
-        self.model.add(Dense(10, activation='softmax'))
+        self.model.add(Dense(hidden_list[2], activation=activation_list[2]))
 
 
-    def model_train(self):
+    def model_train(self,X_train, y_train, X_test, y_test,epochs):
         #train the model
-        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=3)
+        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=epochs)
 
-    def model_compile(self):
+    def model_compile(self,optimizer,loss):
         #compile model using accuracy to measure model performance
-        self.model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+        self.model.compile(optimizer=optimizer, loss=loss, metrics=['accuracy'])
 
     def model_predict(self):
 

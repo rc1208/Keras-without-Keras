@@ -1,5 +1,6 @@
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation
+from keras.callbacks import CSVLogger
 from tensorflow.python.saved_model import builder as saved_model_builder
 from tensorflow.python.saved_model import tag_constants, signature_constants
 import tensorflow as tf
@@ -23,9 +24,12 @@ class feedforward_nn:
     def model_compile(self,optimiser,loss_function):
         self.model.compile(loss=loss_function, optimizer=optimiser, metrics=['accuracy'])
 
-    def model_train(self,X_train,y_train,X_test,y_test):
+    def model_train(self,X_train,y_train,X_test,y_test, ep, logcsv="callback_log.csv"):
         #train the model
-        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=3)
+        callback = [CSVLogger(filename=logcsv)]
+        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=int(ep), callbacks=callback)
+            
+
 
     def model_save(self,folder,model_version):
         init_op = tf.global_variables_initializer()
