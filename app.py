@@ -10,8 +10,10 @@ from werkzeug.utils import secure_filename
 from flask import make_response
 from flask import abort
 from tensorflow_serving.model_volume.neural_nets import nn
+from flask_cors import CORS
 #Create the app object that will route our calls
 app = Flask(__name__)
+CORS(app)
 # Add a single endpoint that we can use for testing
 
 
@@ -192,6 +194,9 @@ def compile_model():
         nn.create_feed_forward(content)
         return json.dumps({'status':'Compiled'})
 
+    elif content['nn_type'] == 'feedforward':
+        nn.create_feed_forward(content)
+        return json.dumps({'status':'Compiled'})
     else:
         return json.dumps({'status':'Compiled-Failed'})
 

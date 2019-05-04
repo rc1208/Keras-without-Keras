@@ -16,8 +16,8 @@ class rnn:
         self.model.add(Dropout(reg_dropout))
         self.model.add(Dense(vocab_size, activation='softmax'))
 
-    def model_compile(self):
-        self.model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    def model_compile(self,optimiser,loss_function):
+        self.model.compile(optimizer=optimiser, loss=loss_function, metrics=['accuracy'])
 
     def model_train(self,X_train,y_train,X_test,y_test):
         #train the model

@@ -192,8 +192,8 @@ function makeGUI() {
     player.playOrPause();
     if (iter === 0) {
       let xhttp = new XMLHttpRequest();
-      xhttp.open("POST", "https:localhost:3333/api/neural-network/v1.0/", true);
-      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.open("POST", "http://localhost:3333/api/neural-network/v1.0/", true);
+      xhttp.setRequestHeader("Content-type", "application/json");
       let hidden_list = "";
       let acts = "";
       for (let i = 0; i < state.networkShape.length; i++) {
@@ -204,14 +204,17 @@ function makeGUI() {
       }
       hidden_list += state.sizeOutput == 2 ? 1 : state.sizeOutput;
       acts += "sigmoid";
-      xhttp.send("nn_type=feedforward"
-        + "&inp=" + state.sizeInput
-        + "&hidden_list=" + hidden_list
-        + "&lossfunc=" + state.lossfunc
-        + "&activation_list=" + acts
-        + "&optimiser=adam"
-        + "&split_value=0.2"
-        + "&data_location=" + state.dataLocation
+      xhttp.send(
+        JSON.stringify({
+          "nn_type": "feedforward",
+          "hidden_list": hidden_list,
+          "inp": String(state.sizeInput),
+          "activation_list": acts,
+          "optimiser": "adam",
+          "split_value": "0.2",
+          "loss_function": state.lossfunc,
+          "data_location": state.dataLocation
+        })
       );
     }
   });
