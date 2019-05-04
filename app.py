@@ -167,11 +167,11 @@ def get_tasks(task_id):
 def compile_model():
     content = request.get_json()
     if content['nn_type'] == 'feedforward':
-        nn.create_feed_forward(content,)
+        nn.create_feed_forward(content,"/Users/apple/Documents/SEM/SEM4/deep_learning/project/test_data_123/")
         return json.dumps({'status':'Compiled'})
 
     elif content['nn_type'] == 'rnn':
-        nn.create_rnn(content)
+        nn.create_rnn(content,"/Users/apple/Documents/SEM/SEM4/deep_learning/project/test_data_123/")
         return json.dumps({'status':'Compiled'})
     else:
         return json.dumps({'status':'Compiled-Failed'})

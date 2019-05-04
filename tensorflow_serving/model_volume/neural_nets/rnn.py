@@ -9,10 +9,10 @@ class rnn:
     def __init__(self):
         self.model = Sequential()
 
-    def design_model(self,vocab_size,lstm_out,lstm_drop,lstm_recc_drop,dense_out,reg_dropout,inp_row,inp_col):
-        self.model.add(LSTM(lstm_out, return_sequences=False, dropout=lstm_drop, recurrent_dropout=lstm_recc_drop, input_shape=(inp_row, inp_col)))
-        self.model.add(Dense(dense_out, activation='relu'))
-        self.model.add(Dropout(reg_dropout))
+    def design_model(self,vocab_size,lstm_out,dense_out,reg_dropout,inp_row,inp_col):
+        self.model.add(LSTM(int(lstm_out), return_sequences=False, input_shape=(inp_row, inp_col)))
+        self.model.add(Dense(int(dense_out), activation='relu'))
+        self.model.add(Dropout(int(reg_dropout)))
         self.model.add(Dense(vocab_size, activation='softmax'))
 
     def model_compile(self,optimiser,loss_function):
@@ -20,7 +20,7 @@ class rnn:
 
     def model_train(self,X_train,y_train,X_test,y_test,ep,logcsv="callback_log.csv"):
         callback = [CSVLogger(filename=logcsv)]
-        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=ep,callbacks=callback)
+        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=int(ep),callbacks=callback)
 
     def model_save(self,folder,model_version):
         sess = tf.Session()
