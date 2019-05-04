@@ -4,13 +4,13 @@ Deep learning has been used in a variety of applications since it was introduced
 
 ####framwork pic here
 
-### Objectives
+### 1. Objectives
 
 1. Provide NN, CNN, RNN functions according to user’s input data. 
 2. Make user manipulate a visual interface without any coding. Keras code is generated automatically and operated in the backend.
 3. Provide various options so that user can change them and compare results accordingly.
 
-### Problem
+### 2. Problem
 
 Deep learning libraries require user to handle following steps in programming languages:
 
@@ -23,7 +23,7 @@ Deep learning libraries require user to handle following steps in programming la
 
 **Research question:** can we use neural networks including CNN and RNN without knowing how to write a program?
 
-### Architecture
+### 3. Architecture
 
 ***Frontend***
 1. *Data upload page (html, python)*: receive user’s data and decide a network type (DNN, CNN, RNN)
@@ -35,11 +35,11 @@ Deep learning libraries require user to handle following steps in programming la
 
 ####architecture pic here
 
-### Result (User's view)
+### 4. Result (User's view)
 
 ####result pic here
 
-### How to use
+### 5. How to use
 
 <br><br><br><br>
 
