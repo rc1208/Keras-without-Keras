@@ -191,11 +191,11 @@ def get_tasks(task_id):
 def compile_model():
     content = request.get_json()
     if content['nn_type'] == 'feedforward':
-        nn.create_feed_forward(content)
+        nn.create_feed_forward(content,)
         return json.dumps({'status':'Compiled'})
 
-    elif content['nn_type'] == 'feedforward':
-        nn.create_feed_forward(content)
+    elif content['nn_type'] == 'rnn':
+        nn.create_rnn(content)
         return json.dumps({'status':'Compiled'})
     else:
         return json.dumps({'status':'Compiled-Failed'})

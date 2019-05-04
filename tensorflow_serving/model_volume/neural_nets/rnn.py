@@ -3,6 +3,7 @@ from keras.models import Sequential
 from keras.layers import LSTM, Dense, Dropout, Masking, Embedding
 from tensorflow.python.saved_model import builder as saved_model_builder
 from tensorflow.python.saved_model import tag_constants, signature_constants
+from keras.callbacks import CSVLogger
 
 class rnn:
     def __init__(self):
@@ -17,9 +18,9 @@ class rnn:
     def model_compile(self,optimiser,loss_function):
         self.model.compile(optimizer=optimiser, loss=loss_function, metrics=['accuracy'])
 
-    def model_train(self,X_train,y_train,X_test,y_test,logcsv="callback_log.csv"):
-        #train the model
-        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=3)
+    def model_train(self,X_train,y_train,X_test,y_test,ep,logcsv="callback_log.csv"):
+        callback = [CSVLogger(filename=logcsv)]
+        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=3,callbacks=callback)
 
     def model_save(self,folder,model_version):
         sess = tf.Session()
