@@ -55,9 +55,9 @@ Deep learning libraries require user to handle following steps in programming la
 | Python 3 or > | [Python-3](https://www.python.org/downloads/) | 
 | Flask         | [Flask Homepage](http://flask.pocoo.org/)      | 
 | Docker        | [Docker Homepage](https://docs.docker.com/install/)      | 
-| Tensorflow    | [Tensorflow Homepage] (https://www.tensorflow.org/)      | 
-| Keras         | [Keras Homepage] (https://keras.io/)                     |
-| Tensorflow Serving        |[Tensorflow Serving] (https://www.tensorflow.org/tfx/guide/serving)      | 
+| Tensorflow    | [Tensorflow Homepage](https://www.tensorflow.org/)      | 
+| Keras         | [Keras Homepage](https://keras.io/)                     |
+| Tensorflow Serving        |[Tensorflow Serving](https://www.tensorflow.org/tfx/guide/serving)      | 
 
 ### Frontend Software Requirements ###
 1. Node.js/ NPM(should come installed with Node.js)
