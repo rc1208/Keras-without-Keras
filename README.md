@@ -103,7 +103,8 @@ curl -i -H "Content-Type: application/json" -X POST -d \
   "data_location":"data/mnist21x21_3789_converted.pklz"}' 'http://localhost:3333/api/neural-network/v1.0/'
   
 ```json
-{"hidden_list":"64 32 4", \
+curl -i -H "Content-Type: application/json" -X POST -d \
+'{"hidden_list":"64 32 4", \
   "inp": "21",
   "kernel_size":"3 3", \
   "activation_list":"relu relu softmax", \
@@ -111,5 +112,5 @@ curl -i -H "Content-Type: application/json" -X POST -d \
   "optimiser":"adam", \
   "split_value": "0.2", \
   "loss_function": "categorical_crossentropy", \
-  "data_location":"data/mnist21x21_3789_converted.pklz"}
+  "data_location":"data/mnist21x21_3789_converted.pklz"}' 'http://localhost:3333/api/neural-network/v1.0/'
 ```
