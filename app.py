@@ -169,7 +169,7 @@ def return_json(file):
     ret = pd.read_csv(file)
     if ret.empty:
         return json.dumps({'status': 'model training failed'})
-    return json.dumps(ret.to_json())
+    return ret.to_json()
 
 
 @app.route('/api/neural-network/v1.0/', methods = ['POST'])
