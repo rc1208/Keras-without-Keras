@@ -77,11 +77,6 @@ Deep learning libraries require user to handle following steps in programming la
 | Chrome Web Browser > | [Chrome homepage](https://www.google.com/chrome/) | 
 
 
-
-#### Run python request.py for a sample CURL request to feedforward. Change parameters in JSON as necessary ####
-
-
-
 ### Feed Forward POST JSON ###
 
 ```json
