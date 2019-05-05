@@ -28,6 +28,7 @@ import {
 import {Example2D, shuffle} from "./dataset";
 import {AppendingLineChart} from "./linechart";
 import * as d3 from 'd3';
+import {drawLineChart} from "../chart";
 
 let mainWidth;
 
@@ -216,6 +217,7 @@ function makeGUI() {
           "data_location": state.dataLocation
         })
       );
+      drawLineChart();
     }
   });
 

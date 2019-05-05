@@ -170,7 +170,7 @@ export class State {
   dataset: dataset.DataGenerator = dataset.classifyCircleData;
   regDataset: dataset.DataGenerator = dataset.regressPlane;
   seed: string;
-  sizeInput = 2;
+  sizeInput = 5;
   sizeOutput = 1;
   lossfunc = "binary_crossentropy";
   dataLocation = "data/data_new.csv";

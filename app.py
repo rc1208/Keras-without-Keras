@@ -7,6 +7,7 @@ import csv
 import json
 import gzip
 from datetime import datetime
+import pandas as pd
 from werkzeug.utils import secure_filename
 from flask import make_response
 from flask import abort
@@ -163,18 +164,34 @@ def get_tasks(task_id):
     return jsonify({'task': task[1]})
 
 ### feedforward NN API - GET request at 1 - make the model with the given id '1' and data file
+
+def return_json(file):
+    ret = pd.read_csv(file)
+    if ret.empty:
+        return json.dumps({'status': 'model training failed'})
+    return json.dumps(ret.to_json())
+
+
 @app.route('/api/neural-network/v1.0/', methods = ['POST'])
 def compile_model():
     content = request.get_json()
+    filename = "data/mse"
     if content['nn_type'] == 'feedforward':
-        nn.create_feed_forward(content,"/Users/apple/Documents/SEM/SEM4/deep_learning/project/test_data_123/")
-        return json.dumps({'status':'Compiled'})
+        nn.create_feed_forward(content,"data/mse")
+        filename += '/callback_log_feed.csv'
+        return return_json(filename)
 
     elif content['nn_type'] == 'rnn':
-        nn.create_rnn(content,"/Users/apple/Documents/SEM/SEM4/deep_learning/project/test_data_123/")
-        return json.dumps({'status':'Compiled'})
+        nn.create_rnn(content,"data/mse")
+        filename += '/callback_rnn_log.csv'
+        return return_json(filename)
+
+    elif content['nn_type'] == 'cnn':
+        nn.create_cnn(content,"data/mse")
+        filename += '/callback_cnn_log.csv'
+        return return_json(filename)
     else:
-        return json.dumps({'status':'Compiled-Failed'})
+        return json.dumps({'status':'unknown model expected'})
 
 
 @app.route('/images_upload', methods = ['GET'])
@@ -211,7 +228,7 @@ def images_upload_post():
         flash('No file part')
         return redirect(request.url)
 
-    
+
 def images_savefile(file, data_id, data_desc, dir_pickle):
     #save the file (name as data_id), and link to "training.csv"
     filepath = os.path.join(dir_pickle, data_id)
@@ -247,7 +264,6 @@ def images_getsize(pickle_path):
         n_class=len(setx)
         return (n_image, width, height, n_class)
 
-        
 
 @app.route('/text_upload', methods = ['GET'])
 def text_upload():
@@ -274,7 +290,6 @@ def text_upload_post():
         lossfunc="crossentropy"
         return redirect("http://127.0.0.1:8080/index_rnn.html#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&typeofnet=2&regularizationRate=0&noise=0&networkShape=1&seed=0.09947&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&lossfunc=%s&dataLocation=%s" %(lossfunc, filepath))
         
-
 def text_savefile(file, data_id, data_desc, dir_text):
     filepath = os.path.join(dir_text, data_id)
     file.save(filepath)

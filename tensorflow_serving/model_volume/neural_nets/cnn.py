@@ -3,20 +3,11 @@ from keras.datasets import mnist
 from tensorflow.python.saved_model import builder as saved_model_builder
 from tensorflow.python.saved_model import tag_constants, signature_constants
 import tensorflow as tf
-#download mnist data and split into train and test sets
-(X_train, y_train), (X_test, y_test) = mnist.load_data()
+from keras.callbacks import CSVLogger
 
-
-#reshape data to fit model
-X_train = X_train.reshape(60000,28,28,1)
-X_test = X_test.reshape(10000,28,28,1)
 
 
 from keras.utils import to_categorical
-#one-hot encode target column
-y_train = to_categorical(y_train)
-y_test = to_categorical(y_test)
-
 
 from keras.models import Sequential
 from keras.layers import Dense, Conv2D, Flatten
@@ -26,18 +17,23 @@ class cnn:
     def __init__(self):
         #create model
         self.model = Sequential()
-    def design_model(self,hidden_list,inp,activation_list,kernel_size_1,kernel_size_2):
+    def design_model(self,hidden_list,inp,activation_list,kernel_size):
+        hidden_list = hidden_list.split()
+        activation_list = activation_list.split()
+        kernel_size = kernel_size.split()
 
         #add model layers
-        self.model.add(Conv2D(hidden_list[0], kernel_size=kernel_size_1, activation=activation_list[0], input_shape=(inp,inp,1)))
-        self.model.add(Conv2D(hidden_list[1], kernel_size=kernel_size_2, activation=activation_list[1]))
+        self.model.add(Conv2D(int(hidden_list[0]), kernel_size=int(kernel_size[0]), activation=activation_list[0], input_shape=(int(inp),int(inp),1)))
+        for i in range(1,len(hidden_list) - 1):
+            self.model.add(Conv2D(int(hidden_list[i]), kernel_size=int(kernel_size[i]), activation=activation_list[i]))
         self.model.add(Flatten())
-        self.model.add(Dense(hidden_list[2], activation=activation_list[2]))
+        self.model.add(Dense(int(hidden_list[-1]), activation=activation_list[-1]))
 
 
-    def model_train(self,X_train, y_train, X_test, y_test,epochs):
+    def model_train(self,X_train, y_train, X_test, y_test,epochs,logcsv="callback_log.csv"):
         #train the model
-        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=epochs)
+        callback = [CSVLogger(filename=logcsv)]
+        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=int(epochs),callbacks=callback)
 
     def model_compile(self,optimizer,loss):
         #compile model using accuracy to measure model performance
@@ -49,7 +45,9 @@ class cnn:
         self.model.predict(X_test[:4])
 
     def model_save(self,folder,model_version):
+        init_op = tf.global_variables_initializer()
         sess = tf.Session()
+        sess.run(init_op)
         x = self.model.input
         y = self.model.output
         prediction_signature = tf.saved_model.signature_def_utils.predict_signature_def({"inputs": x},{"prediction": y})
@@ -57,13 +55,14 @@ class cnn:
         if (valid_prediction_signature == False):
             raise ValueError("Error: Prediction signature not valid!")
         builder = saved_model_builder.SavedModelBuilder(folder + model_version)
-        legacy_init_op = tf.group(tf.tables_initializer(), name='legacy_init_op')
+        #legacy_init_op = tf.group(tf.tables_initializer(), name='legacy_init_op')
         builder.add_meta_graph_and_variables(
             sess, [tag_constants.SERVING],
             signature_def_map={
                 signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY: prediction_signature,
-            },
-            legacy_init_op=legacy_init_op)
+            },)
+            #legacy_init_op=legacy_init_op)
 
         # save model
         builder.save()
+        sess.close()
