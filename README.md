@@ -1,6 +1,6 @@
 # Keras without Keras
 
-Deep learning has been used in a variety of applications since it was introduced. However, for those who does not know how to code, deep learning is not an available method. We propose a deep learning framework called ‘*Keras* *without* *Keras*’ so that user can use deep learning with their own data, and check the results with various options without any coding knowledge.
+Deep learning has been used in a variety of applications since it was introduced. However, for those who do not know how to code, deep learning is not an available method. We propose a deep learning framework called ‘*Keras* *without* *Keras*’ so that user can use deep learning with their own data, and check the results with various options without any coding knowledge.
 
 <center><img src="https://github.com/rc1208/Keras-without-Keras/blob/master/resources/framework.png" width="40%"></center>
 
@@ -19,7 +19,7 @@ Deep learning libraries require user to handle following steps in programming la
 * step 3) Train a model, then test it
 * step 4) Check results, change options 
 * step 5) Go back to step (2) <br>
-→ *If you don’t know how to write a program, you can’t use deep learning!*
+→ *If you don’t know how to write programs, you can’t use deep learning!*
 
 **Research question:** can we use neural networks including CNN and RNN without knowing how to write a program?
 
@@ -32,6 +32,8 @@ Deep learning libraries require user to handle following steps in programming la
 
 ***Backend***
 * Generate a Keras code according to inputs (python)
+* Train the network to generate the model
+* Save the model to disk
 * Send results to frontend
 
 ### 4. Result (User's view)
@@ -39,50 +41,76 @@ Deep learning libraries require user to handle following steps in programming la
 
 ### 5. How to run
 
-<br><br><br><br>
+```
+1. Initialize the Python library -> python init_database.py 
+2. Run the Node Frontend Server
+ - cd to playground folder
+ - Install Dependencies -> npm i 
+ - Compile the app and place it in the dist/ directory -> npm run build
+ - Open a page on your browser -> npm run serve
+3. Run the Flask Backend Server
+ - To start the server -> python app.py
+ - Optional Step: If you want to CURL on the models, run -> python request.py(Comment out the request that you don't want to test)
+```
 
 
 
 
 ## Softwares required to be installed: ##
 
-1. Python 3 or >
-2. Flask 
-3. Docker
-4. Tensorflow
-5. Tensorflow Serving
+### Backend Software Requirements ###
 
-#### CURL request for FF NN ####
-curl -X POST   http://localhost:8501/v1/models/feeds:predict   -H 'cache-control: no-cache'   -H 'postman-token: f7fb6e3f-26ba-a742-4ab3-03c953cefaf5'   -d '{
- "inputs":[
-  [23,27.125,419,686,0.00471494214590473]
-  ]
-}'
+| Software      |  Link         | 
+| ------------- |:-------------:| 
+| Python 3 or > | [Python-3](https://www.python.org/downloads/) | 
+| Flask         | [Flask Homepage](http://flask.pocoo.org/)      | 
+| Docker        | [Docker Homepage](https://docs.docker.com/install/)      | 
+| Tensorflow    | [Tensorflow Homepage](https://www.tensorflow.org/)      | 
+| Keras         | [Keras Homepage](https://keras.io/)                     |
+| Tensorflow Serving        |[Tensorflow Serving](https://www.tensorflow.org/tfx/guide/serving)      | 
 
-  
+### Frontend Software Requirements ###
 
-#### to generate the sqlite database (instance/data.db), run:
-#### Warn: this will remove existing training data inventory saved in instance/data.db, don't do it if there are already some data uploaded
-python init_database.py
-
-
-#### Run python request.py for a sample CURL request to feedforward. Change parameters in JSON as necessary ####
+| Software      |  Link         | 
+| ------------- |:-------------:| 
+| Node.js | [Node Homepage](https://nodejs.org/en/) | 
+| Chrome Web Browser  | [Chrome homepage](https://www.google.com/chrome/) | 
 
 
+### Feed Forward POST JSON ###
 
-### feed forward POST Json ###
-
-
-curl -i -H "Content-Type: application/json" -X POST -d \
-'{"nn_type":"feedforward", \
-  "hidden_list":"5 5 1", \
-  "inp": "5", \
-  "activation_list":"relu relu sigmoid", \
-  "optimiser":"adam", \
-  "split_value": "0.2", \
-  "loss_function": "binary_crossentropy", \
-  "data_location":"data/data_new.csv" \
+```json
+curl -i -H "Content-Type: application/json" -X POST -d 
+'{"nn_type":"feedforward", 
+  "hidden_list":"5 5 1", 
+  "inp": "5", 
+  "activation_list":"relu relu sigmoid", 
+  "optimiser":"adam", 
+  "split_value": "0.2", 
+  "loss_function": "binary_crossentropy", 
+  "data_location":"data/data_new.csv" 
   }' 'http://localhost:3333/api/neural-network/v1.0/'
+  ```
   
-  
-  
+  ### CNN POST JSON ###
+ 
+```json
+curl -i -H "Content-Type: application/json" -X POST -d 
+'{"hidden_list":"64 32 4", 
+  "inp": "21",
+  "kernel_size":"3 3", 
+  "activation_list":"relu relu softmax", 
+  "epochs":"3", 
+  "optimiser":"adam", 
+  "split_value": "0.2", 
+  "loss_function": "categorical_crossentropy", 
+  "data_location":"data/mnist21x21_3789_converted.pklz"}' 'http://localhost:3333/api/neural-network/v1.0/'
+```
+### Contributors
+| Team Member      |  Github Link| 
+| ------------- |:-------------:| 
+| Chu Sheng | [Here](https://github.com/bamboo983) | 
+| Ganesh Chandra Satish         | [Here](https://github.com/ganeshchandras)      | 
+| Hansol Yoon       | [Here](https://github.com/hansolyoon)      | 
+|  Rahul Chowdhury  | [Here](https://github.com/rc1208)      | 
+|  Si Shen       | [Here](https://github.com/shensimeteor)                     |

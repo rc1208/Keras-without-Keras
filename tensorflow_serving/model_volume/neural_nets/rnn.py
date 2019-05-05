@@ -10,7 +10,6 @@ class rnn:
         self.model = Sequential()
 
     def design_model(self,vocab_size,lstm_out,dense_out,reg_dropout,inp_row,inp_col):
-        print(inp_row, inp_col)
         self.model.add(LSTM(int(lstm_out), return_sequences=False, input_shape=(inp_row, inp_col)))
         self.model.add(Dense(int(dense_out), activation='relu'))
         self.model.add(Dropout(float(reg_dropout)))
