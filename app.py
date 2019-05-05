@@ -7,6 +7,7 @@ import csv
 import json
 import gzip
 from datetime import datetime
+import pandas as pd
 from werkzeug.utils import secure_filename
 from flask import make_response
 from flask import abort
@@ -163,22 +164,34 @@ def get_tasks(task_id):
     return jsonify({'task': task[1]})
 
 ### feedforward NN API - GET request at 1 - make the model with the given id '1' and data file
+
+def return_json(file):
+    ret = pd.read_csv(file)
+    if ret.empty:
+        return json.dumps({'status': 'model training failed'})
+    return json.dumps(ret.to_json())
+
+
 @app.route('/api/neural-network/v1.0/', methods = ['POST'])
 def compile_model():
     content = request.get_json()
+    filename = "data/mse"
     if content['nn_type'] == 'feedforward':
         nn.create_feed_forward(content,"data/mse")
-        return json.dumps({'status':'Compiled'})
+        filename += '/callback_log_feed.csv'
+        return return_json(filename)
 
     elif content['nn_type'] == 'rnn':
         nn.create_rnn(content,"data/mse")
-        return json.dumps({'status':'Compiled'})
+        filename += '/callback_rnn_log.csv'
+        return return_json(filename)
 
     elif content['nn_type'] == 'cnn':
         nn.create_cnn(content,"data/mse")
-        return json.dumps({'status':'Compiled'})
+        filename += '/callback_cnn_log.csv'
+        return return_json(filename)
     else:
-        return json.dumps({'status':'Compiled-Failed'})
+        return json.dumps({'status':'unknown model expected'})
 
 
 @app.route('/images_upload', methods = ['GET'])
