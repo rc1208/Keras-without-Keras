@@ -214,10 +214,15 @@ function makeGUI() {
           "optimiser": "adam",
           "split_value": "0.2",
           "loss_function": state.lossfunc,
-          "data_location": state.dataLocation
+          "data_location": state.dataLocation,
+          "epochs": 10
         })
       );
-      drawLineChart();
+      xhttp.onreadystatechange=(e) => {
+        let obj = JSON.parse(xhttp.responseText);
+        console.log(obj);
+        drawLineChart(obj.acc);
+      }
     }
   });
 
