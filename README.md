@@ -68,11 +68,12 @@ curl -X POST   http://localhost:8501/v1/models/feeds:predict   -H 'cache-control
 python init_database.py
 
 
+
 #### Run python request.py for a sample CURL request to feedforward. Change parameters in JSON as necessary ####
 
 
 
-### feed forward POST Json ###
+### Feed Forward POST JSON ###
 
 
 curl -i -H "Content-Type: application/json" -X POST -d \
@@ -87,4 +88,16 @@ curl -i -H "Content-Type: application/json" -X POST -d \
   }' 'http://localhost:3333/api/neural-network/v1.0/'
   
   
+  ### CNN POST JSON ###
+  
+  curl -i -H "Content-Type: application/json" -X POST -d \
+'{"hidden_list":"64 32 4", \
+  "inp": "21",
+  "kernel_size":"3 3", \
+  "activation_list":"relu relu softmax", \
+  "epochs":"3", \
+  "optimiser":"adam", \
+  "split_value": "0.2", \
+  "loss_function": "categorical_crossentropy", \
+  "data_location":"data/mnist21x21_3789_converted.pklz"}' 'http://localhost:3333/api/neural-network/v1.0/'
   
