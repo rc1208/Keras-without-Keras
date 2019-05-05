@@ -1,6 +1,6 @@
 # Keras without Keras
 
-Deep learning has been used in a variety of applications since it was introduced. However, for those who does not know how to code, deep learning is not an available method. We propose a deep learning framework called ‘*Keras* *without* *Keras*’ so that user can use deep learning with their own data, and check the results with various options without any coding knowledge.
+Deep learning has been used in a variety of applications since it was introduced. However, for those who do not know how to code, deep learning is not an available method. We propose a deep learning framework called ‘*Keras* *without* *Keras*’ so that user can use deep learning with their own data, and check the results with various options without any coding knowledge.
 
 <center><img src="https://github.com/rc1208/Keras-without-Keras/blob/master/resources/framework.png" width="40%"></center>
 
@@ -19,7 +19,7 @@ Deep learning libraries require user to handle following steps in programming la
 * step 3) Train a model, then test it
 * step 4) Check results, change options 
 * step 5) Go back to step (2) <br>
-→ *If you don’t know how to write a program, you can’t use deep learning!*
+→ *If you don’t know how to write programs, you can’t use deep learning!*
 
 **Research question:** can we use neural networks including CNN and RNN without knowing how to write a program?
 
@@ -32,6 +32,8 @@ Deep learning libraries require user to handle following steps in programming la
 
 ***Backend***
 * Generate a Keras code according to inputs (python)
+* Train the network to generate the model
+* Save the model to disk
 * Send results to frontend
 
 ### 4. Result (User's view)
