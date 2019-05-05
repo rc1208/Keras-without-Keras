@@ -41,8 +41,8 @@ Deep learning libraries require user to handle following steps in programming la
 
 ### 5. How to run
 
-```
-1. Initialize the Python library -> ```python python init_database.py ```
+```python
+1. Initialize the Python library -> python init_database.py 
 2. Run the Node Frontend Server
  - cd to playground folder
  - Install Dependencies -> npm i 
