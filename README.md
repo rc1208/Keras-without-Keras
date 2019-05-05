@@ -76,7 +76,7 @@ python init_database.py
 
 ### Feed Forward POST JSON ###
 
-
+```json
 curl -i -H "Content-Type: application/json" -X POST -d \
 '{"nn_type":"feedforward", \
   "hidden_list":"5 5 1", \
@@ -87,21 +87,10 @@ curl -i -H "Content-Type: application/json" -X POST -d \
   "loss_function": "binary_crossentropy", \
   "data_location":"data/data_new.csv" \
   }' 'http://localhost:3333/api/neural-network/v1.0/'
-  
+  ```
   
   ### CNN POST JSON ###
-  
-  curl -i -H "Content-Type: application/json" -X POST -d \
-'{"hidden_list":"64 32 4", \
-  "inp": "21",
-  "kernel_size":"3 3", \
-  "activation_list":"relu relu softmax", \
-  "epochs":"3", \
-  "optimiser":"adam", \
-  "split_value": "0.2", \
-  "loss_function": "categorical_crossentropy", \
-  "data_location":"data/mnist21x21_3789_converted.pklz"}' 'http://localhost:3333/api/neural-network/v1.0/'
-  
+ 
 ```json
 curl -i -H "Content-Type: application/json" -X POST -d \
 '{"hidden_list":"64 32 4", \
