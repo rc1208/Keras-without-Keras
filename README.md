@@ -106,6 +106,23 @@ curl -i -H "Content-Type: application/json" -X POST -d
   "loss_function": "categorical_crossentropy", 
   "data_location":"data/mnist21x21_3789_converted.pklz"}' 'http://localhost:3333/api/neural-network/v1.0/'
 ```
+
+  ### RNN POST JSON ###
+  
+  ```json
+curl -i -H "Content-Type: application/json" -X POST -d 
+'{"nn_type":"rnn", 
+  "lstm_out":"256",
+  "dense_out":"100",
+  "reg_dropout":"0.2",
+  "epochs":"10",
+  "batch_size":"1000",
+  "optimiser":"adam", 
+  "split_value": "0.2", 
+  "loss_function": "categorical_crossentropy", 
+  "data_location":"data/test_data.txt"}' 'http://localhost:3333/api/neural-network/v1.0/'
+```
+  
 ### Contributors
 | Team Member      |  Github Link| 
 | ------------- |:-------------:| 
