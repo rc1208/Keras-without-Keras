@@ -4,20 +4,10 @@ from tensorflow.python.saved_model import builder as saved_model_builder
 from tensorflow.python.saved_model import tag_constants, signature_constants
 import tensorflow as tf
 from keras.callbacks import CSVLogger
-#download mnist data and split into train and test sets
-(X_train, y_train), (X_test, y_test) = mnist.load_data()
 
-
-#reshape data to fit model
-X_train = X_train.reshape(60000,28,28,1)
-X_test = X_test.reshape(10000,28,28,1)
 
 
 from keras.utils import to_categorical
-#one-hot encode target column
-y_train = to_categorical(y_train)
-y_test = to_categorical(y_test)
-
 
 from keras.models import Sequential
 from keras.layers import Dense, Conv2D, Flatten
@@ -55,7 +45,9 @@ class cnn:
         self.model.predict(X_test[:4])
 
     def model_save(self,folder,model_version):
+        init_op = tf.global_variables_initializer()
         sess = tf.Session()
+        sess.run(init_op)
         x = self.model.input
         y = self.model.output
         prediction_signature = tf.saved_model.signature_def_utils.predict_signature_def({"inputs": x},{"prediction": y})
@@ -63,13 +55,14 @@ class cnn:
         if (valid_prediction_signature == False):
             raise ValueError("Error: Prediction signature not valid!")
         builder = saved_model_builder.SavedModelBuilder(folder + model_version)
-        legacy_init_op = tf.group(tf.tables_initializer(), name='legacy_init_op')
+        #legacy_init_op = tf.group(tf.tables_initializer(), name='legacy_init_op')
         builder.add_meta_graph_and_variables(
             sess, [tag_constants.SERVING],
             signature_def_map={
                 signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY: prediction_signature,
-            },
-            legacy_init_op=legacy_init_op)
+            },)
+            #legacy_init_op=legacy_init_op)
 
         # save model
         builder.save()
+        sess.close()

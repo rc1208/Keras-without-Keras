@@ -6,6 +6,7 @@ import tensorflow_serving.model_volume.neural_nets.rnn as rnn
 import tensorflow_serving.model_volume.neural_nets.cnn as cnn
 from keras.datasets import mnist
 from keras.utils import np_utils
+from keras.utils import to_categorical
 import numpy as np
 from mlxtend.data import loadlocal_mnist
 app = Flask(__name__)
@@ -85,11 +86,19 @@ def create_cnn(content,callback_log_dir):
     y_train = y[:split_value,:]
     y_test = y[split_value:,:]
 
+    #reshape X_train and X_test
+    X_train = X_train.reshape(X_train.shape[0],X_train.shape[1],X_train.shape[2],1)
+    X_test = X_test.reshape(X_test.shape[0],X_test.shape[1],X_test.shape[2],1)
+
+
+    #one-hot encode target column
+    y_train = to_categorical(y_train)
+    y_test = to_categorical(y_test)
 
     #X_train = X_train.reshape(len(X_train),content['inp'],content['inp'])
     #X_test = X_test.reshape(len(X_test),content['inp'],content['inp'])
-    y_train = y_train.flatten()
-    y_test = y_test.flatten()
+    #y_train = y_train.flatten()
+    #y_test = y_test.flatten()
     c.model_train(X_train, y_train, X_test, y_test,content['epochs'],callback_log_dir+"/callback_cnn_log.csv")
     c.model_save(folder + "cnn",model_version )
 
