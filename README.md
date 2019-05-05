@@ -41,7 +41,17 @@ Deep learning libraries require user to handle following steps in programming la
 
 ### 5. How to run
 
-<br><br><br><br>
+```
+1. Initialize the Python library -> python init_database.py
+2. Run the Node Frontend Server
+ - cd to playground folder
+ - Install Dependencies -> npm i 
+ - Compile the app and place it in the dist/ directory -> npm run build
+ - Open a page on your browser -> npm run serve
+3. Run the Flask Backend Server
+ - To start the server -> python app.py
+ - Optional Step: If you want to CURL on the models, run -> python request.py(Comment out the request that you don't want to test)
+```
 
 
 
