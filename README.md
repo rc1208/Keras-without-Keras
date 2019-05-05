@@ -59,9 +59,11 @@ Deep learning libraries require user to handle following steps in programming la
 
 | Software      |  Link         | 
 | ------------- |:-------------:| 
-| col 3 is      | right-aligned | 
-| col 2 is      | centered      | 
-| zebra stripes | are neat      | 
+| Python 3 or > | right-aligned | 
+| Flask         | centered      | 
+| Docker        | are neat      | 
+| Tensorflow    | are neat      | 
+| Tensorflow Serving        | are neat      | 
 
 ### Frontend Software Requirements ###
 1. Node.js/ NPM(should come installed with Node.js)
