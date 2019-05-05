@@ -174,16 +174,15 @@ def return_json(file):
     ret = pd.read_csv(file)
     if ret.empty:
         return json.dumps({'status': 'model training failed'})
-    return json.dumps(ret.to_json())
+    return ret.to_json()
 
 
 @app.route('/api/neural-network/v1.0/', methods = ['POST'])
 def compile_model():
     content = request.get_json()
-    filename = "data/mse"
+    filename = ""
     if content['nn_type'] == 'feedforward':
-        nn.create_feed_forward(content,"data/mse")
-        filename += '/callback_log_feed.csv'
+        filename = nn.create_feed_forward(content,"data/mse")
         return return_json(filename)
 
     elif content['nn_type'] == 'rnn':
@@ -192,8 +191,8 @@ def compile_model():
         return return_json(filename)
 
     elif content['nn_type'] == 'cnn':
-        nn.create_cnn(content,"data/mse")
-        filename += '/callback_cnn_log.csv'
+        filename = nn.create_cnn(content,"data/mse")
+
         return return_json(filename)
     else:
         return json.dumps({'status':'unknown model expected'})
@@ -294,7 +293,7 @@ def text_upload_post():
             file.save(filepath)
         lossfunc=app.config["LOSS_TEXT"]
         return redirect("http://127.0.0.1:8080/index_rnn.html#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&typeofnet=2&regularizationRate=0&noise=0&networkShape=1&seed=0.09947&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&lossfunc=%s&dataLocation=%s" %(lossfunc, filepath))
-        
+
 def text_savefile(file, data_id, data_desc, dir_text):
     filepath = os.path.join(dir_text, data_id)
     file.save(filepath)
@@ -390,8 +389,6 @@ def use_data_nn():
         return redirect("http://127.0.0.1:8080/index_rnn.html#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&typeofnet=2&regularizationRate=0&noise=0&networkShape=1&seed=0.09947&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&lossfunc=%s&dataLocation=%s" %(lossfunc, data_location))
 
         
-
-
 
 #When run from command line, start the server
 if __name__ == '__main__':

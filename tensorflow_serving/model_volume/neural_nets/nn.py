@@ -13,11 +13,15 @@ app = Flask(__name__)
 import pickle
 import gzip
 import os
-print(os.path)
+import datetime
+suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
+#print(os.path)
 folder = "tensorflow_serving/model_volume/models/"
 model_version = "1.0"
 
 def create_feed_forward(content,callback_log_dir):
+    callback_log_dir = callback_log_dir +  "/" + suffix + "_callback_log_feed.csv"
+    print(callback_log_dir)
     ff = feed.feedforward_nn()
     ff.design_model(content['hidden_list'],content['inp'],content['activation_list'])
     ff.model_compile(content['optimiser'],content['loss_function'])
@@ -26,9 +30,9 @@ def create_feed_forward(content,callback_log_dir):
     X = data[collist[0:-1]].values
     y = data[collist[-1:]].values
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=float(content['split_value']))
-    ff.model_train(X_train, y_train, X_test, y_test, content['epochs'],callback_log_dir+"/callback_log_feed.csv")
+    ff.model_train(X_train, y_train, X_test, y_test, content['epochs'],callback_log_dir)
     ff.model_save(folder + "feeds",model_version )
-
+    return callback_log_dir
 def clean_test_data(loc):
     data = open(loc).read().lower()
     chars = sorted(list(set(data)))

@@ -4,6 +4,7 @@ from keras.callbacks import CSVLogger
 from tensorflow.python.saved_model import builder as saved_model_builder
 from tensorflow.python.saved_model import tag_constants, signature_constants
 import tensorflow as tf
+import datetime
 
 class feedforward_nn:
 
@@ -24,11 +25,13 @@ class feedforward_nn:
     def model_compile(self,optimiser,loss_function):
         self.model.compile(loss=loss_function, optimizer=optimiser, metrics=['accuracy'])
 
-    def model_train(self,X_train,y_train,X_test,y_test, ep, logcsv="callback_log.csv"):
+    def model_train(self,X_train,y_train,X_test,y_test, epochs, logcsv="callback_log.csv"):
         #train the model
+        #print("epochs=",ep)
+
         callback = [CSVLogger(filename=logcsv)]
-        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=int(ep), callbacks=callback)
-            
+        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=int(epochs), callbacks=callback)
+
 
 
     def model_save(self,folder,model_version):
@@ -41,7 +44,9 @@ class feedforward_nn:
         valid_prediction_signature = tf.saved_model.signature_def_utils.is_valid_signature(prediction_signature)
         if (valid_prediction_signature == False):
             raise ValueError("Error: Prediction signature not valid!")
-        builder = saved_model_builder.SavedModelBuilder(folder + model_version)
+        suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
+        folder = folder +  model_version + "_" + suffix
+        builder = saved_model_builder.SavedModelBuilder(folder)
         #legacy_init_op = tf.group(tf.tables_initializer(), name='legacy_init_op')
         builder.add_meta_graph_and_variables(
             sess, [tag_constants.SERVING],
