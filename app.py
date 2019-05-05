@@ -187,7 +187,7 @@ def images_upload_post():
     if 'inputfilePkl' in request.files:
         # upload pickle
         file = request.files['inputfilePkl']
-        dir_pickle=app.config["UPLOAD_DATA_FOLDER"]+"/images/"
+        edir_pickle=app.config["UPLOAD_DATA_FOLDER"]+"/images/"
         if(not os.path.isdir(dir_pickle)):
             os.makedirs(dir_pickle)
         filepath = os.path.join(dir_pickle, "training.pickle")
@@ -200,7 +200,7 @@ def images_upload_post():
         if(isinstance(sizes, tuple)):
             size_input_neuron = sizes[1]*sizes[2]
             size_output_neuron = sizes[3]
-            print((size_input_neuron, size_output_neuron))
+            print("http://127.0.0.1:8080/index_cnn.html#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&typeofnet=1&regularizationRate=0&noise=0&networkShape=1,1,4,4&seed=0.35115&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&sizeInput=%d&sizeOutput=%d&lossfunc=%s&dataLocation=%s" %(size_input_neuron, size_output_neuron, "crossentropy", filepath))
             return redirect("http://127.0.0.1:8080/index_cnn.html#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&typeofnet=1&regularizationRate=0&noise=0&networkShape=1,1,4,4&seed=0.35115&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&sizeInput=%d&sizeOutput=%d&lossfunc=%s&dataLocation=%s" %(size_input_neuron, size_output_neuron, "crossentropy", filepath))
         else:
             return redirect(request.url)
@@ -249,8 +249,46 @@ def images_getsize(pickle_path):
 
         
 
+@app.route('/text_upload', methods = ['GET'])
+def text_upload():
+    return render_template('text_upload.html')
 
+@app.route("/text_upload", methods = ['POST'])
+def text_upload_post():
+    if 'inputfileText' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['inputfileText']
+    if file.filename == '':
+        flash('No selected file')
+        return redirect(request.url)
+    if file:
+        dir_text=app.config["UPLOAD_DATA_FOLDER"]+"/text/"
+        if(not os.path.isdir(dir_text)):
+            os.makedirs(dir_text)
+        filepath = os.path.join(dir_text, "training.txt")
+        if(request.form.get("dataid")):
+            text_savefile(file, request.form.get('dataid'), request.form.get('datadesc'), dir_text)
+        else:
+            file.save(filepath)
+        lossfunc="crossentropy"
+        return redirect("http://127.0.0.1:8080/index_rnn.html#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&typeofnet=2&regularizationRate=0&noise=0&networkShape=1&seed=0.09947&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&lossfunc=%s&dataLocation=%s" %(lossfunc, filepath))
         
+
+def text_savefile(file, data_id, data_desc, dir_text):
+    filepath = os.path.join(dir_text, data_id)
+    file.save(filepath)
+    training_file=os.path.join(dir_text, "training.txt")
+    if(os.path.exists(training_file)):
+        os.remove(training_file)
+    os.symlink(filepath, training_file)
+    #save file info to db
+    conn = get_db()
+    conn.execute('''
+    insert into %s (id, type, description, date_created, file_number, if_ignore_1stline, if_target_category) values (?,?,?,?,?,?,?)''' %app.config["DBTABLE_DATA"], \
+                 (data_id, "text", data_desc, datetime.now().strftime("%Y-%m-%d %H-%M-%S"), 1, 0, 0) )
+    conn.commit()
+    
 
 #When run from command line, start the server
 if __name__ == '__main__':
