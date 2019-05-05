@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Existing Data List</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="jumbotron">
+              <h2><i class="fas fa-database"></i> Step 2. Select Your Data </h2>
+              <!--<p>A bunch of beautiful images that I didn't take (except for the first one!)</p>  -->
+            </div>
+            <table class="table table-striped">
+              <thead class="thead-light">
+                <tr>
+                    <th scope="col">Type</th>
+                    <th scope="col">Identifier</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Date of Uploading</th>
+                    <th scope="col">Task </th>
+                    <th scope="col">Selection </th>
+                    <th scope="col">Download <th>
+                </tr>
+            </thead>
+               {% for row in data %}
+                <tr>
+                    <td> {{ row.type }} </td>
+                    <td> {{ row.dataid }} </td>
+                    <td> {{ row.datadesc }} </td>
+                    <td> {{ row.date }} </td>
+                    <td> {{ row.note}} </td>
+                    <td>
+                      <form action="/data_select" method="post">
+                         <input type="hidden" name="type" value="{{row.type}}" />
+                         <input type="hidden" name="lossfunc" value="{{row.lossfunc}}"  />
+                         <input type="hidden" name="data_location" value="{{row.data_location}}"  />
+                         <input type="hidden" name="task" value ="{{row.note}}" />
+                         <input type="submit" class="btn btn-success" value="Use It!" />
+                      </form>
+                    </td>
+                    <td>
+                      <a class="btn btn-secondary" href="{{ row.url }}"> Download </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </body>
+</html>
