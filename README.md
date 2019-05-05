@@ -41,7 +41,7 @@ Deep learning libraries require user to handle following steps in programming la
 
 ### 5. How to run
 
-```python
+```
 1. Initialize the Python library -> python init_database.py 
 2. Run the Node Frontend Server
  - cd to playground folder
@@ -74,7 +74,7 @@ Deep learning libraries require user to handle following steps in programming la
 | Software      |  Link         | 
 | ------------- |:-------------:| 
 | Node.js | [Node Homepage](https://nodejs.org/en/) | 
-| Chrome Web Browser > | [Chrome homepage](https://www.google.com/chrome/) | 
+| Chrome Web Browser  | [Chrome homepage](https://www.google.com/chrome/) | 
 
 
 ### Feed Forward POST JSON ###
