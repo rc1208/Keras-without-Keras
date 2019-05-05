@@ -70,16 +70,11 @@ Deep learning libraries require user to handle following steps in programming la
 | Tensorflow Serving        |[Tensorflow Serving](https://www.tensorflow.org/tfx/guide/serving)      | 
 
 ### Frontend Software Requirements ###
-1. Node.js/ NPM(should come installed with Node.js)
-2. Any Modern Web Browser
 
-
-
-  
-
-#### to generate the sqlite database (instance/data.db), run:
-#### Warn: this will remove existing training data inventory saved in instance/data.db, don't do it if there are already some data uploaded
-python init_database.py
+| Software      |  Link         | 
+| ------------- |:-------------:| 
+| Node.js | [Node Homepage](https://nodejs.org/en/) | 
+| Chrome Web Browser > | [Chrome homepage](https://www.google.com/chrome/) | 
 
 
 
