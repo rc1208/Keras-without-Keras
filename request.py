@@ -15,8 +15,10 @@ if res.ok:
 
 res_cnn = requests.post('http://localhost:3333/api/neural-network/v1.0/', json={"nn_type":"cnn", \
   "hidden_list":"64 32 10", \
-  "inp": "28", \
+  "inp": "28",
+  "kernel_size":"3 3", \
   "activation_list":"relu relu softmax", \
+  "epochs":"10", \
   "optimiser":"adam", \
   "split_value": "0.2", \
   "loss_function": "categorical_crossentropy", \

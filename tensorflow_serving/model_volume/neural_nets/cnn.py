@@ -3,6 +3,7 @@ from keras.datasets import mnist
 from tensorflow.python.saved_model import builder as saved_model_builder
 from tensorflow.python.saved_model import tag_constants, signature_constants
 import tensorflow as tf
+from keras.callbacks import CSVLogger
 #download mnist data and split into train and test sets
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
 
@@ -26,18 +27,23 @@ class cnn:
     def __init__(self):
         #create model
         self.model = Sequential()
-    def design_model(self,hidden_list,inp,activation_list,kernel_size_1,kernel_size_2):
+    def design_model(self,hidden_list,inp,activation_list,kernel_size):
+        hidden_list = hidden_list.split()
+        activation_list = activation_list.split()
+        kernel_size = kernel_size.split()
 
         #add model layers
-        self.model.add(Conv2D(hidden_list[0], kernel_size=kernel_size_1, activation=activation_list[0], input_shape=(inp,inp,1)))
-        self.model.add(Conv2D(hidden_list[1], kernel_size=kernel_size_2, activation=activation_list[1]))
+        self.model.add(Conv2D(int(hidden_list[0]), kernel_size=int(kernel_size[0]), activation=activation_list[0], input_shape=(int(inp),int(inp),1)))
+        for i in range(1,len(hidden_list) - 1):
+            self.model.add(Conv2D(int(hidden_list[i]), kernel_size=int(kernel_size[i]), activation=activation_list[i]))
         self.model.add(Flatten())
-        self.model.add(Dense(hidden_list[2], activation=activation_list[2]))
+        self.model.add(Dense(int(hidden_list[-1]), activation=activation_list[-1]))
 
 
-    def model_train(self,X_train, y_train, X_test, y_test,epochs):
+    def model_train(self,X_train, y_train, X_test, y_test,epochs,logcsv="callback_log.csv"):
         #train the model
-        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=epochs)
+        callback = [CSVLogger(filename=logcsv)]
+        self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=int(epochs),callbacks=callback)
 
     def model_compile(self,optimizer,loss):
         #compile model using accuracy to measure model performance
