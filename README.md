@@ -48,11 +48,16 @@ Deep learning libraries require user to handle following steps in programming la
 
 ## Softwares required to be installed: ##
 
+### Backend Software Requirements ###
+
 1. Python 3 or >
 2. Flask 
 3. Docker
 4. Tensorflow
 5. Tensorflow Serving
+
+### Frontend Software Requirements ###
+1. Node.js/ NPM(should come installed with Node.js)
 
 #### CURL request for FF NN ####
 curl -X POST   http://localhost:8501/v1/models/feeds:predict   -H 'cache-control: no-cache'   -H 'postman-token: f7fb6e3f-26ba-a742-4ab3-03c953cefaf5'   -d '{
