@@ -58,13 +58,9 @@ Deep learning libraries require user to handle following steps in programming la
 
 ### Frontend Software Requirements ###
 1. Node.js/ NPM(should come installed with Node.js)
+2. Any Modern Web Browser
 
-#### CURL request for FF NN ####
-curl -X POST   http://localhost:8501/v1/models/feeds:predict   -H 'cache-control: no-cache'   -H 'postman-token: f7fb6e3f-26ba-a742-4ab3-03c953cefaf5'   -d '{
- "inputs":[
-  [23,27.125,419,686,0.00471494214590473]
-  ]
-}'
+
 
   
 
@@ -106,3 +102,14 @@ curl -i -H "Content-Type: application/json" -X POST -d \
   "loss_function": "categorical_crossentropy", \
   "data_location":"data/mnist21x21_3789_converted.pklz"}' 'http://localhost:3333/api/neural-network/v1.0/'
   
+```json
+{"hidden_list":"64 32 4", \
+  "inp": "21",
+  "kernel_size":"3 3", \
+  "activation_list":"relu relu softmax", \
+  "epochs":"3", \
+  "optimiser":"adam", \
+  "split_value": "0.2", \
+  "loss_function": "categorical_crossentropy", \
+  "data_location":"data/mnist21x21_3789_converted.pklz"}
+```
