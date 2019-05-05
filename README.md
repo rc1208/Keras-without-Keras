@@ -59,7 +59,7 @@ Deep learning libraries require user to handle following steps in programming la
 
 | Software      |  Link         | 
 | ------------- |:-------------:| 
-| Python 3 or > | right-aligned | 
+| Python 3 or > | [Link](https://www.python.org/downloads/) | 
 | Flask         | centered      | 
 | Docker        | are neat      | 
 | Tensorflow    | are neat      | 
