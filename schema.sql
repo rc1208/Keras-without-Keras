@@ -12,6 +12,6 @@ create table training_data (
 
 create index type_index on training_data(type);
 
-insert into training_data (id, type, description, date_created, file_number, if_ignore_1stline, if_target_category)
-values ("example", "tabular", "example data", "2019-04-20 15:00:00", 1, "on", "on")
+/*insert into training_data (id, type, description, date_created, file_number, if_ignore_1stline, if_target_category)
+values ("example", "tabular", "example data", "2019-04-20 15:00:00", 1, "on", "on") */
 

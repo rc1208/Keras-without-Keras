@@ -40,15 +40,17 @@ Deep learning libraries require user to handle following steps in programming la
 <img src="https://github.com/rc1208/Keras-without-Keras/blob/master/resources/result.png" width="100%">
 
 ### 5. How to run
+
 ```
-1. Setup Database Schema - python init_database.py
-2. Start the Frontend Playground Environment
- - Change directory to playground -> cd playground/
- - Install the dependencies for the Node Server -> npm i 
- - Launch the page on the browser -> npm run serve
-3. Start the Backend Flask Server
-- From the root directory(project/) run -> python app.py
-- Additional Step -> If you want to make a CURL request through the terminal -> python request.py (Comment out the requests you don't want to test)
+1. Initialize the Python library -> python init_database.py 
+2. Run the Node Frontend Server
+ - cd to playground folder
+ - Install Dependencies -> npm i 
+ - Compile the app and place it in the dist/ directory -> npm run build
+ - Open a page on your browser -> npm run serve
+3. Run the Flask Backend Server
+ - To start the server -> python app.py
+ - Optional Step: If you want to CURL on the models, run -> python request.py(Comment out the request that you don't want to test)
 ```
 
 
@@ -57,23 +59,22 @@ Deep learning libraries require user to handle following steps in programming la
 ## Softwares required to be installed: ##
 
 ### Backend Software Requirements ###
-```
-1. Python 3 or higher
-2. Flask 
-3. Docker
-4. Tensorflow
-5. Tensorflow Serving
-```
+
+| Software      |  Link         | 
+| ------------- |:-------------:| 
+| Python 3 or > | [Python-3](https://www.python.org/downloads/) | 
+| Flask         | [Flask Homepage](http://flask.pocoo.org/)      | 
+| Docker        | [Docker Homepage](https://docs.docker.com/install/)      | 
+| Tensorflow    | [Tensorflow Homepage](https://www.tensorflow.org/)      | 
+| Keras         | [Keras Homepage](https://keras.io/)                     |
+| Tensorflow Serving        |[Tensorflow Serving](https://www.tensorflow.org/tfx/guide/serving)      | 
+
 ### Frontend Software Requirements ###
-```
-1. Node.js/ NPM(should come installed with Node.js)
-2. Any Modern Web Browser
-```
 
-
-
-#### Run python request.py for a sample CURL request to feedforward. Change parameters in JSON as necessary ####
-
+| Software      |  Link         | 
+| ------------- |:-------------:| 
+| Node.js | [Node Homepage](https://nodejs.org/en/) | 
+| Chrome Web Browser  | [Chrome homepage](https://www.google.com/chrome/) | 
 
 
 ### Feed Forward POST JSON ###
@@ -105,3 +106,11 @@ curl -i -H "Content-Type: application/json" -X POST -d
   "loss_function": "categorical_crossentropy", 
   "data_location":"data/mnist21x21_3789_converted.pklz"}' 'http://localhost:3333/api/neural-network/v1.0/'
 ```
+### Contributors
+| Team Member      |  Github Link| 
+| ------------- |:-------------:| 
+| Chu Sheng | [Here](https://github.com/bamboo983) | 
+| Ganesh Chandra Satish         | [Here](https://github.com/ganeshchandras)      | 
+| Hansol Yoon       | [Here](https://github.com/hansolyoon)      | 
+|  Rahul Chowdhury  | [Here](https://github.com/rc1208)      | 
+|  Si Shen       | [Here](https://github.com/shensimeteor)                     |
