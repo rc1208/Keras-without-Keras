@@ -26,7 +26,7 @@ def create_feed_forward(content,callback_log_dir):
     X = data[collist[0:-1]].values
     y = data[collist[-1:]].values
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=float(content['split_value']))
-    ff.model_train(X_train, y_train, X_test, y_test, callback_log_dir+"/callback_log_feed.csv")
+    ff.model_train(X_train, y_train, X_test, y_test, content['epochs'],callback_log_dir+"/callback_log_feed.csv")
     ff.model_save(folder + "feeds",model_version )
 
 def clean_test_data(loc):
