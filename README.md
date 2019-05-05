@@ -106,3 +106,11 @@ curl -i -H "Content-Type: application/json" -X POST -d
   "loss_function": "categorical_crossentropy", 
   "data_location":"data/mnist21x21_3789_converted.pklz"}' 'http://localhost:3333/api/neural-network/v1.0/'
 ```
+### Contributors
+| Team Member      |  Github Link| 
+| ------------- |:-------------:| 
+| Chu Sheng | [Here](https://github.com/bamboo983) | 
+| Ganesh Chandra Satish         | [Here](https://github.com/ganeshchandras)      | 
+| Hansol Yoon       | [Here](https://github.com/hansolyoon)      | 
+|  Rahul Chowdhury  | [Here](https://github.com/rc1208)      | 
+|  Si Shen       | [Here](https://github.com/shensimeteor)                     |
