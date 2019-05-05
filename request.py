@@ -10,7 +10,7 @@ res = requests.post('http://localhost:3333/api/neural-network/v1.0/', json={"nn_
   "loss_function": "binary_crossentropy", \
   "data_location":"data/data_new.csv"})
 if res.ok:
-    print("Model Compiled!")
+    print(res)
 
 '''
 
