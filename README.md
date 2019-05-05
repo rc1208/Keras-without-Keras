@@ -5,13 +5,13 @@ Deep learning has been used in a variety of applications since it was introduced
 <center><img src="https://github.com/rc1208/Keras-without-Keras/blob/master/resources/framework.png" width="40%"></center>
 
 ### 1. Objectives
-```
+
 * Provide NN, CNN, RNN functions according to user’s input data. 
 * Make user manipulate a visual interface without any coding. Keras code is generated automatically and operated in the backend.
 * Provide various options so that user can change them and compare results accordingly.
-```
+
 ### 2. Problem
-```
+
 Deep learning libraries require user to handle following steps in programming languages:
 
 * step 1) Import data and split them into training and test sets
@@ -22,7 +22,7 @@ Deep learning libraries require user to handle following steps in programming la
 → *If you don’t know how to write programs, you can’t use deep learning!*
 
 **Research question:** can we use neural networks including CNN and RNN without knowing how to write a program?
-```
+
 ### 3. Architecture
 <img src="https://github.com/rc1208/Keras-without-Keras/blob/master/resources/archi.png" width="60%">
 
