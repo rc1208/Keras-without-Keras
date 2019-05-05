@@ -40,8 +40,16 @@ Deep learning libraries require user to handle following steps in programming la
 <img src="https://github.com/rc1208/Keras-without-Keras/blob/master/resources/result.png" width="100%">
 
 ### 5. How to run
-
-<br><br><br><br>
+```
+1. Setup Database Schema - python init_database.py
+2. Start the Frontend Playground Environment
+ - Change directory to playground -> cd playground/
+ - Install the dependencies for the Node Server -> npm i 
+ - Launch the page on the browser -> npm run serve
+3. Start the Backend Flask Server
+- From the root directory(project/) run -> python app.py
+- Additional Step -> If you want to make a CURL request through the terminal -> python request.py (Comment out the requests you don't want to test)
+```
 
 
 
@@ -61,13 +69,6 @@ Deep learning libraries require user to handle following steps in programming la
 1. Node.js/ NPM(should come installed with Node.js)
 2. Any Modern Web Browser
 ```
-
-
-  
-
-#### to generate the sqlite database (instance/data.db), run:
-#### Warn: this will remove existing training data inventory saved in instance/data.db, don't do it if there are already some data uploaded
-python init_database.py
 
 
 
