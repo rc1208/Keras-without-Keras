@@ -129,8 +129,8 @@ curl -i -H "Content-Type: application/json" -X POST -d
 ### Contributors
 | Team Member      |  Github Link| 
 | ------------- |:-------------:| 
-| Chu Sheng | [Here](https://github.com/bamboo983) | 
-| Ganesh Chandra Satish         | [Here](https://github.com/ganeshchandras)      | 
-| Hansol Yoon       | [Here](https://github.com/hansolyoon)      | 
-|  Rahul Chowdhury  | [Here](https://github.com/rc1208)      | 
+| Rahul Chowdhury  | [Here](https://github.com/rc1208)      | 
+| Ganesh Chandra Satish  | [Here](https://github.com/ganeshchandras)      | 
 |  Si Shen       | [Here](https://github.com/shensimeteor)                     |
+| Chu Sheng | [Here](https://github.com/bamboo983) | 
+| Hansol Yoon       | [Here](https://github.com/hansolyoon)      | 
