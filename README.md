@@ -99,7 +99,8 @@ curl -i -H "Content-Type: application/json" -X POST -d
  
 ```json
 curl -i -H "Content-Type: application/json" -X POST -d 
-'{"hidden_list":"64 32 4", 
+'{"nn_type":"cnn",
+  "hidden_list":"64 32 4", 
   "inp": "21",
   "kernel_size":"3 3", 
   "activation_list":"relu relu softmax", 
