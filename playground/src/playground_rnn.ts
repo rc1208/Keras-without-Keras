@@ -28,6 +28,7 @@ import {
 import {Example2D, shuffle} from "./dataset";
 import {AppendingLineChart} from "./linechart";
 import * as d3 from 'd3';
+import {drawLineChart} from "../chart";
 
 let mainWidth;
 
@@ -63,13 +64,13 @@ interface InputFeature {
 }
 
 let INPUTS: {[name: string]: InputFeature} = {
-  "x": {f: (x, y) => x, label: ""},
-  "y": {f: (x, y) => y, label: ""},
-  "xSquared": {f: (x, y) => x * x, label: ""},
-  "ySquared": {f: (x, y) => y * y,  label: ""},
-  "xTimesY": {f: (x, y) => x * y, label: ""},
-  "sinX": {f: (x, y) => Math.sin(x), label: ""},
-  "sinY": {f: (x, y) => Math.sin(y), label: ""},
+  // "x": {f: (x, y) => x, label: ""},
+  // "y": {f: (x, y) => y, label: ""},
+  // "xSquared": {f: (x, y) => x * x, label: ""},
+  // "ySquared": {f: (x, y) => y * y,  label: ""},
+  // "xTimesY": {f: (x, y) => x * y, label: ""},
+  // "sinX": {f: (x, y) => Math.sin(x), label: ""},
+  // "sinY": {f: (x, y) => Math.sin(y), label: ""},
 };
 
 let HIDABLE_CONTROLS = [
@@ -143,6 +144,10 @@ class Player {
 
 let state = State.deserializeState();
 
+for(var i = 0;i < state.sizeInput; i++) {
+  INPUTS['a' + i] = {f: (x, y) => 1, label: ""};
+}
+
 // Filter out inputs that are hidden.
 state.getHiddenProps().forEach(prop => {
   if (prop in INPUTS) {
@@ -186,6 +191,39 @@ function makeGUI() {
     // Change the button's content.
     userHasInteracted();
     player.playOrPause();
+    if (iter === 0) {
+      let xhttp = new XMLHttpRequest();
+      xhttp.open("POST", "http://localhost:3333/api/neural-network/v1.0/", true);
+      xhttp.setRequestHeader("Content-type", "application/json");
+      let hidden_list = "";
+      let acts = "";
+      for (let i = 0; i < state.networkShape.length; i++) {
+        hidden_list += state.networkShape[i];
+        hidden_list += " ";
+        acts += state.act;
+        acts += " ";
+      }
+      hidden_list += state.sizeOutput == 2 ? 1 : state.sizeOutput;
+      acts += "sigmoid";
+      xhttp.send(
+        JSON.stringify({
+          "nn_type": "feedforward",
+          "hidden_list": hidden_list,
+          "inp": String(state.sizeInput),
+          "activation_list": acts,
+          "optimiser":"adam",
+          "split_value": "0.2",
+          "loss_function": state.lossfunc,
+          "data_location": state.dataLocation,
+          "epochs": 10
+        })
+      );
+      xhttp.onreadystatechange=(e) => {
+        let obj = JSON.parse(xhttp.responseText);
+        console.log(obj);
+        drawLineChart(obj.acc);
+      }
+    }
   });
 
   player.onPlayPause(isPlaying => {
@@ -593,7 +631,7 @@ function drawNetwork(network: nn.Node[][]): void {
   nodeIds.forEach((nodeId, i) => {
     let cy = nodeIndexScale(i) + RECT_SIZE / 2;
     node2coord[nodeId] = {cx, cy};
-    drawNode(cx, cy, nodeId, true, container);
+    drawNode(cx, cy, nodeId, false, container);
   });
 
   // Draw the intermediate layers.
@@ -945,9 +983,9 @@ function updateUI(firstStep = false) {
 function constructInputIds(): string[] {
   let result: string[] = [];
   for (let inputName in INPUTS) {
-    if (state[inputName]) {
+    // if (state[inputName]) {
       result.push(inputName);
-    }
+    // }
   }
   return result;
 }
@@ -955,9 +993,9 @@ function constructInputIds(): string[] {
 function constructInput(x: number, y: number): number[] {
   let input: number[] = [];
   for (let inputName in INPUTS) {
-    if (state[inputName]) {
+    // if (state[inputName]) {
       input.push(INPUTS[inputName].f(x, y));
-    }
+    // }
   }
   return input;
 }

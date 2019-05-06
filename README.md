@@ -27,7 +27,8 @@ Deep learning libraries require user to handle following steps in programming la
 <img src="https://github.com/rc1208/Keras-without-Keras/blob/master/resources/archi.png" width="60%">
 
 ***Frontend***
-* *Data upload page (html, python)*: receive user’s data and decide a network type (DNN, CNN, RNN)
+* *Data upload page (html, js, python)*: receive user’s data (tabular, image, text), and decide a network type (DNN, CNN, RNN)
+* *Data selection page (html, js, python)*: allow user to retrieve saved data to run again
 * *Build a net page (typescript)*: allow user to decide hyper-params, neural net architecture, and pass them to backend
 
 ***Backend***
@@ -41,17 +42,19 @@ Deep learning libraries require user to handle following steps in programming la
 
 ### 5. How to run
 
-```
-1. Initialize the Python library -> python init_database.py 
+1. Initialize the SQlite database -> `python init_database.py`
 2. Run the Node Frontend Server
- - cd to playground folder
- - Install Dependencies -> npm i 
- - Compile the app and place it in the dist/ directory -> npm run build
- - Open a page on your browser -> npm run serve
+ - `cd playground`
+ - Install Dependencies -> `npm i`
+ - Compile the app and place it in the dist/ directory -> `npm run build`
+ - Open a page on your browser -> `npm run serve`
 3. Run the Flask Backend Server
- - To start the server -> python app.py
- - Optional Step: If you want to CURL on the models, run -> python request.py(Comment out the request that you don't want to test)
-```
+ - To start the server -> `python app.py`
+ - Optional Step: If you want to CURL on the models, run -> `python request.py` (Comment out the request that you don't want to test)
+4. Some example data for uploading/running test:
+ - tabular data: data/data_new.csv (for classification)
+ - image data: data/mnist21x21_3789_one_hot.pklz (for image classification)
+ - text data: data/asyoulikeit.txt (for language modeling)
 
 
 
@@ -126,8 +129,8 @@ curl -i -H "Content-Type: application/json" -X POST -d
 ### Contributors
 | Team Member      |  Github Link| 
 | ------------- |:-------------:| 
-| Chu Sheng | [Here](https://github.com/bamboo983) | 
-| Ganesh Chandra Satish         | [Here](https://github.com/ganeshchandras)      | 
-| Hansol Yoon       | [Here](https://github.com/hansolyoon)      | 
-|  Rahul Chowdhury  | [Here](https://github.com/rc1208)      | 
+| Rahul Chowdhury  | [Here](https://github.com/rc1208)      | 
+| Chu-Sheng Ku | [Here](https://github.com/bamboo983) | 
+| Ganesh Chandra Satish  | [Here](https://github.com/ganeshchandras)      | 
 |  Si Shen       | [Here](https://github.com/shensimeteor)                     |
+| Hansol Yoon       | [Here](https://github.com/hansolyoon)      | 

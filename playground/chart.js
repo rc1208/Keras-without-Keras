@@ -1,22 +1,16 @@
 /* jshint undef: true, unused: true, devel: true, curly: false, eqeqeq: false */
 
-export function drawLineChart() {
+export function drawLineChart(data) {
 	"use strict";
 
 	// creazione coordinate per ogni punto rispetto all'area dell'svg
 	var _svg = document.getElementById('svg_wrapper'),
 
-		dati = [ [0, 300], [1, 200], [2, 180], [3, 12], ['e', -25], ['f', 220], ['g', 315], ['h', 9] ],
+		dati = [],
 
 		chart_padding = 20, // spazio dal bordo dell'elemento svg per evitare che il grafico sia tagliato dai bordi
 		padding_asse_y = 40, // padding orizzontale aggiuntivo per lasciare spazio a sinistra dell'asse y
 		padding_asse_x = 20, // padding verticale aggiuntivo per lasciare spazio sotto l'asse x
-
-		valore_massimo_asse_y = dati.reduce(function(prev, current) { // valore massimo asse y (secondo valore di ogni coppia)
-			  return Math.max(prev, current[1]);
-			}, 0),
-
-		punti_asse_x = dati.length - 1,
 
 		stroke_width_assi = 1, // questo valore va aggiunto ad alcune lunghezze per evitare dentellature
 
@@ -26,6 +20,18 @@ export function drawLineChart() {
 		base = 600,
 		base_corretta = base - (chart_padding*2) - padding_asse_y
 	;
+
+	var i = 0, d;
+	for (d in data) {
+		dati.push([i, data[i]]);
+		i++;
+	}
+
+	var valore_massimo_asse_y = dati.reduce(function(prev, current) { // valore massimo asse y (secondo valore di ogni coppia)
+		return Math.max(prev, current[1]);
+	  }, 0),
+
+	  punti_asse_x = dati.length - 1,;
 
 	// arrotondamento valore massimo
 	// viene portato alla decina/centinaia più vicina per eccesso
