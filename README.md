@@ -130,7 +130,7 @@ curl -i -H "Content-Type: application/json" -X POST -d
 | Team Member      |  Github Link| 
 | ------------- |:-------------:| 
 | Rahul Chowdhury  | [Here](https://github.com/rc1208)      | 
+| Chu-Sheng Ku | [Here](https://github.com/bamboo983) | 
 | Ganesh Chandra Satish  | [Here](https://github.com/ganeshchandras)      | 
 |  Si Shen       | [Here](https://github.com/shensimeteor)                     |
-| Chu Sheng | [Here](https://github.com/bamboo983) | 
 | Hansol Yoon       | [Here](https://github.com/hansolyoon)      | 
