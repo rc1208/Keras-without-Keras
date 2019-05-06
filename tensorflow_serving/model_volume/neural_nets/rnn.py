@@ -6,6 +6,7 @@ from tensorflow.python.saved_model import tag_constants, signature_constants
 from keras.callbacks import CSVLogger
 import datetime
 
+
 class rnn:
     def __init__(self):
         self.model = Sequential()
@@ -31,18 +32,16 @@ class rnn:
         y = self.model.output
         prediction_signature = tf.saved_model.signature_def_utils.predict_signature_def({"inputs": x},{"prediction": y})
         valid_prediction_signature = tf.saved_model.signature_def_utils.is_valid_signature(prediction_signature)
-        if (valid_prediction_signature == False):
+        if not valid_prediction_signature:
             raise ValueError("Error: Prediction signature not valid!")
         suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
         folder = folder +  model_version + "_" + suffix
         builder = saved_model_builder.SavedModelBuilder(folder)
-        #legacy_init_op = tf.group(tf.tables_initializer(), name='legacy_init_op')
         builder.add_meta_graph_and_variables(
             sess, [tag_constants.SERVING],
             signature_def_map={
                 signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY: prediction_signature,
             },)
-            #legacy_init_op=legacy_init_op)
 
         # save model
         builder.save()

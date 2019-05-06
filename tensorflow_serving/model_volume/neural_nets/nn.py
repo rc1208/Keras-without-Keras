@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import tensorflow_serving.model_volume.neural_nets.feed as feed
@@ -8,16 +8,14 @@ from keras.datasets import mnist
 from keras.utils import np_utils
 from keras.utils import to_categorical
 import numpy as np
-from mlxtend.data import loadlocal_mnist
 app = Flask(__name__)
 import pickle
 import gzip
-import os
 import datetime
 
-#print(os.path)
 folder = "tensorflow_serving/model_volume/models/"
 model_version = "1.0"
+
 
 def create_feed_forward(content,callback_log_dir):
     suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
@@ -34,6 +32,8 @@ def create_feed_forward(content,callback_log_dir):
     ff.model_train(X_train, y_train, X_test, y_test, content['epochs'],callback_log_dir)
     ff.model_save(folder + "feeds",model_version )
     return callback_log_dir
+
+
 def clean_test_data(loc):
     data = open(loc).read().lower()
     chars = sorted(list(set(data)))
@@ -54,6 +54,7 @@ def clean_test_data(loc):
     y = np_utils.to_categorical(dataY)
     return X,y
 
+
 def create_rnn(content,callback_log_dir):
     suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
     callback_log_dir = callback_log_dir +  "/" + suffix + "_callback_log_rnn.csv"
@@ -66,6 +67,7 @@ def create_rnn(content,callback_log_dir):
     r.model_save(folder + "rnn",model_version )
 
     return callback_log_dir
+
 
 def create_cnn(content,callback_log_dir):
     suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")

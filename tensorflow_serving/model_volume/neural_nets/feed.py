@@ -26,13 +26,8 @@ class feedforward_nn:
         self.model.compile(loss=loss_function, optimizer=optimiser, metrics=['accuracy'])
 
     def model_train(self,X_train,y_train,X_test,y_test, epochs, logcsv="callback_log.csv"):
-        #train the model
-        #print("epochs=",ep)
-
         callback = [CSVLogger(filename=logcsv)]
         self.model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=int(epochs), callbacks=callback)
-
-
 
     def model_save(self,folder,model_version):
         init_op = tf.global_variables_initializer()
@@ -47,13 +42,11 @@ class feedforward_nn:
         suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
         folder = folder +  model_version + "_" + suffix
         builder = saved_model_builder.SavedModelBuilder(folder)
-        #legacy_init_op = tf.group(tf.tables_initializer(), name='legacy_init_op')
         builder.add_meta_graph_and_variables(
             sess, [tag_constants.SERVING],
             signature_def_map={
                 signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY: prediction_signature,
             },)
-            #legacy_init_op=legacy_init_op)
 
         # save model
         builder.save()
