@@ -14,12 +14,13 @@ import pickle
 import gzip
 import os
 import datetime
-suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
+
 #print(os.path)
 folder = "tensorflow_serving/model_volume/models/"
 model_version = "1.0"
 
 def create_feed_forward(content,callback_log_dir):
+    suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
     callback_log_dir = callback_log_dir +  "/" + suffix + "_callback_log_feed.csv"
     print(callback_log_dir)
     ff = feed.feedforward_nn()
@@ -54,16 +55,21 @@ def clean_test_data(loc):
     return X,y
 
 def create_rnn(content,callback_log_dir):
+    suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
+    callback_log_dir = callback_log_dir +  "/" + suffix + "_callback_log_rnn.csv"
     r = rnn.rnn()
     X,y = clean_test_data(content['data_location'])
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=float(content['split_value']))
     r.design_model(y_train.shape[1],content['lstm_out'],content['dense_out'],content['reg_dropout'],X_train.shape[1],X_train.shape[2])
     r.model_compile(content['optimiser'], content['loss_function'])
-    r.model_train(X_train, y_train, X_test, y_test,content['epochs'], content['batch_size'], callback_log_dir+"/callback_rnn_log.csv")
+    r.model_train(X_train, y_train, X_test, y_test,content['epochs'], content['batch_size'], callback_log_dir)
     r.model_save(folder + "rnn",model_version )
 
+    return callback_log_dir
 
 def create_cnn(content,callback_log_dir):
+    suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
+    callback_log_dir = callback_log_dir +  "/" + suffix + "_callback_log_cnn.csv"
     c = cnn.cnn()
     #design_model(self,hidden_list,inp,activation_list,kernel_size_1,kernel_size_2)
     c.design_model(content['hidden_list'],content['inp'],content['activation_list'],content['kernel_size'])
@@ -74,15 +80,8 @@ def create_cnn(content,callback_log_dir):
     data = pickle.load(gzip.open(content['data_location'],'rb'))
     X = data[0]
     y = data[1]
-    print("hello cnn")
-    '''
-    X, y = loadlocal_mnist(
-    images_path=content['data_location']+'train-images-idx3-ubyte',
-    labels_path=content['data_location']+'train-labels-idx1-ubyte')
-    split_value = int((1 - float(content['split_value']) * len(X)))
-    X_train = X[:split_value,:]
-    X_test = X[split_value:,:]
-    '''
+    #print("hello cnn")
+
     split_value = int((1 - float(content['split_value']) * len(X)))
     X_train = X[:split_value,:,:]
     X_test = X[split_value:,:,:]
@@ -99,13 +98,11 @@ def create_cnn(content,callback_log_dir):
     y_train = to_categorical(y_train)
     y_test = to_categorical(y_test)
 
-    #X_train = X_train.reshape(len(X_train),content['inp'],content['inp'])
-    #X_test = X_test.reshape(len(X_test),content['inp'],content['inp'])
-    #y_train = y_train.flatten()
-    #y_test = y_test.flatten()
-    c.model_train(X_train, y_train, X_test, y_test,content['epochs'],callback_log_dir+"/callback_cnn_log.csv")
+
+    c.model_train(X_train, y_train, X_test, y_test,content['epochs'],callback_log_dir)
     c.model_save(folder + "cnn",model_version )
 
+    return callback_log_dir
 
 if __name__ == "__main__":
     app.run()

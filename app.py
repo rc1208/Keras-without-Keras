@@ -181,14 +181,14 @@ def compile_model():
         return return_json(filename)
 
     elif content['nn_type'] == 'rnn':
-        nn.create_rnn(content,"data/mse")
-        filename += '/callback_rnn_log.csv'
+        filename = nn.create_rnn(content,"data/mse")
+        print(filename)
         return return_json(filename)
 
     elif content['nn_type'] == 'cnn':
         filename = nn.create_cnn(content,"data/mse")
-
         return return_json(filename)
+
     else:
         return json.dumps({'status':'unknown model expected'})
 

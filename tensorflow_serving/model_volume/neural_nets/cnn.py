@@ -4,7 +4,7 @@ from tensorflow.python.saved_model import builder as saved_model_builder
 from tensorflow.python.saved_model import tag_constants, signature_constants
 import tensorflow as tf
 from keras.callbacks import CSVLogger
-
+import datetime
 
 
 from keras.utils import to_categorical
@@ -54,7 +54,9 @@ class cnn:
         valid_prediction_signature = tf.saved_model.signature_def_utils.is_valid_signature(prediction_signature)
         if (valid_prediction_signature == False):
             raise ValueError("Error: Prediction signature not valid!")
-        builder = saved_model_builder.SavedModelBuilder(folder + model_version)
+        suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
+        folder = folder +  model_version + "_" + suffix
+        builder = saved_model_builder.SavedModelBuilder(folder)
         #legacy_init_op = tf.group(tf.tables_initializer(), name='legacy_init_op')
         builder.add_meta_graph_and_variables(
             sess, [tag_constants.SERVING],
