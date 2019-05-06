@@ -220,7 +220,6 @@ function makeGUI() {
       );
       xhttp.onreadystatechange=(e) => {
         let obj = JSON.parse(xhttp.responseText);
-        console.log(obj);
         drawLineChart(obj.acc);
       }
     }
