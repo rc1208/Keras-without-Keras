@@ -60,3 +60,6 @@ docs/_build/
 .idea/misc.xml
 .idea/modules.xml
 .idea/workspace.xml
+
+tensorflow_serving/model_volume/models/
+data/mse/
