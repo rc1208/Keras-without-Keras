@@ -40,24 +40,38 @@ Deep learning libraries require user to handle following steps in programming la
 ### 4. Result (User's view)
 <img src="https://github.com/rc1208/Keras-without-Keras/blob/master/resources/result.png" width="100%">
 
-### 5. How to run
+### 5. How to run (with shell scripts)
+1. Open a terminal: `./initial.sh`
+2. Start backend: `./backend.sh`
+3. Open a new terminal and start frontend: `./frontend.sh`
+4. Open a browser and go to: `http://0.0.0.0:3333/`
 
-1. Initialize the SQlite database -> `python init_database.py`
-2. Run the Node Frontend Server
- - `cd playground`
- - Install Dependencies -> `npm i`
- - Compile the app and place it in the dist/ directory -> `npm run build`
- - Open a page on your browser -> `npm run serve`
+### 6. How to run (w/o shell scripts)
+1. Initialize the SQlite database: `python init_database.py`
+2. Install all dependencies
+ - `sudo pip install -U Flask`
+ - `sudo apt-get install python3`
+ - `pip install pandas`
+ - `sudo pip install keras`
+ - `sudo pip install tensorflow`
+ - `sudo pip install scikit-learn`
+ - `sudo pip install -U flask-cors`
+ - `cd playground` & `sudo npm i` & `sudo npm run build` & `cd ..`
+
 3. Run the Flask Backend Server
- - To start the server -> `python app.py`
- - Optional Step: If you want to CURL on the models, run -> `python request.py` (Comment out the request that you don't want to test)
-4. Some example data for uploading/running test:
+ - To start the server: `python3 app.py`
+ - Optional Step: If you want to CURL on the models, run: `python request.py` (Comment out the request that you don't want to test)
+
+4. Run the Node Frontend Server
+ - Open a new terminal and go to playground: `cd playground`
+ - To start the frontend server: `npm run serve`
+
+5. Use some example data for uploading/running test:
  - tabular data: data/data_new.csv (for classification)
  - image data: data/mnist21x21_3789_one_hot.pklz (for image classification)
  - text data: data/asyoulikeit.txt (for language modeling)
 
-
-
+6. Open a browser and go to: `http://0.0.0.0:3333/`
 
 ## Softwares required to be installed: ##
 

@@ -19,7 +19,7 @@
     "watchrnn-js": "watchify src/playground_rnn.ts -p [tsify] -v --debug -o dist/bundlernn.js",
     "build": "npm run prep && npm run build-js && npm run buildcnn-js && npm run buildrnn-js && npm run build-css && npm run build-html",
     "watch": "npm run prep && concurrently \"npm run watch-js\" \"npm run watchcnn-js\" \"npm run watchrnn-js\" \"npm run watch-css\" \"npm run watch-html\"",
-    "serve": "http-server -o -c-1 dist/",
+    "serve": "http-server -c-1 dist/",
     "serve-watch": "concurrently \"http-server -o -c-1 dist/\" \"npm run watch\" \"npm run watchcnn\" \"npm run watchrnn\""
   },
   "devDependencies": {

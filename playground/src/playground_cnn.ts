@@ -207,15 +207,16 @@ function makeGUI() {
       acts += "sigmoid";
       xhttp.send(
         JSON.stringify({
-          "nn_type": "feedforward",
+          "nn_type": "cnn",
           "hidden_list": hidden_list,
           "inp": String(state.sizeInput),
           "activation_list": acts,
-          "optimiser":"adam",
+          "optimiser": "adam",
           "split_value": "0.2",
           "loss_function": state.lossfunc,
           "data_location": state.dataLocation,
-          "epochs": 10
+          "epochs": 10,
+          "kernel_size": state.kernel_size
         })
       );
       xhttp.onreadystatechange=(e) => {
@@ -652,8 +653,9 @@ function drawNetwork(network: nn.Node[][]): void {
       let node = network[layerIdx][i];
       let cy = nodeIndexScale(i) + RECT_SIZE / 2;
       node2coord[node.id] = {cx, cy};
-      drawNode(cx, cy, node.id, false, container, node);
-
+      if (i < 10){
+        drawNode(cx, cy, node.id, false, container, node);
+      }
       // Show callout to thumbnails.
       let numNodes = network[layerIdx].length;
       let nextNumNodes = network[layerIdx + 1].length;

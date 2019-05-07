@@ -3,10 +3,10 @@
 import sqlite3
 import os
 
-s=input("Warn: This will drop the database (of training data inventory)! Type 'Yes' if you are sure to do that.\n")
-if(s != "Yes"):
-    print("you didn't re-generate the database")
-    exit(0)
+# s=input("Warn: This will drop the database (of training data inventory)! Type 'Yes' if you are sure to do that.\n")
+# if(s != "Yes"):
+#     print("you didn't re-generate the database")
+#     exit(0)
 
 if(not os.path.isdir("instance")):
     os.mkdir("instance")

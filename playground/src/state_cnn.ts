@@ -136,7 +136,8 @@ export class State {
     {name: "sizeOutput", type: Type.NUMBER},
     {name: "lossfunc", type: Type.STRING},
     {name: "dataLocation", type: Type.STRING},
-    {name: "act", type: Type.STRING}
+    {name: "act", type: Type.STRING},
+    {name: "kernel_size", type: Type.STRING}
   ];
 
   [key: string]: any;
@@ -157,7 +158,7 @@ export class State {
   collectStats = false;
   numHiddenLayers = 4;
   hiddenLayerControls: any[] = [];
-  networkShape: number[] = [1, 1, 4, 4];
+  networkShape: number[] = [64, 32, 4];
   x = true;
   y = true;
   xTimesY = false;
@@ -170,11 +171,12 @@ export class State {
   dataset: dataset.DataGenerator = dataset.classifyCircleData;
   regDataset: dataset.DataGenerator = dataset.regressPlane;
   seed: string;
-  sizeInput = 5;
+  sizeInput = 21;
   sizeOutput = 1;
-  lossfunc: "binary_crossentropy";
-  dataLocation: "data/data_new.csv";
+  lossfunc = "categorical_crossentropy";
+  dataLocation = "data/mnist21x21_3789_converted.pklz";
   act = "relu";
+  kernel_size = "3 3";
 
   /**
    * Deserializes the state from the url hash.
