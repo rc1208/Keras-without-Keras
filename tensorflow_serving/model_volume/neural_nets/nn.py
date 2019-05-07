@@ -74,7 +74,7 @@ def create_cnn(content,callback_log_dir):
     callback_log_dir = callback_log_dir +  "/" + suffix + "_callback_log_cnn.csv"
     c = cnn.cnn()
     #design_model(self,hidden_list,inp,activation_list,kernel_size_1,kernel_size_2)
-    c.design_model(content['hidden_list'],content['inp'],content['activation_list'],content['kernel_size'])
+    c.design_model(content['hidden_list'],content['width'],content['height'],content['activation_list'],content['kernel_size'])
     #model_compile(self,optimizer,loss)
     c.model_compile(content['optimiser'],content['loss_function'])
     (X_train, y_train), (X_test, y_test) = mnist.load_data()

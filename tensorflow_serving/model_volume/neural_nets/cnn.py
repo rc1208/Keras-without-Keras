@@ -17,13 +17,13 @@ class cnn:
     def __init__(self):
         #create model
         self.model = Sequential()
-    def design_model(self,hidden_list,inp,activation_list,kernel_size):
+    def design_model(self,hidden_list,width,height,activation_list,kernel_size):
         hidden_list = hidden_list.split()
         activation_list = activation_list.split()
         kernel_size = kernel_size.split()
 
         #add model layers
-        self.model.add(Conv2D(int(hidden_list[0]), kernel_size=int(kernel_size[0]), activation=activation_list[0], input_shape=(int(inp),int(inp),1)))
+        self.model.add(Conv2D(int(hidden_list[0]), kernel_size=int(kernel_size[0]), activation=activation_list[0], input_shape=(int(width),int(height),1)))
         for i in range(1,len(hidden_list) - 1):
             self.model.add(Conv2D(int(hidden_list[i]), kernel_size=int(kernel_size[i]), activation=activation_list[i]))
         self.model.add(Flatten())

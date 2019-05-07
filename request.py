@@ -12,11 +12,12 @@ res = requests.post('http://localhost:3333/api/neural-network/v1.0/', json={"nn_
 if res.ok:
     print(res)
 
-
+'''
 
 res_cnn = requests.post('http://localhost:3333/api/neural-network/v1.0/', json={"nn_type":"cnn", \
   "hidden_list":"64 32 4", \
-  "inp": "21",
+  "width": "21",
+  "height":"21",
   "kernel_size":"3 3", \
   "activation_list":"relu relu softmax", \
   "epochs":"3", \
@@ -42,3 +43,4 @@ res_rnn = requests.post('http://localhost:3333/api/neural-network/v1.0/', json={
 "data_location":"data/asyoulikeit.txt"})
 if res_rnn.ok:
     print("Model Combined!")
+'''
