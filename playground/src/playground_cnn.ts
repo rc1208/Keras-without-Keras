@@ -209,14 +209,15 @@ function makeGUI() {
         JSON.stringify({
           "nn_type": "cnn",
           "hidden_list": hidden_list,
-          "inp": String(state.sizeInput),
           "activation_list": acts,
           "optimiser": "adam",
           "split_value": "0.2",
           "loss_function": state.lossfunc,
           "data_location": state.dataLocation,
           "epochs": 10,
-          "kernel_size": state.kernel_size
+          "kernel_size": state.kernel_size + " " + state.kernel_size,
+          "width": state.width,
+          "height": state.height
         })
       );
       xhttp.onreadystatechange=(e) => {
