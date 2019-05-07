@@ -126,18 +126,18 @@ $(".custom-file-input").on("change", function() {
         function isDataPngChanged(){
             if($("#isDataPng").prop("checked")){ //png + csv
                 $("#divInputFilePkl").hide();
-                $("#divInputFilePkl").prop("required", false);
+                $("#inputfilePkl").prop("required", false);
                 $("#divInputFilePNG").show();
-                $("#divInputFilePNG").prop("required", true);
+                $("#inputfilePNG").prop("required", true);
                 $("#divInputFileCsv").show();
-                $("#divInputFileCsv").prop("required", true);
+                $("#inputfileCsv").prop("required", true);
             }else{ //pkl
                 $("#divInputFilePkl").show();
-                $("#divInputFilePkl").prop("required", true);
+                $("#inputfilePkl").prop("required", true);
                 $("#divInputFilePNG").hide();
-                $("#divInputFilePNG").prop("required", false);
+                $("#inputfilePNG").prop("required", false);
                 $("#divInputFileCsv").hide();
-                $("#divInputFileCsv").prop("required", false);
+                $("#inputfileCsv").prop("required", false);
             }
         }
         </script>
