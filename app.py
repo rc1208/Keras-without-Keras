@@ -6,6 +6,7 @@ from flask import send_file, send_from_directory
 import os
 import csv
 import json
+from keras import backend as K
 import gzip
 from images import image_pngs_csv_to_pklz
 from datetime import datetime
@@ -189,14 +190,17 @@ def compile_model():
     content = request.get_json()
     if content['nn_type'] == 'feedforward':
         app.config['RESULT_FILE_NAME'] = nn.create_feed_forward(content,"data/mse")
+        K.clear_session()
         return return_json(app.config['RESULT_FILE_NAME'])
 
     elif content['nn_type'] == 'rnn':
         app.config['RESULT_FILE_NAME'] = nn.create_rnn(content,"data/mse")
+        K.clear_session()
         return return_json(app.config['RESULT_FILE_NAME'])
 
     elif content['nn_type'] == 'cnn':
         app.config['RESULT_FILE_NAME'] = nn.create_cnn(content,"data/mse")
+        K.clear_session()
         return return_json(app.config['RESULT_FILE_NAME'])
 
     else:
