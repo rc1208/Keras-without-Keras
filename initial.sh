@@ -9,5 +9,5 @@ sudo pip install scikit-learn
 sudo pip install -U flask-cors
 cd playground
 sudo npm i
-sudo npm build
+sudo npm run build
 cd ..
