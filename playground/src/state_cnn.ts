@@ -137,7 +137,9 @@ export class State {
     {name: "lossfunc", type: Type.STRING},
     {name: "dataLocation", type: Type.STRING},
     {name: "act", type: Type.STRING},
-    {name: "kernel_size", type: Type.STRING}
+    {name: "kernel_size", type: Type.STRING},
+    {name: "width", type: Type.NUMBER},
+    {name: "height", type: Type.NUMBER}
   ];
 
   [key: string]: any;
@@ -158,7 +160,7 @@ export class State {
   collectStats = false;
   numHiddenLayers = 4;
   hiddenLayerControls: any[] = [];
-  networkShape: number[] = [64, 32, 4];
+  networkShape: number[] = [64, 32];
   x = true;
   y = true;
   xTimesY = false;
@@ -176,7 +178,9 @@ export class State {
   lossfunc = "categorical_crossentropy";
   dataLocation = "data/mnist21x21_3789_converted.pklz";
   act = "relu";
-  kernel_size = "3 3";
+  kernel_size = "3";
+  width = 21;
+  height = 21;
 
   /**
    * Deserializes the state from the url hash.
