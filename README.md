@@ -139,7 +139,7 @@ curl -i -H "Content-Type: application/json" -X POST -d
   "optimiser":"adam", 
   "split_value": "0.2", 
   "loss_function": "categorical_crossentropy", 
-  "data_location":"data/test_data.txt"}' 'http://localhost:3333/api/neural-network/v1.0/'
+  "data_location":"data/cnn-test.txt"}' 'http://localhost:3333/api/neural-network/v1.0/'
 ```
   
 ### Contributors
