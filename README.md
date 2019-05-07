@@ -62,16 +62,16 @@ Deep learning libraries require user to handle following steps in programming la
  - To start the server: `python3 app.py`
  - Optional Step: If you want to CURL on the models, run: `python request.py` (Comment out the request that you don't want to test)
 
-2. Run the Node Frontend Server
+4. Run the Node Frontend Server
  - Open a new terminal and go to playground: `cd playground`
  - To start the frontend server: `npm run serve`
 
-4. Use some example data for uploading/running test:
+5. Use some example data for uploading/running test:
  - tabular data: data/data_new.csv (for classification)
  - image data: data/mnist21x21_3789_one_hot.pklz (for image classification)
  - text data: data/asyoulikeit.txt (for language modeling)
 
-
+6. Open a browser and go to: `http://0.0.0.0:3333/`
 
 ## Softwares required to be installed: ##
 
