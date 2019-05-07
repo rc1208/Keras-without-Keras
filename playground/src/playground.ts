@@ -643,7 +643,7 @@ function drawNetwork(network: nn.Node[][]): void {
       let node = network[layerIdx][i];
       let cy = nodeIndexScale(i) + RECT_SIZE / 2;
       node2coord[node.id] = {cx, cy};
-      if (i <= 10){
+      if (i < 10){
         drawNode(cx, cy, node.id, false, container, node);
       }
 
