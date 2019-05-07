@@ -176,11 +176,17 @@ def get_tasks(task_id):
 
 ### feedforward NN API - GET request at 1 - make the model with the given id '1' and data file
 
-def return_json(file):
-    ret = pd.read_csv(file)
-    if ret.empty:
-        return json.dumps({'status': 'model training failed'})
-    return ret.to_json()
+#app.config['RESULT_FILE_NAME'] = "data/mse/190505_211721_callback_log_cnn.csv"
+
+@app.route('/api/csv-result/v1.0/', methods = ['GET'])
+def return_json():
+    try:
+        ret = pd.read_csv(app.config['RESULT_FILE_NAME'])
+        if ret.empty:
+            return json.dumps({'status': 'model training failed'})
+        return ret.to_json()
+    except FileNotFoundError:
+        return json.dumps({'FileError': 'file not created'})
 
 
 filename = ""
@@ -188,18 +194,20 @@ filename = ""
 @app.route('/api/neural-network/v1.0/', methods = ['POST'])
 def compile_model():
     content = request.get_json()
+    suffix = datetime.now().strftime("%y%m%d_%H%M%S")
+    app.config['RESULT_FILE_NAME'] = "data/mse" +  "/" + suffix + "_callback_log_feed.csv"
     if content['nn_type'] == 'feedforward':
-        app.config['RESULT_FILE_NAME'] = nn.create_feed_forward(content,"data/mse")
+        nn.create_feed_forward(content,app.config['RESULT_FILE_NAME'])
         K.clear_session()
         return return_json(app.config['RESULT_FILE_NAME'])
 
     elif content['nn_type'] == 'rnn':
-        app.config['RESULT_FILE_NAME'] = nn.create_rnn(content,"data/mse")
+        nn.create_rnn(content,app.config['RESULT_FILE_NAME'])
         K.clear_session()
         return return_json(app.config['RESULT_FILE_NAME'])
 
     elif content['nn_type'] == 'cnn':
-        app.config['RESULT_FILE_NAME'] = nn.create_cnn(content,"data/mse")
+        nn.create_cnn(content,app.config['RESULT_FILE_NAME'])
         K.clear_session()
         return return_json(app.config['RESULT_FILE_NAME'])
 

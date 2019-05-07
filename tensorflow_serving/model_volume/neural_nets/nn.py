@@ -18,9 +18,9 @@ model_version = "1.0"
 
 
 def create_feed_forward(content,callback_log_dir):
-    suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
-    callback_log_dir = callback_log_dir +  "/" + suffix + "_callback_log_feed.csv"
-    print(callback_log_dir)
+    #suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
+    #callback_log_dir = callback_log_dir +  "/" + suffix + "_callback_log_feed.csv"
+    #print(callback_log_dir)
     ff = feed.feedforward_nn()
     ff.design_model(content['hidden_list'],content['inp'],content['activation_list'])
     ff.model_compile(content['optimiser'],content['loss_function'])
@@ -56,8 +56,8 @@ def clean_test_data(loc):
 
 
 def create_rnn(content,callback_log_dir):
-    suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
-    callback_log_dir = callback_log_dir +  "/" + suffix + "_callback_log_rnn.csv"
+    #suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
+    #callback_log_dir = callback_log_dir +  "/" + suffix + "_callback_log_rnn.csv"
     r = rnn.rnn()
     X,y = clean_test_data(content['data_location'])
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=float(content['split_value']))
@@ -70,8 +70,8 @@ def create_rnn(content,callback_log_dir):
 
 
 def create_cnn(content,callback_log_dir):
-    suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
-    callback_log_dir = callback_log_dir +  "/" + suffix + "_callback_log_cnn.csv"
+    #suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
+    #callback_log_dir = callback_log_dir +  "/" + suffix + "_callback_log_cnn.csv"
     c = cnn.cnn()
     #design_model(self,hidden_list,inp,activation_list,kernel_size_1,kernel_size_2)
     c.design_model(content['hidden_list'],content['width'],content['height'],content['activation_list'],content['kernel_size'])
