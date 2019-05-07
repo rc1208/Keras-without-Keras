@@ -646,7 +646,7 @@ function drawNetwork(network: nn.Node[][]): void {
 
   // Draw the intermediate layers.
   for (let layerIdx = 1; layerIdx < numLayers - 1; layerIdx++) {
-    let numNodes = network[layerIdx].length;
+    let numNodes = network[layerIdx].length > 10 ? 1 : network[layerIdx].length;
     let cx = layerScale(layerIdx) + RECT_SIZE / 2;
     maxY = Math.max(maxY, nodeIndexScale(numNodes));
     addPlusMinusControl(layerScale(layerIdx), layerIdx);
