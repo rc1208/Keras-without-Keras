@@ -189,7 +189,7 @@ def compile_model():
     content = request.get_json()
     if content['nn_type'] == 'feedforward':
         app.config['RESULT_FILE_NAME'] = nn.create_feed_forward(content,"data/mse")
-        return return_json(filename)
+        return return_json(app.config['RESULT_FILE_NAME'])
 
     elif content['nn_type'] == 'rnn':
         app.config['RESULT_FILE_NAME'] = nn.create_rnn(content,"data/mse")
