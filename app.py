@@ -60,6 +60,8 @@ def tabular_upload_post():
         if(request.form.get("dataid")):
             tabular_savefile(file, request.form.get('dataid'), request.form.get('datadesc'),  if_ignore_1stline, if_target_category)
         else:
+            if(os.path.exists(filepath)):
+                os.remove(filepath)
             file.save(filepath)
         size_input_neuron, size_output_neuron = tabular_getsize(filepath, if_target_category, if_ignore_1stline)
         print((if_target_category, if_ignore_1stline, size_input_neuron, size_output_neuron))
@@ -215,7 +217,10 @@ def images_upload_post():
         if(request.form.get("dataid")):
             images_savefile(file, request.form.get('dataid'), request.form.get('datadesc'), dir_pickle)
         else:
+            if(os.path.exists(filepath)):
+                os.remove(filepath)
             file.save(filepath)
+        pickle_gzip(file.filename, filepath)
         sizes=images_getsize(filepath)
         print(sizes)
         if(isinstance(sizes, tuple)):
@@ -232,6 +237,15 @@ def images_upload_post():
         flash('No file part')
         return redirect(request.url)
 
+# if upload_filename is *.pklz, ignore; if upload_filename is *.pkl, read data from "save_filename" & re-write as "zip pickle"
+def pickle_gzip(upload_filename, save_filename): 
+    if(upload_filename[-1] == "z"):
+        return
+    else:
+        with open(save_filename, "rb") as f:
+            data = pickle.load(f)
+        with gzip.open(save_filename, "wb") as f:
+            pickle.dump(data, f, 1)
 
 def images_savefile(file, data_id, data_desc, dir_pickle):
     #save the file (name as data_id), and link to "training.csv"
@@ -290,6 +304,8 @@ def text_upload_post():
         if(request.form.get("dataid")):
             text_savefile(file, request.form.get('dataid'), request.form.get('datadesc'), dir_text)
         else:
+            if(os.path.exists(filepath)):
+                os.remove(filepath)
             file.save(filepath)
         lossfunc=app.config["LOSS_TEXT"]
         return redirect("http://127.0.0.1:8080/index_rnn.html#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&typeofnet=2&regularizationRate=0&noise=0&networkShape=1&seed=0.09947&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&lossfunc=%s&dataLocation=%s" %(lossfunc, filepath))
