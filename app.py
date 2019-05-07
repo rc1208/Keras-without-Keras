@@ -83,7 +83,7 @@ def tabular_getsize(filepath, if_target_category, if_ignore_1stline):
             if(if_ignore_1stline):
                 if_ignore_1stline = None
                 continue
-            n_feature = len(row)
+            n_feature = len(row) - 1
             if(not if_target_category):
                 n_output = 1
                 return (n_feature, n_output)
