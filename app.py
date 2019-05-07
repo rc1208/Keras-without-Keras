@@ -178,10 +178,9 @@ def get_tasks(task_id):
 
 #app.config['RESULT_FILE_NAME'] = "data/mse/190505_211721_callback_log_cnn.csv"
 
-@app.route('/api/csv-result/v1.0/', methods = ['GET'])
-def return_json():
+def return_json(file):
     try:
-        ret = pd.read_csv(app.config['RESULT_FILE_NAME'])
+        ret = pd.read_csv(file)
         if ret.empty:
             return json.dumps({'status': 'model training failed'})
         return ret.to_json()
@@ -190,6 +189,10 @@ def return_json():
 
 
 filename = ""
+
+@app.route('/api/csv-result/v1.0/', methods = ['GET'])
+def epoch_file_read():
+    return return_json(app.config['RESULT_FILE_NAME'])
 
 @app.route('/api/neural-network/v1.0/', methods = ['POST'])
 def compile_model():
