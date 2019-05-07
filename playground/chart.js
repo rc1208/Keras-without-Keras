@@ -35,7 +35,7 @@ export function drawLineChart(data) {
 
 	// arrotondamento valore massimo
 	// viene portato alla decina/centinaia più vicina per eccesso
-	var parametro_arrotondamento = 10;
+	var parametro_arrotondamento = 1;
 	if( valore_massimo_asse_y > 100 ) { parametro_arrotondamento = 100; }
 	if( valore_massimo_asse_y > 1000 ) { parametro_arrotondamento = 1000; }
 	valore_massimo_asse_y = Math.ceil( valore_massimo_asse_y/parametro_arrotondamento )* parametro_arrotondamento;
