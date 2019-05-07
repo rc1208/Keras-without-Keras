@@ -35,6 +35,8 @@ app.config["LOSS_TABULAR_NUMERIC"] = "mse"
 app.config["LOSS_IMAGES"] = "categorical_crossentropy"
 app.config["LOSS_TEXT"] = "categorical_crossentropy"
 
+app.config['RESULT_FILE_NAME'] = ""
+
 @app.route('/', methods = ['GET'])
 def home():
     return render_template('index.html')
@@ -180,22 +182,22 @@ def return_json(file):
     return ret.to_json()
 
 
+filename = ""
+
 @app.route('/api/neural-network/v1.0/', methods = ['POST'])
 def compile_model():
     content = request.get_json()
-    filename = ""
     if content['nn_type'] == 'feedforward':
-        filename = nn.create_feed_forward(content,"data/mse")
+        app.config['RESULT_FILE_NAME'] = nn.create_feed_forward(content,"data/mse")
         return return_json(filename)
 
     elif content['nn_type'] == 'rnn':
-        filename = nn.create_rnn(content,"data/mse")
-        print(filename)
-        return return_json(filename)
+        app.config['RESULT_FILE_NAME'] = nn.create_rnn(content,"data/mse")
+        return return_json(app.config['RESULT_FILE_NAME'])
 
     elif content['nn_type'] == 'cnn':
-        filename = nn.create_cnn(content,"data/mse")
-        return return_json(filename)
+        app.config['RESULT_FILE_NAME'] = nn.create_cnn(content,"data/mse")
+        return return_json(app.config['RESULT_FILE_NAME'])
 
     else:
         return json.dumps({'status':'unknown model expected'})
