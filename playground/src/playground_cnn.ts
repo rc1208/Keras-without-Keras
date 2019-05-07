@@ -652,8 +652,9 @@ function drawNetwork(network: nn.Node[][]): void {
       let node = network[layerIdx][i];
       let cy = nodeIndexScale(i) + RECT_SIZE / 2;
       node2coord[node.id] = {cx, cy};
-      drawNode(cx, cy, node.id, false, container, node);
-
+      if (i < 10){
+        drawNode(cx, cy, node.id, false, container, node);
+      }
       // Show callout to thumbnails.
       let numNodes = network[layerIdx].length;
       let nextNumNodes = network[layerIdx + 1].length;
