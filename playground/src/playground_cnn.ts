@@ -779,14 +779,12 @@ function addPlusMinusControl(x: number, layerIdx: number) {
   }
   let suffix = state.networkShape[i] > 1 ? "s" : "";
 
-  if (layerIdx-1 == 0 || layerIdx-1 == 1){
-    div.append("div").text("conv2d");
+  if (layerIdx-1 == 0){
+    div.append("div").text("64 conv2d");
   }
-  else{
-    div.append("div").text(
-    state.networkShape[i] + " neuron" + suffix);
+  if (layerIdx-1 == 1){
+  	div.append("div").text("32 conv2d");	
   }
-  
 
   
   //   d3.select("#svg").on("click", () => {
@@ -1056,9 +1054,9 @@ function reset(onStartup=false) {
   }
   player.pause();
 
-  let suffix = state.numHiddenLayers !== 1 ? "s" : "";
-  d3.select("#layers-label").text("Hidden layer" + suffix);
-  d3.select("#num-layers").text(state.numHiddenLayers);
+  // let suffix = state.numHiddenLayers !== 1 ? "s" : "";
+  // d3.select("#layers-label").text("Hidden layer" + suffix);
+  // d3.select("#num-layers").text(state.numHiddenLayers);
 
   // Make a simple network.
   iter = 0;
