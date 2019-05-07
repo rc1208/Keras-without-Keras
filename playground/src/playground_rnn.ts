@@ -207,15 +207,16 @@ function makeGUI() {
       acts += "sigmoid";
       xhttp.send(
         JSON.stringify({
-          "nn_type": "feedforward",
-          "hidden_list": hidden_list,
-          "inp": String(state.sizeInput),
-          "activation_list": acts,
-          "optimiser":"adam",
+          "nn_type": "rnn",
+          "lstm_out": "256",
+          "dense_out": "100",
+          "reg_dropout": "0.2",
+          "batch_size": "1000",
+          "optimiser": "adam",
           "split_value": "0.2",
           "loss_function": state.lossfunc,
           "data_location": state.dataLocation,
-          "epochs": 10
+          "epochs": "10"
         })
       );
       xhttp.onreadystatechange=(e) => {
