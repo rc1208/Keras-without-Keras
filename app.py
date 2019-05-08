@@ -31,7 +31,7 @@ app.secret_key="123789456"
 app.config["DATABASE"] = app.instance_path + "/data.db"
 app.config["DBTABLE_DATA"] = "training_data"
 
-app.config["LOSS_TABULAR_CATEGORY"] = "categorical_crossentropy"
+app.config["LOSS_TABULAR_CATEGORY"] = "binary_crossentropy"
 app.config["LOSS_TABULAR_NUMERIC"] = "mse"
 app.config["LOSS_IMAGES"] = "categorical_crossentropy"
 app.config["LOSS_TEXT"] = "categorical_crossentropy"
