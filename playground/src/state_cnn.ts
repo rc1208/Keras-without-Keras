@@ -158,7 +158,7 @@ export class State {
   initZero = false;
   hideText = false;
   collectStats = false;
-  numHiddenLayers = 4;
+  numHiddenLayers = 2;
   hiddenLayerControls: any[] = [];
   networkShape: number[] = [64, 32];
   x = true;
@@ -174,7 +174,7 @@ export class State {
   regDataset: dataset.DataGenerator = dataset.regressPlane;
   seed: string;
   sizeInput = 21;
-  sizeOutput = 1;
+  sizeOutput = 4;
   lossfunc = "categorical_crossentropy";
   dataLocation = "data/mnist21x21_3789_converted.pklz";
   act = "relu";

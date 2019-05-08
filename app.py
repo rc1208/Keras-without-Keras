@@ -6,6 +6,7 @@ from flask import send_file, send_from_directory
 import os
 import csv
 import json
+from keras import backend as K
 import gzip
 from images import image_pngs_csv_to_pklz
 from datetime import datetime
@@ -30,7 +31,7 @@ app.secret_key="123789456"
 app.config["DATABASE"] = app.instance_path + "/data.db"
 app.config["DBTABLE_DATA"] = "training_data"
 
-app.config["LOSS_TABULAR_CATEGORY"] = "categorical_crossentropy"
+app.config["LOSS_TABULAR_CATEGORY"] = "binary_crossentropy"
 app.config["LOSS_TABULAR_NUMERIC"] = "mse"
 app.config["LOSS_IMAGES"] = "categorical_crossentropy"
 app.config["LOSS_TEXT"] = "categorical_crossentropy"
@@ -175,28 +176,42 @@ def get_tasks(task_id):
 
 ### feedforward NN API - GET request at 1 - make the model with the given id '1' and data file
 
+#app.config['RESULT_FILE_NAME'] = "data/mse/190505_211721_callback_log_cnn.csv"
+
 def return_json(file):
-    ret = pd.read_csv(file)
-    if ret.empty:
-        return json.dumps({'status': 'model training failed'})
-    return ret.to_json()
+    try:
+        ret = pd.read_csv(file)
+        if ret.empty:
+            return json.dumps({'status': 'model training failed'})
+        return ret.to_json()
+    except FileNotFoundError:
+        return json.dumps({'FileError': 'file not created'})
 
 
 filename = ""
 
+@app.route('/api/csv-result/v1.0/', methods = ['GET'])
+def epoch_file_read():
+    return return_json(app.config['RESULT_FILE_NAME'])
+
 @app.route('/api/neural-network/v1.0/', methods = ['POST'])
 def compile_model():
     content = request.get_json()
+    suffix = datetime.now().strftime("%y%m%d_%H%M%S")
+    app.config['RESULT_FILE_NAME'] = "data/mse" +  "/" + suffix + "_callback_log_feed.csv"
     if content['nn_type'] == 'feedforward':
-        app.config['RESULT_FILE_NAME'] = nn.create_feed_forward(content,"data/mse")
+        nn.create_feed_forward(content,app.config['RESULT_FILE_NAME'])
+        K.clear_session()
         return return_json(app.config['RESULT_FILE_NAME'])
 
     elif content['nn_type'] == 'rnn':
-        app.config['RESULT_FILE_NAME'] = nn.create_rnn(content,"data/mse")
+        nn.create_rnn(content,app.config['RESULT_FILE_NAME'])
+        K.clear_session()
         return return_json(app.config['RESULT_FILE_NAME'])
 
     elif content['nn_type'] == 'cnn':
-        app.config['RESULT_FILE_NAME'] = nn.create_cnn(content,"data/mse")
+        nn.create_cnn(content,app.config['RESULT_FILE_NAME'])
+        K.clear_session()
         return return_json(app.config['RESULT_FILE_NAME'])
 
     else:
@@ -230,8 +245,8 @@ def images_upload_post():
             size_input_neuron = sizes[1]*sizes[2]
             size_output_neuron = sizes[3]
             print(sizes)
-            print("http://127.0.0.1:8080/index_cnn.html#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&typeofnet=1&regularizationRate=0&noise=0&networkShape=1,1,4,4&seed=0.35115&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&sizeInput=%d&sizeOutput=%d&lossfunc=%s&dataLocation=%s&width=%d&height=%d" %(size_input_neuron, size_output_neuron, app.config["LOSS_IMAGES"], filepath, sizes[1], sizes[2]))
-            return redirect("http://127.0.0.1:8080/index_cnn.html#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&typeofnet=1&regularizationRate=0&noise=0&networkShape=1,1,4,4&seed=0.35115&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&sizeInput=%d&sizeOutput=%d&lossfunc=%s&dataLocation=%s&width=%d&height=%d" %(size_input_neuron, size_output_neuron, app.config["LOSS_IMAGES"], filepath, sizes[1], sizes[2]))
+            print("http://127.0.0.1:8080/index_cnn.html#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&typeofnet=1&regularizationRate=0&noise=0&networkShape=64,32&seed=0.35115&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&sizeInput=%d&sizeOutput=%d&lossfunc=%s&dataLocation=%s&width=%d&height=%d" %(size_input_neuron, size_output_neuron, app.config["LOSS_IMAGES"], filepath, sizes[1], sizes[2]))
+            return redirect("http://127.0.0.1:8080/index_cnn.html#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&typeofnet=1&regularizationRate=0&noise=0&networkShape=64,32&seed=0.35115&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&sizeInput=%d&sizeOutput=%d&lossfunc=%s&dataLocation=%s&width=%d&height=%d" %(size_input_neuron, size_output_neuron, app.config["LOSS_IMAGES"], filepath, sizes[1], sizes[2]))
         else:
             return redirect(request.url)
     elif 'inputfilePNG' in request.files and 'inputfileCsv' in request.files:
@@ -269,8 +284,8 @@ def images_upload_post():
         size_input_neuron = w*h
         size_output_neuron = n_label
         filepath = training_file
-        print("http://127.0.0.1:8080/index_cnn.html#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&typeofnet=1&regularizationRate=0&noise=0&networkShape=1,1,4,4&seed=0.35115&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&sizeInput=%d&sizeOutput=%d&lossfunc=%s&dataLocation=%s&height=%d&width=%d" %(size_input_neuron, size_output_neuron, app.config["LOSS_IMAGES"], filepath, w, h))
-        return redirect("http://127.0.0.1:8080/index_cnn.html#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&typeofnet=1&regularizationRate=0&noise=0&networkShape=1,1,4,4&seed=0.35115&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&sizeInput=%d&sizeOutput=%d&lossfunc=%s&dataLocation=%s&height=%d&width=%d" %(size_input_neuron, size_output_neuron, app.config["LOSS_IMAGES"], filepath, w, h))
+        print("http://127.0.0.1:8080/index_cnn.html#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&typeofnet=1&regularizationRate=0&noise=0&networkShape=64,32&seed=0.35115&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&sizeInput=%d&sizeOutput=%d&lossfunc=%s&dataLocation=%s&height=%d&width=%d" %(size_input_neuron, size_output_neuron, app.config["LOSS_IMAGES"], filepath, w, h))
+        return redirect("http://127.0.0.1:8080/index_cnn.html#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&typeofnet=1&regularizationRate=0&noise=0&networkShape=64,32&seed=0.35115&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&discretize_hide=true&showTestData_hide=true&stepButton_hide=true&noise_hide=true&dataset_hide=true&sizeInput=%d&sizeOutput=%d&lossfunc=%s&dataLocation=%s&height=%d&width=%d" %(size_input_neuron, size_output_neuron, app.config["LOSS_IMAGES"], filepath, w, h))
 
     else:
         flash('No file part')

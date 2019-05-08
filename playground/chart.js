@@ -1,6 +1,6 @@
 /* jshint undef: true, unused: true, devel: true, curly: false, eqeqeq: false */
 
-export function drawLineChart(data) {
+export function drawLineChart(data, epochs) {
 	"use strict";
 
 	// creazione coordinate per ogni punto rispetto all'area dell'svg
@@ -112,7 +112,8 @@ export function drawLineChart(data) {
 
 
 	// etichette asse x
-	_step = punti_asse_x;
+	// _step = punti_asse_x;
+	_step = epochs - 1;
 
 	var y1_trattino = chart_padding + altezza_corretta - _lunghezza_trattino,
 		y2_trattino = y1_trattino + (_lunghezza_trattino * 2)
@@ -153,7 +154,7 @@ export function drawLineChart(data) {
 
 	dati.forEach(function (item, idx) {
 		var i = {label: item[0], value: item[1], index: idx};
-		i.x = Math.round((base_corretta / punti_asse_x) * idx) + chart_padding + padding_asse_y;
+		i.x = Math.round((base_corretta / epochs - 1) * idx) + chart_padding + padding_asse_y;
 		i.y = Math.round(altezza - ((altezza_corretta * item[1]) / valore_massimo_asse_y)  - chart_padding - padding_asse_x);
 		coord.push(i);
 		points.push(i.x +',' +i.y);

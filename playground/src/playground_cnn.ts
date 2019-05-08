@@ -223,8 +223,22 @@ function makeGUI() {
       xhttp.onreadystatechange=(e) => {
         let obj = JSON.parse(xhttp.responseText);
         console.log(obj);
-        drawLineChart(obj.acc);
+        drawLineChart(obj.acc, 10);
       }
+
+      let intervalID = setInterval(
+        function(){
+          let updateHttp = new XMLHttpRequest();
+          updateHttp.open("GET", "http://localhost:3333/api/csv-result/v1.0/", true);
+          updateHttp.setRequestHeader("Content-type", "application/json");
+          updateHttp.send();
+          updateHttp.onreadystatechange=(e) => {
+            if (updateHttp.readyState == 4 && updateHttp.status == 200) {
+              let obj = JSON.parse(updateHttp.responseText);
+              drawLineChart(obj.acc, 10);
+            }
+          }
+        }, 1000);
     }
   });
 
@@ -646,7 +660,7 @@ function drawNetwork(network: nn.Node[][]): void {
 
   // Draw the intermediate layers.
   for (let layerIdx = 1; layerIdx < numLayers - 1; layerIdx++) {
-    let numNodes = network[layerIdx].length;
+    let numNodes = network[layerIdx].length > 10 ? 1 : network[layerIdx].length;
     let cx = layerScale(layerIdx) + RECT_SIZE / 2;
     maxY = Math.max(maxY, nodeIndexScale(numNodes));
     addPlusMinusControl(layerScale(layerIdx), layerIdx);
@@ -779,14 +793,12 @@ function addPlusMinusControl(x: number, layerIdx: number) {
   }
   let suffix = state.networkShape[i] > 1 ? "s" : "";
 
-  if (layerIdx-1 == 0 || layerIdx-1 == 1){
-    div.append("div").text("conv2d");
+  if (layerIdx-1 == 0){
+    div.append("div").text("64 conv2d");
   }
-  else{
-    div.append("div").text(
-    state.networkShape[i] + " neuron" + suffix);
+  if (layerIdx-1 == 1){
+  	div.append("div").text("32 conv2d");	
   }
-  
 
   
   //   d3.select("#svg").on("click", () => {
@@ -1056,9 +1068,9 @@ function reset(onStartup=false) {
   }
   player.pause();
 
-  let suffix = state.numHiddenLayers !== 1 ? "s" : "";
-  d3.select("#layers-label").text("Hidden layer" + suffix);
-  d3.select("#num-layers").text(state.numHiddenLayers);
+  // let suffix = state.numHiddenLayers !== 1 ? "s" : "";
+  // d3.select("#layers-label").text("Hidden layer" + suffix);
+  // d3.select("#num-layers").text(state.numHiddenLayers);
 
   // Make a simple network.
   iter = 0;

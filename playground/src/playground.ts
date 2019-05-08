@@ -215,13 +215,28 @@ function makeGUI() {
           "split_value": "0.2",
           "loss_function": state.lossfunc,
           "data_location": state.dataLocation,
-          "epochs": 10
+          "epochs": 50
         })
       );
       xhttp.onreadystatechange=(e) => {
         let obj = JSON.parse(xhttp.responseText);
-        drawLineChart(obj.acc);
+        drawLineChart(obj.acc, 50);
+        clearInterval(intervalID);
       }
+
+      let intervalID = setInterval(
+        function(){
+          let updateHttp = new XMLHttpRequest();
+          updateHttp.open("GET", "http://localhost:3333/api/csv-result/v1.0/", true);
+          updateHttp.setRequestHeader("Content-type", "application/json");
+          updateHttp.send();
+          updateHttp.onreadystatechange=(e) => {
+            if (updateHttp.readyState == 4 && updateHttp.status == 200) {
+              let obj = JSON.parse(updateHttp.responseText);
+              drawLineChart(obj.acc, 50);
+            }
+          }
+        }, 1000);
     }
   });
 
