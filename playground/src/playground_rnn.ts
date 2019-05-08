@@ -222,8 +222,22 @@ function makeGUI() {
       xhttp.onreadystatechange=(e) => {
         let obj = JSON.parse(xhttp.responseText);
         console.log(obj);
-        drawLineChart(obj.acc);
+        drawLineChart(obj.acc, 10);
       }
+
+      let intervalID = setInterval(
+        function(){
+          let updateHttp = new XMLHttpRequest();
+          updateHttp.open("GET", "http://localhost:3333/api/csv-result/v1.0/", true);
+          updateHttp.setRequestHeader("Content-type", "application/json");
+          updateHttp.send();
+          updateHttp.onreadystatechange=(e) => {
+            if (updateHttp.readyState == 4 && updateHttp.status == 200) {
+              let obj = JSON.parse(updateHttp.responseText);
+              drawLineChart(obj.acc, 10);
+            }
+          }
+        }, 1000);
     }
   });
 
