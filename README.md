@@ -152,4 +152,4 @@ curl -i -H "Content-Type: application/json" -X POST -d
 | Hansol Yoon       | [Here](https://github.com/hansolyoon)      | 
 
 ### Demo Video
-[![Watch the video](https://img.youtube.com/vi/<iDfQLy_nYD8>/hqdefault.jpg)](https://youtu.be/iDfQLy_nYD8)
+[![Watch the video](https://img.youtube.com/vi/iDfQLy_nYD8/hqdefault.jpg)](https://youtu.be/iDfQLy_nYD8)
